@@ -15,17 +15,20 @@ class HomeController extends Controller
     }
 
     public function attendance(Request $request){
+        if(!Auth::check()){
+            return redirect()->route('home')->with('error', "Bạn chưa đăng nhập");
+        }
         $user = Auth::user();
         $type = $request->input('type');
         $attendance = [
             'user_id' => $user->id,
-            'date' => now()->toDateString(),
+            'date' => now()->toDateTimeString(),
             'type' => $type,
             'status' => 'success',
         ];
         Attendance::create($attendance);
-        return redirect()->route('home');
-
+        return redirect()->route('home')->with('success', "thành công");
     }
+
 
 }
