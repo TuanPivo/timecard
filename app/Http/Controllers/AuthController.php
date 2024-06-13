@@ -18,7 +18,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->route('home')->with('Bạn đã đăng nhập rồi');
         }
-        return view('user.login');
+        return view('pages.login');
     }
 
     public function login(LoginRequest $request)

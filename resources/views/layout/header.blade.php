@@ -1,6 +1,6 @@
-<header>
-      <div class="header">
-        <button class="btn btn-primary mr-2">Button 1</button>
-        <button class="btn btn-secondary">Button 2</button>
-      </div>
-</header>
+<div class="header">
+    <h2>ảnh công ty ở đây</h2>
+    <div>
+      <button class="btn btn-danger mr-2">Login</button>
+    </div>
+</div>
