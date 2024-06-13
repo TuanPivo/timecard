@@ -17,17 +17,17 @@
         .sidebar {
             min-width: 250px;
             max-width: 250px;
-            background-color: #343a40;
-            color: #fff;
+            background-color: #f8f9fa;
+            color: #000000;
         }
 
         .sidebar a {
-            color: #fff;
+            color: #000000;
             text-decoration: none;
         }
 
         .sidebar .nav-link:hover {
-            background-color: #495057;
+            background-color: #cfcfcf;
         }
 
         .content {
