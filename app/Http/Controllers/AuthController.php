@@ -44,6 +44,9 @@ class AuthController extends Controller
 
     public function logOut()
     {
+        if(!Auth::check()){
+            return redirect()->back()->with('error', "Bạn chưa đăng nhập");
+        }
         Auth::logout();
         return redirect()->route('login');
     }

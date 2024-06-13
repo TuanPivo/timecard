@@ -73,7 +73,9 @@
 </head>
 
 <body>
-    @include('layout.header')
+    @if(!Auth::check())
+         @include('layout.header')
+    @endif
     <div class="main">
         @include('layout.sidebar')
         <div class="content">
