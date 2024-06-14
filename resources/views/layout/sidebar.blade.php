@@ -12,9 +12,12 @@
                 <a class="nav-link" href="#"><i class="fas fa-bars"></i> Manage TimeCard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('showRewuest')}}"><i class="fas fa-bars"></i> Manage Request</a>
+                <a class="nav-link" href="{{ route('showRewuest')}}"><i class="fas fa-address-card"></i> Manage Request</a>
             </li>
         @endif
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('confirm') }}"><i class="fas fa-key"></i> Change password</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ route('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </li>

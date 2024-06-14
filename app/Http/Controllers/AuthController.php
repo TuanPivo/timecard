@@ -51,17 +51,15 @@ class AuthController extends Controller
     }
 
 
-    public function showFormChangePass(Request $request, $id_user = null)
+    public function showConfirmPass(Request $request, $id_user = null)
     {
         if (!Auth::check()) {
             return redirect()->route('home');
         }
-        return view('user.changepass')->with(
-            ['id_user' => $id_user]
-        );
+        return view('pages.confirm_password');
     }
 
-    public function changePass(ChangePassRequest $request)
+    public function confirmPass(ChangePassRequest $request)
     {
         $user = Auth::user();
 
