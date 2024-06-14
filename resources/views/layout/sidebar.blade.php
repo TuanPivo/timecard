@@ -11,6 +11,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fas fa-bars"></i> Manage TimeCard</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('showRewuest')}}"><i class="fas fa-bars"></i> Manage Request</a>
+            </li>
         @endif
         <li class="nav-item">
             <a class="nav-link" href="{{ route('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>

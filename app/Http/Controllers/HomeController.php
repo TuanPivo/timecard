@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\AttendanceRequest;
 use App\Models\Attendance;
 use Carbon\Carbon;
 
@@ -91,6 +92,35 @@ class HomeController extends Controller
         Attendance::create($attendance);
 
         return response()->json(['success' => true]);
+    }
+
+    public function showRequest(){
+        if (!Auth::check()) {
+            return redirect()->route('home')->with('error', "Bạn chưa đăng nhập");
+        }
+        $data = Attendance::with('user')->where('status', 'pending')->get();
+        return view('pages.list_request', compact(['data']));
+    }
+
+    public function reject($id)
+    {
+        $attendance = Attendance::find($id);
+        if ($attendance) {
+            $attendance->status = 'reject';
+            $attendance->save();
+            return redirect()->back()->with('success', 'Request has been rejected.');
+        }
+        return redirect()->back()->with('error', 'Request not found.');
+    }
+    public function approve($id)
+    {
+        $attendance = Attendance::find($id);
+        if ($attendance) {
+            $attendance->status = 'success';
+            $attendance->save();
+            return redirect()->back()->with('success', 'Request has been approve.');
+        }
+        return redirect()->back()->with('error', 'Request not found.');
     }
 
 
