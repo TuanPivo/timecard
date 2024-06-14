@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\Auth\ChangePassRequest;
+use App\Http\Requests\ChangePassRequest;
 
 class AuthController extends Controller
 {
