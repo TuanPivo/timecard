@@ -78,10 +78,14 @@
                 events: {
                     url: '{{ route('attendanceData') }}',
                     method: 'GET',
+                    success: function(data) {
+                        console.log('Events data:', data); // Log the events data here
+                    },
                     failure: function() {
                         alert('Có lỗi xảy ra khi tải dữ liệu!');
                     }
                 },
+                
                 eventContent: function(arg) {
                     var status = arg.event.extendedProps.status;
                     var containerEl = document.createElement('div');
@@ -89,13 +93,16 @@
                     // Thiết lập màu sắc dựa trên status
                     switch (status) {
                         case 'success':
-                            containerEl.style.backgroundColor = '#39f';
+                            containerEl.style.backgroundColor = '#2eb85c';
+                            containerEl.style.color = '#fff';
                             break;
                         case 'pending':
                             containerEl.style.backgroundColor = '#f9b115'; // Màu vàng cho status pending
+                            containerEl.style.color = '#fff';
                             break;
                         case 'reject':
                             containerEl.style.backgroundColor = '#e55353'; // Màu đỏ cho status reject
+                            containerEl.style.color = '#fff';
                             break;
                         default:
                             break;

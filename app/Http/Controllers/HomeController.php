@@ -38,7 +38,15 @@ class HomeController extends Controller
     $attendances = Attendance::where('user_id', $user->id)
         ->whereIn('status', ['success', 'approve', 'pending','reject']) // Chỉ lấy các sự kiện có status là success, approve hoặc pending
         ->select('type', 'date', 'status')
+        ->orderBy('date','desc')
         ->get()
+         ->groupBy(function ($date) {
+            return Carbon::parse($date->date)->format('Y-m-d');
+         })
+        ->map(function ($dayGroup) {
+            return $dayGroup->unique('type'); // Lấy sự kiện gần nhất của mỗi loại trong ngày
+        })
+        ->flatten()
         ->map(function ($attendance) {
             $title = ucfirst($attendance->type);
             if ($attendance->status === 'pending') {
