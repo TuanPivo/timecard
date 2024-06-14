@@ -9,6 +9,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <style>
         body {
             display: flex;
@@ -85,6 +87,25 @@
         </div>
     </div>
     @include('layout.footer')
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+    
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+        Dropzone.autoDiscover = false;
+    </script>
+    
+    @yield('customJs')
+
 </body>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/locales-all.min.js"></script>

@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'email' => 'required|email',
             'password' => [
                 'required',
                 'min:8',
