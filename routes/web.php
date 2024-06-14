@@ -37,8 +37,8 @@ Route::group(['prefix' => '/'], function () {
 
         Route::get('/logout', 'logout')->name('logout');
 
-        Route::get('/changePass', 'showFormChangePass')->name('showPass');
-        Route::post('/changePass', 'changePass')->name('changePass');
+        Route::get('/confirmPass', 'showConfirmPass')->name('confirm');
+        Route::post('/confirmPass', 'confirmPass')->name('confirmPass');
     });
 
     Route::controller(AccountController::class)->group(function () {

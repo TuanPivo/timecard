@@ -63,7 +63,6 @@ class HomeController extends Controller
             ];
         });
 
-
     return response()->json($attendances);
 }
 
@@ -74,7 +73,7 @@ class HomeController extends Controller
 
         switch ($type) {
             case 'check in':
-                $date .= ' 08:00:00'; // Thêm giờ 08:00 nếu là check in
+                $date .= ' 08:30:00'; // Thêm giờ 08:30 nếu là check in
                 break;
             case 'check out':
                 $date .= ' 17:30:00'; // Thêm giờ 17:30 nếu là check in 17h30
