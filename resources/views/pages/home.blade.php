@@ -88,11 +88,14 @@
 
                     // Thiết lập màu sắc dựa trên status
                     switch (status) {
+                        case 'success':
+                            containerEl.style.backgroundColor = '#39f';
+                            break;
                         case 'pending':
-                            containerEl.style.backgroundColor = '#ffc107'; // Màu vàng cho status pending
+                            containerEl.style.backgroundColor = '#f9b115'; // Màu vàng cho status pending
                             break;
                         case 'reject':
-                            containerEl.style.backgroundColor = '#dc3545'; // Màu đỏ cho status reject
+                            containerEl.style.backgroundColor = '#e55353'; // Màu đỏ cho status reject
                             break;
                         default:
                             break;

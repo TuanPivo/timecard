@@ -36,7 +36,7 @@ class HomeController extends Controller
     $user = Auth::user();
 
     $attendances = Attendance::where('user_id', $user->id)
-        ->whereIn('status', ['success', 'approve', 'pending']) // Chỉ lấy các sự kiện có status là success, approve hoặc pending
+        ->whereIn('status', ['success', 'approve', 'pending','reject']) // Chỉ lấy các sự kiện có status là success, approve hoặc pending
         ->select('type', 'date', 'status')
         ->get()
         ->map(function ($attendance) {
@@ -44,12 +44,16 @@ class HomeController extends Controller
             if ($attendance->status === 'pending') {
                 $title .= ' - ' . $attendance->status;
             }
+            if($attendance->status === 'reject'){
+                $title .= '-' . $attendance->status;
+            }
             return [
                 'title' => $title,
                 'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
                 'status' => $attendance->status,
             ];
         });
+
 
     return response()->json($attendances);
 }
