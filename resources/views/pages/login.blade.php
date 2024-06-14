@@ -1,54 +1,53 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en_AU" />
+<html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Uruca - Company</title>
-    <meta name="description" content="" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Uruca K.K</title>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('assets/css/adminlte.min.css') }}">
 </head>
-<section class="section-5">
-    <div class="container my-5">
-        <div class="py-lg-2">&nbsp;</div>
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-5">
-                <div class="card shadow border-0 p-5">
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                    <h1 class="h3">Login</h1>
-                    <form action="{{ route('loginPost') }}" method="post">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="" class="mb-2">Name*</label>
-                            <input type="text" value="{{ old('name') }}" name="name" class="form-control"
-                                placeholder="Enter name">
-                            @error('name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="mb-2">Password*</label>
-                            <input type="password" name="password" class="form-control" placeholder="Enter Password">
-                            @error('password')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="justify-content-between d-flex">
-                            <button class="btn btn-primary mt-2" type="submit">Login</button>
-                            <a href="forgot-password.html" class="mt-3">Forgot Password?</a>
-                        </div>
-                    </form>
-                </div>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="#" class="h3">Login Account</a>
+            </div>
+            <div class="card-body">
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                <form action="{{ route('loginPost') }}" method="post">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="" class="mb-2">Email <span style="color:#FF0000">*</span></label>
+                        <input type="text" value="{{ old('email') }}" name="email" class="form-control @error('email') is-invalid @enderror"
+                            placeholder="Enter email">
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="mb-2">Password <span style="color:#FF0000">*</span></label>
+                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Password">
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="justify-content-between d-flex">
+                        <button class="btn btn-primary mt-2" type="submit">Login</button>
+                        <a href="#" class="mt-3">Forgot Password?</a>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="py-lg-5">&nbsp;</div>
     </div>
-</section>
+
+    <!-- Bootstrap-->
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

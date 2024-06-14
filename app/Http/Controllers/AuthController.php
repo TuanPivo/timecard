@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
-use Illuminate\Http\Request;
-use App\Http\Requests\ChangePassRequest;
-use Illuminate\Support\Facades\Auth;
 use App\Helpers\ConstCommon;
-use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Auth\ChangePassRequest;
 
 class AuthController extends Controller
 {
@@ -25,7 +24,7 @@ class AuthController extends Controller
     {
         $intendedUrl = session('url.intended');
         $credentials = [
-            'name' => $request->input('name'),
+            'email' => $request->input('email'),
             'password' => $request->input('password'),
         ];
         $redirectTo = route('home');

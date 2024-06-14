@@ -4,6 +4,14 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('home')}}"><i class="fas fa-home"></i> Home</a>
         </li>
+        @if (Auth::check() && Auth::user()->role === 0)
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('account.index')}}"><i class="fas fa-users"></i> Manage User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-bars"></i> Manage TimeCard</a>
+            </li>
+        @endif
         <li class="nav-item">
             <a class="nav-link" href="{{ route('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </li>
