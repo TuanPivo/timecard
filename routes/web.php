@@ -22,6 +22,9 @@ Route::get('/', function () {
 Route::group(['prefix' => '/'], function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index')->name('home');
+        Route::post('/', 'attendance')->name('attendance');
+        Route::get('/data', 'getDataAttendance')->name('attendanceData');
+        Route::post('/send', 'sendRequest')->name('sendRequest');
     });
     Route::controller(AuthController::class)->group(function () {
         Route::get('/login', 'showLoginForm')->name('login');
