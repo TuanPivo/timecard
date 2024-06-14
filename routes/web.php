@@ -3,8 +3,8 @@
 use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/', 'attendance')->name('attendance');
         Route::get('/data', 'getDataAttendance')->name('attendanceData');
         Route::post('/send', 'sendRequest')->name('sendRequest');
-        Route::get('/show', 'showRequest')->name('showRewuest');
+        Route::get('/show', 'showRequest')->name('showRequest');
         Route::get('/reject/{id}', 'reject')->name('reject');
         Route::get('/approve/{id}', 'approve')->name('approve');
 
@@ -50,4 +50,8 @@ Route::group(['prefix' => '/'], function () {
         Route::delete('/users/{userId}','destroy')->name('account.delete');
     });
 
+    Route::controller(CalendarController::class)->group(function () {
+        Route::get('/calendar', 'index')->name('calendar.index');
+        // Route::get('/calendar/show', 'getcalendar')->name('calendar.calendar');
+    });
 });

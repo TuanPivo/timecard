@@ -14,13 +14,15 @@ class AccountController extends Controller
 {
     public function index(Request $request)
     {
-        // $users = User::latest()->paginate(15);
-        $users = User::orderBy('created_at', 'DESC')->paginate(15);
+        $users = User::orderBy('created_at', 'DESC');
+        
 
         if (!empty($request->get('keyword'))) {
             $users = $users->Where('name', 'like', '%' . $request->get('keyword') . '%');
             $users = $users->orWhere('email', 'like', '%' . $request->get('keyword') . '%');
         }
+
+        $users = $users->paginate(15);
 
         return view('account.index', [
             'users' => $users,
@@ -103,10 +105,6 @@ class AccountController extends Controller
         if ($validator->passes()) {
             $user->name = $request->name;
             $user->email = $request->email;
-
-            // if ($request->password != '') {
-            //     $user->password = Hash::make($request->password);
-            // }
 
             $subject = 'Account information has been successfully edited.';
             $name = $request->input('name');
