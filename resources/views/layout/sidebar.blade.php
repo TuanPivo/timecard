@@ -9,9 +9,6 @@
                 <a class="nav-link" href="{{ route('account.index')}}"><i class="fas fa-users"></i> Manage User</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('calendar.index')}}"><i class="fas fa-bars"></i> Manage TimeCard</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{{ route('showRequest')}}"><i class="fas fa-bars"></i> Manage Request</a>
             </li>
         @endif

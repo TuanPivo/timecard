@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Attendance;
 use App\Mail\CreateAccount;
 use App\Mail\UpdateAccount;
 use Illuminate\Http\Request;
@@ -16,7 +18,6 @@ class AccountController extends Controller
     {
         $users = User::orderBy('created_at', 'DESC');
         
-
         if (!empty($request->get('keyword'))) {
             $users = $users->Where('name', 'like', '%' . $request->get('keyword') . '%');
             $users = $users->orWhere('email', 'like', '%' . $request->get('keyword') . '%');
@@ -112,7 +113,6 @@ class AccountController extends Controller
 
             Mail::to(env('MAIL_FROM_ADDRESS'))->send(new UpdateAccount($subject, $name, $email));
 
-
             $user->update();
 
             session()->flash('success', 'Updated user successfully.');
@@ -132,23 +132,58 @@ class AccountController extends Controller
     public function destroy($userId)
     {
         $user = User::find($userId);
-        if ($user == null) {
-            $message = 'User not found.';
-            session()->flash('error', $message);
+
+        if (empty($user)) {
+            session()->flash('error', 'User not found');
 
             return response()->json([
                 'status' => true,
-                'message' => $message,
+                'message' => 'User not found',
             ]);
         }
         $user->delete();
 
-        $message = 'Deleted user successfully.';
-        session()->flash('success', $message);
+        session()->flash('success', 'User deleted successfully');
 
         return response()->json([
             'status' => true,
-            'message' => $message,
+            'message' => 'User deleted successfully',
         ]);
+    }
+
+    public function showAttendance(User $user){
+        return view('account.attendance', compact(['user']));
+    }
+
+    public function getAttendance(User $user)
+    {
+        $attendances = Attendance::where('user_id', $user->id)
+            ->whereIn('status', ['success', 'approve', 'pending', 'reject'])
+            ->select('type', 'date', 'status')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->groupBy(function ($date) {
+                return Carbon::parse($date->date)->format('Y-m-d');
+            })
+            ->map(function ($dayGroup) {
+                return $dayGroup->unique('type');
+            })
+            ->flatten()
+            ->map(function ($attendance) {
+                $title = ucfirst($attendance->type);
+                if ($attendance->status === 'pending') {
+                    $title .= ' - ' . $attendance->status;
+                }
+                if ($attendance->status === 'reject') {
+                    $title .= '-' . $attendance->status;
+                }
+                return [
+                    'title' => $title,
+                    'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
+                    'status' => $attendance->status,
+                ];
+            });
+
+        return response()->json($attendances);
     }
 }

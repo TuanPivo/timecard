@@ -22,8 +22,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="name">Name <span style="color:#FF0000">*</span></label>
-                                    <input type="text" value="{{ $user->name }}" name="name" id="name" class="form-control" placeholder="Name">
+                                    <label for="name">Full Name <span style="color:#FF0000">*</span></label>
+                                    <input type="text" value="{{ $user->name }}" name="name" id="name" class="form-control" placeholder="Enter full name of user">
                                         <p></p>
                                 </div>
                             </div>
@@ -34,14 +34,6 @@
                                         <p></p>
                                 </div>
                             </div>
-                            {{-- <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="slug">Password</label>
-                                    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                                    <span>To change password you have to enter value, otherwise leave blank.</span>
-                                    <p></p>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                 </div>

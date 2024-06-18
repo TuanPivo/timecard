@@ -3,7 +3,6 @@
 use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -48,10 +47,8 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/account/edit/{userId}', 'edit')->name('account.edit');
         Route::put('/users/{userId}', 'update')->name('account.update');
         Route::delete('/users/{userId}','destroy')->name('account.delete');
-    });
 
-    Route::controller(CalendarController::class)->group(function () {
-        Route::get('/calendar', 'index')->name('calendar.index');
-        // Route::get('/calendar/show', 'getcalendar')->name('calendar.calendar');
+        Route::get('/account/attendance/{user}', 'showAttendance')->name('account.attendance');
+        Route::get('/attendance/{user}', 'getAttendance')->name('account.attendanceData');
     });
 });

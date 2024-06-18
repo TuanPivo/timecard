@@ -5,10 +5,10 @@
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1> List Users</h1>
+                    <h3>List Users</h3>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('account.create') }}" class="btn btn-primary">New User</a>
+                    <a href="{{ route('account.create') }}" class="btn-sm btn-primary">New User</a>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Role Name</th>
                                 <th class="text-center">Joining Date</th>
-                                <th class="text-center">Calendar CheckIn/CheckOut</th>
+                                <th class="text-center">Show Attendance</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -56,7 +56,9 @@
                                         <td class="text-center">{{ $user->role == 1 ? 'User' : ($user->role == 0 ? 'Admin' : '') }}</td>
                                         <td class="text-center">{{ $user->created_at->format('d/m/Y') }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('calendar.index') }}">View Calendar</a>
+                                            <a href="{{ route('account.attendance', $user->id) }}">
+                                                View Attendance
+                                            </a>
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('account.edit', $user->id) }}">
