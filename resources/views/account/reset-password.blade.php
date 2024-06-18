@@ -7,7 +7,6 @@
     <title>Uruca K.K</title>
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/adminlte.min.css') }}">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
@@ -19,35 +18,32 @@
             @include('layout.message')
 
             <div class="card-header text-center">
-                <h3>Login Account</h3>
+                <h3>Reset Password</h3>
             </div>
-            <div class="card-body">
-                {{-- @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif --}}
-                <form action="{{ route('loginPost') }}" method="post">
+            <div class="card-body">                
+                <form action="{{ route('account.processResetPassword', ['token' => $tokenString]) }}" method="post">
                     @csrf
+                    <input type="hidden" name="token" value="{{ $tokenString }}">
                     <div class="mb-3">
-                        <label for="" class="mb-2">Email <span style="color:#FF0000">*</span></label>
-                        <input type="text" value="{{ old('email') }}" name="email" class="form-control @error('email') is-invalid @enderror"
-                            placeholder="Enter email">
-                        @error('email')
+                        <label for="" class="mb-2">New Password <span style="color:#FF0000">*</span></label>
+                        <input type="password" value="" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror"
+                            placeholder="Enter new password">
+                        @error('new_password')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="" class="mb-2">Password <span style="color:#FF0000">*</span></label>
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Password">
-                        @error('password')
+                        <label for="" class="mb-2">Confirm Password <span style="color:#FF0000">*</span></label>
+                        <input type="password" value="" name="confirm_password" id="confirm_password" class="form-control @error('confirm_password') is-invalid @enderror"
+                            placeholder="Enter confirm password">
+                        @error('confirm_password')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="justify-content-between d-flex">
-                        <button class="btn btn-primary mt-2" type="submit">Login</button>
-                        <a href="{{ route('account.forgot-password') }}" class="mt-3">Forgot Password?</a>
+                        <button class="btn btn-primary mt-2" type="submit">Submit</button>
                     </div>
+                    <p>Return to the login page? <a href="{{ route('login') }}">Login</a></p>
                 </form>
             </div>
         </div>

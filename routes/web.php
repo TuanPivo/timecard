@@ -48,7 +48,14 @@ Route::group(['prefix' => '/'], function () {
         Route::put('/users/{userId}', 'update')->name('account.update');
         Route::delete('/users/{userId}','destroy')->name('account.delete');
 
+        // show calendar of user
         Route::get('/account/attendance/{user}', 'showAttendance')->name('account.attendance');
         Route::get('/attendance/{user}', 'getAttendance')->name('account.attendanceData');
+
+        // forgot password
+        Route::get('/forgot-password', 'forgotPassword')->name('account.forgot-password');
+        Route::post('/process-forgot-password', 'processForgotPassword')->name('account.processForgotPassword');
+        Route::get('/reset-password/{token}', 'resetPassword')->name('account.resetPassword');
+        Route::post('/process-reset-password/{token}', 'processResetPassword')->name('account.processResetPassword');
     });
 });
