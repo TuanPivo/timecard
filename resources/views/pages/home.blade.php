@@ -44,9 +44,6 @@
                     success: function(data) {
                         console.log('Events data:', data); // Log the events data here
                     },
-                    failure: function() {
-                        alert('Có lỗi xảy ra khi tải dữ liệu!');
-                    }
                 },
                 
                 eventContent: function(arg) {
