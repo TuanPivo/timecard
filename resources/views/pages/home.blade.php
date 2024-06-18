@@ -23,11 +23,11 @@
         <form method="POST" id="attendanceForm" action="{{ route('attendance') }}">
             @csrf
             <div class="btn-container">
-                <button type="button" value="check in" onclick="handleButtonClick(this)" class="btn btn-primary">check
+                <button type="button" value="check in" onclick="handleButtonClick(this)" class="btn btn-danger">check
                     in</button>
-                <button type="button" value="check out" onclick="handleButtonClick(this)" class="btn btn-primary">check
+                <button type="button" value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check
                     out</button>
-                <button type="button" value="WFH" onclick="handleButtonClick(this)" class="btn btn-primary">WFH</button>
+                {{-- <button type="button" value="WFH" onclick="handleButtonClick(this)" class="btn btn-danger">WFH</button> --}}
             </div>
         </form>
     </div>
