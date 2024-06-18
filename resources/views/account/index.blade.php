@@ -64,7 +64,7 @@
                                             <a href="{{ route('account.edit', $user->id) }}">
                                                 <i class="fas fa-pen"></i>
                                             </a>
-                                            <a href="" onclick="deleteUser({{ $user->id }})" class="text-danger w-4 h-4 mr-1">
+                                            <a href="#" onclick="deleteUser({{ $user->id }})" class="text-danger w-4 h-4 mr-1">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
@@ -103,7 +103,7 @@
                     },
                     success: function (response) {
                         if (response["status"]) {
-                            window.location.href = "{{ route('account.index') }}";
+                            window.location.href = '{{ route('account.index') }}';
                         }
                     }
                 });
