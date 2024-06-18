@@ -54,7 +54,7 @@
                                         <td class="text-center">{{ $user->name }}</td>
                                         <td class="text-center">{{ $user->email }}</td>
                                         <td class="text-center">{{ $user->role == 1 ? 'User' : ($user->role == 0 ? 'Admin' : '') }}</td>
-                                        <td class="text-center">{{ $user->created_at->format('d/m/Y') }}</td>
+                                        <td class="text-center">{{ \Carbon\Carbon::parse($user->date)->format('d/m/Y') }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('account.attendance', $user->id) }}">
                                                 View Attendance

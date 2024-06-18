@@ -1,5 +1,7 @@
 <div class="header">
-    <h2>ảnh công ty ở đây</h2>
+    <div>
+      <img src="{{ asset('assets/image/logo.png')}}" style="width:50%" alt="">
+    </div>
     <div>
       <a  href="{{ route('login') }}" class="btn btn-danger mr-2">Login</a>
     </div>

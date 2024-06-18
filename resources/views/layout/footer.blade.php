@@ -1,3 +1,3 @@
 <div class="footer">
-    <p>Footer content goes here.</p>
-  </div>
+    <p>Uruca 2024 @copyright.</p>
+</div>
