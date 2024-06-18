@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Attendance;
+use Carbon\Carbon;
 
 class AccountController extends Controller
 {
@@ -152,5 +154,41 @@ class AccountController extends Controller
             'status' => true,
             'message' => $message,
         ]);
+    }
+
+    public function showUserAttendance(User $user){
+        return view('account.show_attendance', compact(['user']));
+    }
+
+    public function getUserAttendance(User $user)
+    {
+        $attendances = Attendance::where('user_id', $user->id)
+            ->whereIn('status', ['success', 'approve', 'pending', 'reject'])
+            ->select('type', 'date', 'status')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->groupBy(function ($date) {
+                return Carbon::parse($date->date)->format('Y-m-d');
+            })
+            ->map(function ($dayGroup) {
+                return $dayGroup->unique('type');
+            })
+            ->flatten()
+            ->map(function ($attendance) {
+                $title = ucfirst($attendance->type);
+                if ($attendance->status === 'pending') {
+                    $title .= ' - ' . $attendance->status;
+                }
+                if ($attendance->status === 'reject') {
+                    $title .= '-' . $attendance->status;
+                }
+                return [
+                    'title' => $title,
+                    'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
+                    'status' => $attendance->status,
+                ];
+            });
+
+        return response()->json($attendances);
     }
 }

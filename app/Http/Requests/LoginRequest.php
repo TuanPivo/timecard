@@ -33,7 +33,8 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Name is required',
+            'email.required' => 'email is required',
+            'email.email' => 'Email is not ',
             'password.required' => 'Password is required',
             'password.min' => 'Password must have a minimum length of 8 characters',
             'password.regex' => 'Password must contain at least one special character'

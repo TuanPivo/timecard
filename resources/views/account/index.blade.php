@@ -51,11 +51,8 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
-                                            <a href="{{ route('account.edit', $user->id) }}">
-                                                <i class="fas fa-pen"></i>
-                                            </a>
-                                            <a href="" onclick="deleteUser({{ $user->id }})" class="text-danger w-4 h-4 mr-1">
-                                                <i class="fas fa-trash"></i>
+                                            <a href="{{ route('admin.attendance.show', $user->id) }}">
+                                                view attendance
                                             </a>
                                         </td>
                                     </tr>

@@ -48,6 +48,9 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/account/edit/{userId}', 'edit')->name('account.edit');
         Route::put('/users/{userId}', 'update')->name('account.update');
         Route::delete('/users/{userId}','destroy')->name('account.delete');
+        Route::get('/admin/ show/attendance/{user}', 'showUserAttendance')->name('admin.attendance.show');
+        Route::get('/admin/attendance/{user}', 'getUserAttendance')->name('admin.attendanceData');
+
     });
 
 });
