@@ -5,10 +5,10 @@
     <div class="container-fluid my-2">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Create User</h1>
+                <h3>Create User</h3>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route('account.index') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('account.index') }}" class="btn-sm btn-primary">Back</a>
             </div>
         </div>
     </div>
@@ -22,8 +22,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="name">Name<span style="color:#FF0000">*</span></label>
-                                <input type="text" value="{{ old('name') }}" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Name">
+                                <label for="name">Full Name<span style="color:#FF0000">*</span></label>
+                                <input type="text" value="{{ old('name') }}" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Enter full name of user">
                                 <p></p>
                             </div>
                         </div>
