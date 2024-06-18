@@ -5,10 +5,10 @@
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1> List Users</h1>
+                    <h3>List Users</h3>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('account.create') }}" class="btn btn-primary">New User</a>
+                    <a href="{{ route('account.create') }}" class="btn-sm btn-primary">New User</a>
                 </div>
             </div>
         </div>
@@ -37,24 +37,34 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Action</th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Role Name</th>
+                                <th class="text-center">Joining Date</th>
+                                <th class="text-center">Show Attendance</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if ($users->isNotEmpty())
                                 @foreach ($users as $user)
                                     <tr>
-                                        <td>{{ $user->id }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>
+                                        <td class="text-center">{{ $user->id }}</td>
+                                        <td class="text-center">{{ $user->name }}</td>
+                                        <td class="text-center">{{ $user->email }}</td>
+                                        <td class="text-center">{{ $user->role == 1 ? 'User' : ($user->role == 0 ? 'Admin' : '') }}</td>
+                                        <td class="text-center">{{ $user->created_at->format('d/m/Y') }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ route('account.attendance', $user->id) }}">
+                                                View Attendance
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
                                             <a href="{{ route('account.edit', $user->id) }}">
                                                 <i class="fas fa-pen"></i>
                                             </a>
-                                            <a href="" onclick="deleteUser({{ $user->id }})" class="text-danger w-4 h-4 mr-1">
+                                            <a href="#" onclick="deleteUser({{ $user->id }})" class="text-danger w-4 h-4 mr-1">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
@@ -93,7 +103,7 @@
                     },
                     success: function (response) {
                         if (response["status"]) {
-                            window.location.href = "{{ route('account.index') }}";
+                            window.location.href = '{{ route('account.index') }}';
                         }
                     }
                 });

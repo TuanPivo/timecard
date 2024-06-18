@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +25,7 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/', 'attendance')->name('attendance');
         Route::get('/data', 'getDataAttendance')->name('attendanceData');
         Route::post('/send', 'sendRequest')->name('sendRequest');
-        Route::get('/show', 'showRequest')->name('showRewuest');
+        Route::get('/show', 'showRequest')->name('showRequest');
         Route::get('/reject/{id}', 'reject')->name('reject');
         Route::get('/approve/{id}', 'approve')->name('approve');
 
@@ -48,6 +47,8 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/account/edit/{userId}', 'edit')->name('account.edit');
         Route::put('/users/{userId}', 'update')->name('account.update');
         Route::delete('/users/{userId}','destroy')->name('account.delete');
-    });
 
+        Route::get('/account/attendance/{user}', 'showAttendance')->name('account.attendance');
+        Route::get('/attendance/{user}', 'getAttendance')->name('account.attendanceData');
+    });
 });
