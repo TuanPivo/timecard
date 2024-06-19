@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,13 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/confirmPass', 'confirmPass')->name('confirmPass');
     });
 
+    Route::controller(ForgotPasswordController::class)->group(function () {
+        Route::get('/forgot-password', 'forgotPassword')->name('password.forgot-password');
+        Route::post('/process-forgot-password', 'processForgotPassword')->name('password.processForgotPassword');
+        Route::get('/reset-password/{token}', 'resetPassword')->name('password.resetPassword');
+        Route::post('/process-reset-password/{token}', 'processResetPassword')->name('password.processResetPassword');
+    });
+
     Route::middleware('CheckAdmin')->controller(AccountController::class)->group(function () {
         Route::get('/account', 'index')->name('account.index');
         Route::get('/account/create', 'create')->name('account.create');
@@ -51,11 +59,5 @@ Route::group(['prefix' => '/'], function () {
         // show calendar of user
         Route::get('/account/attendance/{user}', 'showAttendance')->name('account.attendance');
         Route::get('/attendance/{user}', 'getAttendance')->name('account.attendanceData');
-
-        // forgot password
-        Route::get('/forgot-password', 'forgotPassword')->name('account.forgot-password');
-        Route::post('/process-forgot-password', 'processForgotPassword')->name('account.processForgotPassword');
-        Route::get('/reset-password/{token}', 'resetPassword')->name('account.resetPassword');
-        Route::post('/process-reset-password/{token}', 'processResetPassword')->name('account.processResetPassword');
     });
 });

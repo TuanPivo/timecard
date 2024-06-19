@@ -58,7 +58,7 @@
             <p>Dear, <strong>{{ $mailData['user']->name }}</strong></p>
             <p>Click below to change your password.</p>
             <div class="button">
-                <a href="{{ route('account.resetPassword',$mailData['token']) }}">Click here to reset password</a>
+                <a href="{{ route('password.resetPassword',$mailData['token']) }}">Click here to reset password</a>
             </div>
         </div>
         <div class="footer">

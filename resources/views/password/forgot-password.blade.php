@@ -21,7 +21,7 @@
                 <h3>Login Account</h3>
             </div>
             <div class="card-body">                
-                <form action="{{ route('account.processForgotPassword') }}" method="post">
+                <form action="{{ route('password.processForgotPassword') }}" method="post">
                     @csrf
                     <div class="mb-3">
                         <label for="" class="mb-2">Email <span style="color:#FF0000">*</span></label>
