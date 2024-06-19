@@ -50,30 +50,5 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-
-    public function showConfirmPass(Request $request, $id_user = null)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('home');
-        }
-        return view('pages.confirm_password');
-    }
-
-    public function confirmPass(ChangePassRequest $request)
-    {
-        $user = Auth::user();
-
-        if (Hash::check($request->password, $user->password)) {
-
-            $user->password = Hash::make($request->passwordNew);
-            $user->save();
-
-            return redirect()->back()->with('success', 'Password is change success.');
-        } else {
-            return redirect()->back()->with('error', 'Password is error.');
-        }
-
-    }
-
 }
 

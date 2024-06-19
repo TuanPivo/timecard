@@ -70,7 +70,7 @@ class HomeController extends Controller
         return response()->json($attendances);
     }
 
-    public function sendRequest(Request $request){
+    public function sendRequest(AttendanceRequest $request){
         $user = Auth::user();
         $type = $request->input('type');
         $date = $request->input('date');
@@ -101,7 +101,10 @@ class HomeController extends Controller
         if (!Auth::check()) {
             return redirect()->route('home')->with('error', "Bạn chưa đăng nhập");
         }
-        $data = Attendance::with('user')->where('status', 'pending')->get();
+        $data = Attendance::with('user')
+        ->where('status', 'pending')
+        ->orderBy('date','desc')
+        ->get();
         return view('pages.list_request', compact(['data']));
     }
 

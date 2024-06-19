@@ -132,8 +132,20 @@
                             alert('Có lỗi xảy ra!');
                         }
                     },
-                    error: function() {
-                        alert('Có lỗi xảy ra!');
+                    error: function(response) {
+                        var errors = response.responseJSON.errors;
+                        if (errors) {
+                            if (errors.type) {
+                                $('#attendanceType').next('.text-danger').remove();
+                                $('#attendanceType').after('<div class="text-danger">' + errors.type[0] + '</div>');
+                            }
+                            if (errors.date) {
+                                $('#attendanceDate').next('.text-danger').remove();
+                                $('#attendanceDate').after('<div class="text-danger">' + errors.date[0] + '</div>');
+                            }
+                        } else {
+                            alert('Có lỗi xảy ra!');
+                        }
                     }
                 });
             });
