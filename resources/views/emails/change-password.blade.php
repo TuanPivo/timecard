@@ -17,7 +17,7 @@
         .header {
             text-align: center;
             margin-bottom: 20px;
-            background-color: #934caf;
+            background-color: #4caf50;
             padding: 20px;
             color: #ffffff;
         }
@@ -52,19 +52,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <h3>Notification of user account information.</h3>
+            <h3>Password change notification.</h3>
         </div>
         <div class="content">
-            <p>Dear, {{ $name }}</p>
-            <p>Your account has been created successfully. Here are your login details:</p>
+            <p>Dear {{ $name }},</p>
+            <p>You have successfully changed your password. Below are the details of the changes:</p>
             <p><strong>Email:</strong> {{ $email }}</p>
             <p><strong>Password:</strong> {{ $password }}</p>
-            <div class="button">
-                <a href="{{ $loginUrl }}">Click here to login</a>
-            </div>
         </div>
         <div class="footer">
-            <p>Best regards!</p>
+            <p>Best regards,</p>
         </div>
     </div>
 </body>

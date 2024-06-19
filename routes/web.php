@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\ForgotPasswordController;
 
 /*
@@ -38,7 +39,14 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/logout', 'logout')->name('logout');
     });
 
+    Route::controller(ChangePasswordController::class)->group(function () {
+        // change password
+        Route::get('/changePassword', 'changePassword')->name('password.change-password');
+        Route::post('/updatePassword', 'updatePassword')->name('password.updatePassword');
+    });
+
     Route::controller(ForgotPasswordController::class)->group(function () {
+        // forgot password
         Route::get('/forgot-password', 'forgotPassword')->name('password.forgot-password');
         Route::post('/process-forgot-password', 'processForgotPassword')->name('password.processForgotPassword');
         Route::get('/reset-password/{token}', 'resetPassword')->name('password.resetPassword');
