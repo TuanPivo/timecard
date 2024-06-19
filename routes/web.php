@@ -35,9 +35,6 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/login', 'login')->name('loginPost');
 
         Route::get('/logout', 'logout')->name('logout');
-
-        Route::get('/confirmPass', 'showConfirmPass')->name('confirm');
-        Route::post('/confirmPass', 'confirmPass')->name('confirmPass');
     });
 
     Route::middleware('CheckAdmin')->controller(AccountController::class)->group(function () {
