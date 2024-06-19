@@ -70,7 +70,7 @@ class HomeController extends Controller
         return response()->json($attendances);
     }
 
-    public function sendRequest(AttendanceRequest $request){
+    public function sendRequest(Request $request){
         $user = Auth::user();
         $type = $request->input('type');
         $date = $request->input('date');
