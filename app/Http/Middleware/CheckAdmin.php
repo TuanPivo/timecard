@@ -18,7 +18,7 @@ class CheckAdmin
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if (Auth::user()->type != 0) {
+            if (Auth::user()->role == 0) {
                 return $next($request);
             } else {
                 return redirect()->route('home')->with('warning', 'You cannot access this website');
