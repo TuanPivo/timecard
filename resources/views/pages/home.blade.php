@@ -62,21 +62,18 @@
                 eventContent: function(arg) {
                     var status = arg.event.extendedProps.status;
                     var containerEl = document.createElement('div');
+                    containerEl.style.color = '#fff';
 
                     // Thiết lập màu sắc dựa trên status
                     switch (status) {
                         case 'success':
                             containerEl.style.backgroundColor = '#2eb85c';
-                            containerEl.style.color = '#fff';
                             break;
                         case 'pending':
-                            containerEl.style.backgroundColor =
-                            '#f9b115'; // Màu vàng cho status pending
-                            containerEl.style.color = '#fff';
+                            containerEl.style.backgroundColor ='#f9b115'; // Màu vàng cho status pending
                             break;
                         case 'reject':
                             containerEl.style.backgroundColor = '#e55353'; // Màu đỏ cho status reject
-                            containerEl.style.color = '#fff';
                             break;
                         default:
                             break;
@@ -110,7 +107,8 @@
             });
             calendar.render();
 
-            function showModal() {
+            function showModal(date) {
+                $('#attendanceDate').val(date); 
                 $('#attendanceModal').modal('show'); // Hiển thị modal
             }
             $('#saveAttendanceBtn').click(function() {

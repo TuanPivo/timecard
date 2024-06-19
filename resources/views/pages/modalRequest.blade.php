@@ -13,7 +13,7 @@
                     <form id="attendanceForm">
                         @csrf
                         <div class="form-group">
-                            <label for="attendanceType">Loại:</label>
+                            <label for="attendanceType">Type:</label>
                             <select class="form-control" id="attendanceType" name="type">
                                 <option value="check in">Check In</option>
                                 <option value="check out">Check Out</option>
@@ -23,7 +23,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="attendanceDate">Ngày:</label>
+                            <label for="attendanceDate">Date:</label>
                             <div class="input-group date" data-provide="datepicker">
                                 <input type="date" class="form-control" id="attendanceDate" name="date">
                             </div>
