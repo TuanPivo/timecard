@@ -18,6 +18,9 @@
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
+    @if (session('warning'))
+        <div class="alert alert-warning">{{ session('warning') }}</div>
+    @endif
 
     <div class="container mt-5">
         <form method="POST" id="attendanceForm" action="{{ route('attendance') }}">
