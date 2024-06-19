@@ -5,6 +5,7 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            width: 50%;
         }
 
         .btn-container .btn {
