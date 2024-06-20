@@ -24,25 +24,26 @@
     @endif
     <div class="row">
         <div class="col-md-4">
-            <div class="card">
+            <div class="card d-flex justify-content-center align-items-center">
                 <div class="card-header">
                     <h4 class="card-title">Attendance</h4>
                 </div>
                 <form method="POST" id="attendanceForm" action="{{ route('attendance') }}">
-                @csrf
-                <div class="card-body">
-                    <p class="demo">
-                        <button value="check in" onclick="handleButtonClick(this)" class="btn btn-danger">check
-                        in</button>
-                    <button  value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check
-                        out</button>
-                    </p>
-                </div>
+                    @csrf
+                    <div class="card-body">
+                        <p class="demo">
+                            <button value="check in" onclick="handleButtonClick(this)" class="btn btn-danger">checkin</button>
+                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check out</button>
+                        </p>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-    <div id="calendar" class="pt-5"></div>
+    <div class="card">
+        <div id="calendar" class="pt-5">
+        </div>
+    </div>
     @include('pages.modalCheckLogin')
     @include('pages.modalRequest')
     <script>
@@ -78,7 +79,7 @@
                             break;
                         case 'pending':
                             containerEl.style.backgroundColor =
-                            '#f9b115'; // Màu vàng cho status pending
+                                '#f9b115'; // Màu vàng cho status pending
                             break;
                         case 'reject':
                             containerEl.style.backgroundColor = '#e55353'; // Màu đỏ cho status reject
