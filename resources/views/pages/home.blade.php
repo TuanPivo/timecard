@@ -78,14 +78,6 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Kiểm tra nếu người dùng chưa đăng nhập
-            @guest
-            $('#loginModal').modal('show'); // Hiển thị modal khi người dùng chưa đăng nhập
-        @endguest
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
