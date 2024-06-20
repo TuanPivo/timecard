@@ -22,29 +22,36 @@
     @if (session('warning'))
         <div class="alert alert-warning">{{ session('warning') }}</div>
     @endif
-
-    <div class="container mt-5">
-        <form method="POST" id="attendanceForm" action="{{ route('attendance') }}">
-            @csrf
-            <div class="btn-container">
-                <button type="button" value="check in" onclick="handleButtonClick(this)" class="btn btn-danger">check
-                    in</button>
-                <button type="button" value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check
-                    out</button>
-                {{-- <button type="button" value="WFH" onclick="handleButtonClick(this)" class="btn btn-danger">WFH</button> --}}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Attendance</h4>
+                </div>
+                <form method="POST" id="attendanceForm" action="{{ route('attendance') }}">
+                @csrf
+                <div class="card-body">
+                    <p class="demo">
+                        <button value="check in" onclick="handleButtonClick(this)" class="btn btn-danger">check
+                        in</button>
+                    <button  value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check
+                        out</button>
+                    </p>
+                </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <div id="calendar" class="pt-5"></div>
     @include('pages.modalCheckLogin')
     @include('pages.modalRequest')
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Kiểm tra nếu người dùng chưa đăng nhập
-        @guest
-        $('#loginModal').modal('show'); // Hiển thị modal khi người dùng chưa đăng nhập
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu người dùng chưa đăng nhập
+            @guest
+            $('#loginModal').modal('show'); // Hiển thị modal khi người dùng chưa đăng nhập
         @endguest
-    });
+        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -70,7 +77,8 @@
                             containerEl.style.backgroundColor = '#2eb85c';
                             break;
                         case 'pending':
-                            containerEl.style.backgroundColor ='#f9b115'; // Màu vàng cho status pending
+                            containerEl.style.backgroundColor =
+                            '#f9b115'; // Màu vàng cho status pending
                             break;
                         case 'reject':
                             containerEl.style.backgroundColor = '#e55353'; // Màu đỏ cho status reject
@@ -82,7 +90,7 @@
                     // Thiết lập tiêu đề của sự kiện
                     var titleEl = document.createElement('div');
                     titleEl.textContent = arg.event
-                    .title; // Tiêu đề của sự kiện (ví dụ: Check In, Check Out)
+                        .title; // Tiêu đề của sự kiện (ví dụ: Check In, Check Out)
                     containerEl.appendChild(titleEl);
 
                     // Lấy và thiết lập thời gian của sự kiện
@@ -108,7 +116,7 @@
             calendar.render();
 
             function showModal(date) {
-                $('#attendanceDate').val(date); 
+                $('#attendanceDate').val(date);
                 $('#attendanceModal').modal('show'); // Hiển thị modal
             }
             $('#saveAttendanceBtn').click(function() {
@@ -137,11 +145,13 @@
                         if (errors) {
                             if (errors.type) {
                                 $('#attendanceType').next('.text-danger').remove();
-                                $('#attendanceType').after('<div class="text-danger">' + errors.type[0] + '</div>');
+                                $('#attendanceType').after('<div class="text-danger">' + errors
+                                    .type[0] + '</div>');
                             }
                             if (errors.date) {
                                 $('#attendanceDate').next('.text-danger').remove();
-                                $('#attendanceDate').after('<div class="text-danger">' + errors.date[0] + '</div>');
+                                $('#attendanceDate').after('<div class="text-danger">' + errors
+                                    .date[0] + '</div>');
                             }
                         } else {
                             alert('Có lỗi xảy ra!');
