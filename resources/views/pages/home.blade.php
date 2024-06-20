@@ -24,7 +24,7 @@
     @endif
     <div class="row">
         <div class="col-md-4">
-            <div class="card display-flex justify-content-center">
+            <div class="card d-flex justify-content-center align-items-center">
                 <div class="card-header">
                     <h4 class="card-title">Attendance</h4>
                 </div>
@@ -40,7 +40,8 @@
             </div>
         </div>
         <div class="col-md-4 d-flex justify-content-center align-items-center">
-            <div class="clock" id="clock" style="font-size: 3rem;">
+            <div class="card">
+                <div class="clock" id="clock" style="font-size: 3rem;"></div>
             </div>
         </div>
     </div>
