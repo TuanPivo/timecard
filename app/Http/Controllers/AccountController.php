@@ -40,7 +40,8 @@ class AccountController extends Controller
 
     public function create()
     {
-        return view('account.create');
+        $user = Auth::user();
+        return view('account.create', compact(['user']));
     }
 
     public function store(Request $request)
