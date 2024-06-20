@@ -39,6 +39,10 @@
                 </form>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="clock d-flex justify-content-center align-items-center" id="clock" style="font-size: 3rem;">
+            </div>
+        </div>
     </div>
     <div class="card">
         <div id="calendar" class="pt-5">
@@ -46,6 +50,32 @@
     </div>
     @include('pages.modalCheckLogin')
     @include('pages.modalRequest')
+
+    <script>
+        // Function to update the clock
+        function updateClock() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // Ensure two digits for hours, minutes, and seconds
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            var time = hours + ':' + minutes + ':' + seconds;
+
+            // Update the clock element
+            document.getElementById('clock').textContent = time;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+
+        // Initial call to display the clock immediately
+        updateClock();
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu người dùng chưa đăng nhập
