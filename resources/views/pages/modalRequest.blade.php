@@ -34,8 +34,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="button" id="saveAttendanceBtn" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="saveAttendanceBtn" class="btn btn-primary">Send</button>
                 </div>
             </div>
         </div>

@@ -1,682 +1,429 @@
-/**
- * AdminLTE Demo Menu
- * ------------------
- * You should not use this file in production.
- * This file is for demo purposes only.
- */
-
-/* eslint-disable camelcase */
-
-(function ($) {
-  'use strict'
-
-
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
-
-  function createSkinBlock(colors, callback, noneSelected) {
-    var $block = $('<select />', {
-      class: noneSelected ? 'custom-select mb-3 border-0' : 'custom-select mb-3 text-light border-0 ' + colors[0].replace(/accent-|navbar-/, 'bg-')
-    })
-
-    if (noneSelected) {
-      var $default = $('<option />', {
-        text: 'None Selected'
-      })
-
-      $block.append($default)
-    }
-
-    colors.forEach(function (color) {
-      var $color = $('<option />', {
-        class: (typeof color === 'object' ? color.join(' ') : color).replace('navbar-', 'bg-').replace('accent-', 'bg-'),
-        text: capitalizeFirstLetter((typeof color === 'object' ? color.join(' ') : color).replace(/navbar-|accent-|bg-/, '').replace('-', ' '))
-      })
-
-      $block.append($color)
-    })
-    if (callback) {
-      $block.on('change', callback)
-    }
-
-    return $block
-  }
-
-  var $sidebar = $('.control-sidebar')
-  var $container = $('<div />', {
-    class: 'p-3 control-sidebar-content'
-  })
-
-  $sidebar.append($container)
-
-  // Checkboxes
-
-  $container.append(
-    '<h5>Customize AdminLTE</h5><hr class="mb-2"/>'
-  )
-
-  var $dark_mode_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('dark-mode'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('dark-mode')
-    } else {
-      $('body').removeClass('dark-mode')
-    }
-  })
-  var $dark_mode_container = $('<div />', { class: 'mb-4' }).append($dark_mode_checkbox).append('<span>Dark Mode</span>')
-  $container.append($dark_mode_container)
-
-  $container.append('<h6>Header Options</h6>')
-  var $header_fixed_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('layout-navbar-fixed'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('layout-navbar-fixed')
-    } else {
-      $('body').removeClass('layout-navbar-fixed')
-    }
-  })
-  var $header_fixed_container = $('<div />', { class: 'mb-1' }).append($header_fixed_checkbox).append('<span>Fixed</span>')
-  $container.append($header_fixed_container)
-
-  var $dropdown_legacy_offset_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.main-header').hasClass('dropdown-legacy'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.main-header').addClass('dropdown-legacy')
-    } else {
-      $('.main-header').removeClass('dropdown-legacy')
-    }
-  })
-  var $dropdown_legacy_offset_container = $('<div />', { class: 'mb-1' }).append($dropdown_legacy_offset_checkbox).append('<span>Dropdown Legacy Offset</span>')
-  $container.append($dropdown_legacy_offset_container)
-
-  var $no_border_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.main-header').hasClass('border-bottom-0'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.main-header').addClass('border-bottom-0')
-    } else {
-      $('.main-header').removeClass('border-bottom-0')
-    }
-  })
-  var $no_border_container = $('<div />', { class: 'mb-4' }).append($no_border_checkbox).append('<span>No border</span>')
-  $container.append($no_border_container)
-
-  $container.append('<h6>Sidebar Options</h6>')
-
-  var $sidebar_collapsed_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('sidebar-collapse'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('sidebar-collapse')
-      $(window).trigger('resize')
-    } else {
-      $('body').removeClass('sidebar-collapse')
-      $(window).trigger('resize')
-    }
-  })
-  var $sidebar_collapsed_container = $('<div />', { class: 'mb-1' }).append($sidebar_collapsed_checkbox).append('<span>Collapsed</span>')
-  $container.append($sidebar_collapsed_container)
-
-  $(document).on('collapsed.lte.pushmenu', '[data-widget="pushmenu"]', function () {
-    $sidebar_collapsed_checkbox.prop('checked', true)
-  })
-  $(document).on('shown.lte.pushmenu', '[data-widget="pushmenu"]', function () {
-    $sidebar_collapsed_checkbox.prop('checked', false)
-  })
-
-  var $sidebar_fixed_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('layout-fixed'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('layout-fixed')
-      $(window).trigger('resize')
-    } else {
-      $('body').removeClass('layout-fixed')
-      $(window).trigger('resize')
-    }
-  })
-  var $sidebar_fixed_container = $('<div />', { class: 'mb-1' }).append($sidebar_fixed_checkbox).append('<span>Fixed</span>')
-  $container.append($sidebar_fixed_container)
-
-  var $sidebar_mini_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('sidebar-mini'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('sidebar-mini')
-    } else {
-      $('body').removeClass('sidebar-mini')
-    }
-  })
-  var $sidebar_mini_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_checkbox).append('<span>Sidebar Mini</span>')
-  $container.append($sidebar_mini_container)
-
-  var $sidebar_mini_md_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('sidebar-mini-md'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('sidebar-mini-md')
-    } else {
-      $('body').removeClass('sidebar-mini-md')
-    }
-  })
-  var $sidebar_mini_md_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_md_checkbox).append('<span>Sidebar Mini MD</span>')
-  $container.append($sidebar_mini_md_container)
-
-  var $sidebar_mini_xs_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('sidebar-mini-xs'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('sidebar-mini-xs')
-    } else {
-      $('body').removeClass('sidebar-mini-xs')
-    }
-  })
-  var $sidebar_mini_xs_container = $('<div />', { class: 'mb-1' }).append($sidebar_mini_xs_checkbox).append('<span>Sidebar Mini XS</span>')
-  $container.append($sidebar_mini_xs_container)
-
-  var $flat_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.nav-sidebar').hasClass('nav-flat'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('nav-flat')
-    } else {
-      $('.nav-sidebar').removeClass('nav-flat')
-    }
-  })
-  var $flat_sidebar_container = $('<div />', { class: 'mb-1' }).append($flat_sidebar_checkbox).append('<span>Nav Flat Style</span>')
-  $container.append($flat_sidebar_container)
-
-  var $legacy_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.nav-sidebar').hasClass('nav-legacy'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('nav-legacy')
-    } else {
-      $('.nav-sidebar').removeClass('nav-legacy')
-    }
-  })
-  var $legacy_sidebar_container = $('<div />', { class: 'mb-1' }).append($legacy_sidebar_checkbox).append('<span>Nav Legacy Style</span>')
-  $container.append($legacy_sidebar_container)
-
-  var $compact_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.nav-sidebar').hasClass('nav-compact'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('nav-compact')
-    } else {
-      $('.nav-sidebar').removeClass('nav-compact')
-    }
-  })
-  var $compact_sidebar_container = $('<div />', { class: 'mb-1' }).append($compact_sidebar_checkbox).append('<span>Nav Compact</span>')
-  $container.append($compact_sidebar_container)
-
-  var $child_indent_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.nav-sidebar').hasClass('nav-child-indent'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('nav-child-indent')
-    } else {
-      $('.nav-sidebar').removeClass('nav-child-indent')
-    }
-  })
-  var $child_indent_sidebar_container = $('<div />', { class: 'mb-1' }).append($child_indent_sidebar_checkbox).append('<span>Nav Child Indent</span>')
-  $container.append($child_indent_sidebar_container)
-
-  var $child_hide_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.nav-sidebar').hasClass('nav-collapse-hide-child'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('nav-collapse-hide-child')
-    } else {
-      $('.nav-sidebar').removeClass('nav-collapse-hide-child')
-    }
-  })
-  var $child_hide_sidebar_container = $('<div />', { class: 'mb-1' }).append($child_hide_sidebar_checkbox).append('<span>Nav Child Hide on Collapse</span>')
-  $container.append($child_hide_sidebar_container)
-
-  var $no_expand_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.main-sidebar').hasClass('sidebar-no-expand'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.main-sidebar').addClass('sidebar-no-expand')
-    } else {
-      $('.main-sidebar').removeClass('sidebar-no-expand')
-    }
-  })
-  var $no_expand_sidebar_container = $('<div />', { class: 'mb-4' }).append($no_expand_sidebar_checkbox).append('<span>Disable Hover/Focus Auto-Expand</span>')
-  $container.append($no_expand_sidebar_container)
-
-  $container.append('<h6>Footer Options</h6>')
-  var $footer_fixed_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('layout-footer-fixed'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('layout-footer-fixed')
-    } else {
-      $('body').removeClass('layout-footer-fixed')
-    }
-  })
-  var $footer_fixed_container = $('<div />', { class: 'mb-4' }).append($footer_fixed_checkbox).append('<span>Fixed</span>')
-  $container.append($footer_fixed_container)
-
-  $container.append('<h6>Small Text Options</h6>')
-
-  var $text_sm_body_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('body').hasClass('text-sm'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('body').addClass('text-sm')
-    } else {
-      $('body').removeClass('text-sm')
-    }
-  })
-  var $text_sm_body_container = $('<div />', { class: 'mb-1' }).append($text_sm_body_checkbox).append('<span>Body</span>')
-  $container.append($text_sm_body_container)
-
-  var $text_sm_header_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.main-header').hasClass('text-sm'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.main-header').addClass('text-sm')
-    } else {
-      $('.main-header').removeClass('text-sm')
-    }
-  })
-  var $text_sm_header_container = $('<div />', { class: 'mb-1' }).append($text_sm_header_checkbox).append('<span>Navbar</span>')
-  $container.append($text_sm_header_container)
-
-  var $text_sm_brand_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.brand-link').hasClass('text-sm'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.brand-link').addClass('text-sm')
-    } else {
-      $('.brand-link').removeClass('text-sm')
-    }
-  })
-  var $text_sm_brand_container = $('<div />', { class: 'mb-1' }).append($text_sm_brand_checkbox).append('<span>Brand</span>')
-  $container.append($text_sm_brand_container)
-
-  var $text_sm_sidebar_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.nav-sidebar').hasClass('text-sm'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('text-sm')
-    } else {
-      $('.nav-sidebar').removeClass('text-sm')
-    }
-  })
-  var $text_sm_sidebar_container = $('<div />', { class: 'mb-1' }).append($text_sm_sidebar_checkbox).append('<span>Sidebar Nav</span>')
-  $container.append($text_sm_sidebar_container)
-
-  var $text_sm_footer_checkbox = $('<input />', {
-    type: 'checkbox',
-    value: 1,
-    checked: $('.main-footer').hasClass('text-sm'),
-    class: 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.main-footer').addClass('text-sm')
-    } else {
-      $('.main-footer').removeClass('text-sm')
-    }
-  })
-  var $text_sm_footer_container = $('<div />', { class: 'mb-4' }).append($text_sm_footer_checkbox).append('<span>Footer</span>')
-  $container.append($text_sm_footer_container)
-
-  // Color Arrays
-
-  var navbar_dark_skins = [
-    'navbar-primary',
-    'navbar-secondary',
-    'navbar-info',
-    'navbar-success',
-    'navbar-danger',
-    'navbar-indigo',
-    'navbar-purple',
-    'navbar-pink',
-    'navbar-navy',
-    'navbar-lightblue',
-    'navbar-teal',
-    'navbar-cyan',
-    'navbar-dark',
-    'navbar-gray-dark',
-    'navbar-gray'
-  ]
-
-  var navbar_light_skins = [
-    'navbar-light',
-    'navbar-warning',
-    'navbar-white',
-    'navbar-orange'
-  ]
-
-  var sidebar_colors = [
-    'bg-primary',
-    'bg-warning',
-    'bg-info',
-    'bg-danger',
-    'bg-success',
-    'bg-indigo',
-    'bg-lightblue',
-    'bg-navy',
-    'bg-purple',
-    'bg-fuchsia',
-    'bg-pink',
-    'bg-maroon',
-    'bg-orange',
-    'bg-lime',
-    'bg-teal',
-    'bg-olive'
-  ]
-
-  var accent_colors = [
-    'accent-primary',
-    'accent-warning',
-    'accent-info',
-    'accent-danger',
-    'accent-success',
-    'accent-indigo',
-    'accent-lightblue',
-    'accent-navy',
-    'accent-purple',
-    'accent-fuchsia',
-    'accent-pink',
-    'accent-maroon',
-    'accent-orange',
-    'accent-lime',
-    'accent-teal',
-    'accent-olive'
-  ]
-
-  var sidebar_skins = [
-    'sidebar-dark-primary',
-    'sidebar-dark-warning',
-    'sidebar-dark-info',
-    'sidebar-dark-danger',
-    'sidebar-dark-success',
-    'sidebar-dark-indigo',
-    'sidebar-dark-lightblue',
-    'sidebar-dark-navy',
-    'sidebar-dark-purple',
-    'sidebar-dark-fuchsia',
-    'sidebar-dark-pink',
-    'sidebar-dark-maroon',
-    'sidebar-dark-orange',
-    'sidebar-dark-lime',
-    'sidebar-dark-teal',
-    'sidebar-dark-olive',
-    'sidebar-light-primary',
-    'sidebar-light-warning',
-    'sidebar-light-info',
-    'sidebar-light-danger',
-    'sidebar-light-success',
-    'sidebar-light-indigo',
-    'sidebar-light-lightblue',
-    'sidebar-light-navy',
-    'sidebar-light-purple',
-    'sidebar-light-fuchsia',
-    'sidebar-light-pink',
-    'sidebar-light-maroon',
-    'sidebar-light-orange',
-    'sidebar-light-lime',
-    'sidebar-light-teal',
-    'sidebar-light-olive'
-  ]
-
-  // Navbar Variants
-
-  $container.append('<h6>Navbar Variants</h6>')
-
-  var $navbar_variants = $('<div />', {
-    class: 'd-flex'
-  })
-  var navbar_all_colors = navbar_dark_skins.concat(navbar_light_skins)
-  var $navbar_variants_colors = createSkinBlock(navbar_all_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var $main_header = $('.main-header')
-    $main_header.removeClass('navbar-dark').removeClass('navbar-light')
-    navbar_all_colors.forEach(function (color) {
-      $main_header.removeClass(color)
-    })
-
-    $(this).removeClass().addClass('custom-select mb-3 text-light border-0 ')
-
-    if (navbar_dark_skins.indexOf(color) > -1) {
-      $main_header.addClass('navbar-dark')
-      $(this).addClass(color).addClass('text-light')
-    } else {
-      $main_header.addClass('navbar-light')
-      $(this).addClass(color)
-    }
-
-    $main_header.addClass(color)
-  })
-
-  var active_navbar_color = null
-  $('.main-header')[0].classList.forEach(function (className) {
-    if (navbar_all_colors.indexOf(className) > -1 && active_navbar_color === null) {
-      active_navbar_color = className.replace('navbar-', 'bg-')
-    }
-  })
-
-  $navbar_variants_colors.find('option.' + active_navbar_color).prop('selected', true)
-  $navbar_variants_colors.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_navbar_color)
-
-  $navbar_variants.append($navbar_variants_colors)
-
-  $container.append($navbar_variants)
-
-  // Sidebar Colors
-
-  $container.append('<h6>Accent Color Variants</h6>')
-  var $accent_variants = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($accent_variants)
-  $container.append(createSkinBlock(accent_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var $body = $('body')
-    accent_colors.forEach(function (skin) {
-      $body.removeClass(skin)
-    })
-
-    var accent_color_class = color.replace('bg-', 'accent-')
-
-    $body.addClass(accent_color_class)
-  }, true))
-
-  var active_accent_color = null
-  $('body')[0].classList.forEach(function (className) {
-    if (accent_colors.indexOf(className) > -1 && active_accent_color === null) {
-      active_accent_color = className.replace('navbar-', 'bg-')
-    }
-  })
-
-  // $accent_variants.find('option.' + active_accent_color).prop('selected', true)
-  // $accent_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_accent_color)
-
-  $container.append('<h6>Dark Sidebar Variants</h6>')
-  var $sidebar_variants_dark = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($sidebar_variants_dark)
-  var $sidebar_dark_variants = createSkinBlock(sidebar_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var sidebar_class = 'sidebar-dark-' + color.replace('bg-', '')
-    var $sidebar = $('.main-sidebar')
-    sidebar_skins.forEach(function (skin) {
-      $sidebar.removeClass(skin)
-      $sidebar_light_variants.removeClass(skin.replace('sidebar-dark-', 'bg-')).removeClass('text-light')
-    })
-
-    $(this).removeClass().addClass('custom-select mb-3 text-light border-0').addClass(color)
-
-    $sidebar_light_variants.find('option').prop('selected', false)
-    $sidebar.addClass(sidebar_class)
-    $('.sidebar').removeClass('os-theme-dark').addClass('os-theme-light')
-  }, true)
-  $container.append($sidebar_dark_variants)
-
-  var active_sidebar_dark_color = null
-  $('.main-sidebar')[0].classList.forEach(function (className) {
-    var color = className.replace('sidebar-dark-', 'bg-')
-    if (sidebar_colors.indexOf(color) > -1 && active_sidebar_dark_color === null) {
-      active_sidebar_dark_color = color
-    }
-  })
-
-  $sidebar_dark_variants.find('option.' + active_sidebar_dark_color).prop('selected', true)
-  $sidebar_dark_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_sidebar_dark_color)
-
-  $container.append('<h6>Light Sidebar Variants</h6>')
-  var $sidebar_variants_light = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($sidebar_variants_light)
-  var $sidebar_light_variants = createSkinBlock(sidebar_colors, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var sidebar_class = 'sidebar-light-' + color.replace('bg-', '')
-    var $sidebar = $('.main-sidebar')
-    sidebar_skins.forEach(function (skin) {
-      $sidebar.removeClass(skin)
-      $sidebar_dark_variants.removeClass(skin.replace('sidebar-light-', 'bg-')).removeClass('text-light')
-    })
-
-    $(this).removeClass().addClass('custom-select mb-3 text-light border-0').addClass(color)
-
-    $sidebar_dark_variants.find('option').prop('selected', false)
-    $sidebar.addClass(sidebar_class)
-    $('.sidebar').removeClass('os-theme-light').addClass('os-theme-dark')
-  }, true)
-  $container.append($sidebar_light_variants)
-
-  var active_sidebar_light_color = null
-  $('.main-sidebar')[0].classList.forEach(function (className) {
-    var color = className.replace('sidebar-light-', 'bg-')
-    if (sidebar_colors.indexOf(color) > -1 && active_sidebar_light_color === null) {
-      active_sidebar_light_color = color
-    }
-  })
-
-  if (active_sidebar_light_color !== null) {
-    $sidebar_light_variants.find('option.' + active_sidebar_light_color).prop('selected', true)
-    $sidebar_light_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_sidebar_light_color)
-  }
-
-  var logo_skins = navbar_all_colors
-  $container.append('<h6>Brand Logo Variants</h6>')
-  var $logo_variants = $('<div />', {
-    class: 'd-flex'
-  })
-  $container.append($logo_variants)
-  var $clear_btn = $('<a />', {
-    href: '#'
-  }).text('clear').on('click', function (e) {
-    e.preventDefault()
-    var $logo = $('.brand-link')
-    logo_skins.forEach(function (skin) {
-      $logo.removeClass(skin)
-    })
-  })
-
-  var $brand_variants = createSkinBlock(logo_skins, function () {
-    var color = $(this).find('option:selected').attr('class')
-    var $logo = $('.brand-link')
-
-    if (color === 'navbar-light' || color === 'navbar-white') {
-      $logo.addClass('text-black')
-    } else {
-      $logo.removeClass('text-black')
-    }
-
-    logo_skins.forEach(function (skin) {
-      $logo.removeClass(skin)
-    })
-
-    if (color) {
-      $(this).removeClass().addClass('custom-select mb-3 border-0').addClass(color).addClass(color !== 'navbar-light' && color !== 'navbar-white' ? 'text-light' : '')
-    } else {
-      $(this).removeClass().addClass('custom-select mb-3 border-0')
-    }
-
-    $logo.addClass(color)
-  }, true).append($clear_btn)
-  $container.append($brand_variants)
-
-  var active_brand_color = null
-  $('.brand-link')[0].classList.forEach(function (className) {
-    if (logo_skins.indexOf(className) > -1 && active_brand_color === null) {
-      active_brand_color = className.replace('navbar-', 'bg-')
-    }
-  })
-
-  if (active_brand_color) {
-    $brand_variants.find('option.' + active_brand_color).prop('selected', true)
-    $brand_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_brand_color)
-  }
-})(jQuery)
+"use strict";
+
+const modalShowcase = `
+<!-- Demo Showcase -->
+<style>
+.card-documentation {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+	padding: 16px 25px;
+    background: #161B2C;
+    color: #fff;
+    border-radius: 10px;
+    border: 1px solid #ffffff14;
+}
+</style>
+<div class="modal fade" tabindex="-1" id="modalShowcase">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen p-5">
+		<div class="modal-content rounded-4">
+			<div class="modal-header px-md-5 py-md-4 mt-2 mb-3 shadow-sm border-0">
+				<h3 class="h5 fw-extrabold mb-0">Choose Layouts Dashboard</h3>
+				<button type="button" class="btn-close me-1" data-bs-dismiss="modal" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+				<path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+			  </svg>
+			  </button>
+			</div>
+			<div class="modal-body px-md-5">
+				<div class="row g-5 pb-5"> 
+					<div class="col-md-6 col-lg-4">
+						<div class="card-documentation h-100">
+							<div class="d-flex align-items-center flex-column justify-content-center text-center">
+								<img src="assets/img/kaiadmin/logo_documentation.png" height="60" alt="Read Documentation">
+								<div class="docs-info ms-3 mb-4">
+									<h6 class="fw-bold mb-0 op-8 mt-1">Need help?</h6>
+									<p class="fw-bold mb-0 op-5">Please check our docs</p>
+								</div>
+							</div>
+							<a href="../../documentation/index.html" class="btn btn-primary w-100 mb-3">Documentation</a>
+							<a href="https://kaiadmin.themekita.com/" class="btn btn-secondary w-100">Buy Now</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo1/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Classic Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo1.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo2/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									White Classic Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo2.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo3/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Dark Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo3.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo4/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Creative Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo4.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo5/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Trendy Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo5.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo6/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Trendy 2 Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo6.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo7/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Horizontal Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo7.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo8/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Enterprise Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo8.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="preview-showcase shadow-sm">
+							<a href="../demo9/index.html" data-kt-href="true" class="preview-thumbnail">
+								<h3 class="preview-title">
+									Futuristic Dashboard	
+								</h3>
+
+								<div class="overflow-hidden">
+									<img src="assets/img/kaiadmin/demo9.png" class="w-100 rounded-1 shadow-sm preview-img" data-loaded="true">
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Demo Showcase -->
+`;
+
+// window.addEventListener('load', function(event) {
+//   $("body").append(modalShowcase);
+
+//   const myModal = new bootstrap.Modal("#modalShowcase");
+//   myModal.show();
+// });
+
+
+// Cicle Chart
+Circles.create({
+	id:           'task-complete',
+	radius:       50,
+	value:        80,
+	maxValue:     100,
+	width:        5,
+	text:         function(value){return value + '%';},
+	colors:       ['#36a3f7', '#fff'],
+	duration:     400,
+	wrpClass:     'circles-wrp',
+	textClass:    'circles-text',
+	styleWrapper: true,
+	styleText:    true
+})
+
+//Notify
+$.notify({
+	icon: 'icon-bell',
+	title: 'Kaiadmin',
+	message: 'Premium Bootstrap 5 Admin Dashboard',
+},{
+	type: 'secondary',
+	placement: {
+		from: "bottom",
+		align: "right"
+	},
+	time: 1000,
+});
+
+// Jsvectormap
+var world_map = new jsVectorMap({
+	selector: "#world-map",
+	map: "world",
+	zoomOnScroll: false,
+	regionStyle: {
+		hover: {
+			fill: '#435ebe'
+		}
+	},
+	markers: [
+		{
+			name: 'Indonesia',
+			coords: [-6.229728, 106.6894311],
+			style: {
+				fill: '#435ebe'
+			}
+		},
+		{
+			name: 'United States',
+			coords: [38.8936708, -77.1546604],
+			style: {
+				fill: '#28ab55'
+			}
+		},
+		{
+			name: 'Russia',
+			coords: [55.5807481, 36.825129],
+			style: {
+				fill: '#f3616d'
+			}
+		},
+		{
+			name: 'China',
+			coords: [39.9385466, 116.1172735]
+		},
+		{
+			name: 'United Kingdom',
+			coords: [51.5285582, -0.2416812]
+		},
+		{
+			name: 'India',
+			coords: [26.8851417, 75.6504721]
+		},
+		{
+			name: 'Australia',
+			coords: [-35.2813046, 149.124822]
+		},
+		{
+			name: 'Brazil',
+			coords: [-22.9140693, -43.5860681]
+		},
+		{
+			name: 'Egypt',
+			coords: [26.834955, 26.3823725]
+		},
+	],
+	onRegionTooltipShow(event, tooltip) {
+		tooltip.css({ backgroundColor: '#435ebe' })
+	}
+});
+
+//Chart
+
+var ctx = document.getElementById('statisticsChart').getContext('2d');
+
+var statisticsChart = new Chart(ctx, {
+	type: 'line',
+	data: {
+		labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		datasets: [ {
+			label: "Subscribers",
+			borderColor: '#f3545d',
+			pointBackgroundColor: 'rgba(243, 84, 93, 0.6)',
+			pointRadius: 0,
+			backgroundColor: 'rgba(243, 84, 93, 0.4)',
+			legendColor: '#f3545d',
+			fill: true,
+			borderWidth: 2,
+			data: [154, 184, 175, 203, 210, 231, 240, 278, 252, 312, 320, 374]
+		}, {
+			label: "New Visitors",
+			borderColor: '#fdaf4b',
+			pointBackgroundColor: 'rgba(253, 175, 75, 0.6)',
+			pointRadius: 0,
+			backgroundColor: 'rgba(253, 175, 75, 0.4)',
+			legendColor: '#fdaf4b',
+			fill: true,
+			borderWidth: 2,
+			data: [256, 230, 245, 287, 240, 250, 230, 295, 331, 431, 456, 521]
+		}, {
+			label: "Active Users",
+			borderColor: '#177dff',
+			pointBackgroundColor: 'rgba(23, 125, 255, 0.6)',
+			pointRadius: 0,
+			backgroundColor: 'rgba(23, 125, 255, 0.4)',
+			legendColor: '#177dff',
+			fill: true,
+			borderWidth: 2,
+			data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 900]
+		}]
+	},
+	options : {
+		responsive: true, 
+		maintainAspectRatio: false,
+		legend: {
+			display: false
+		},
+		tooltips: {
+			bodySpacing: 4,
+			mode:"nearest",
+			intersect: 0,
+			position:"nearest",
+			xPadding:10,
+			yPadding:10,
+			caretPadding:10
+		},
+		layout:{
+			padding:{left:5,right:5,top:15,bottom:15}
+		},
+		scales: {
+			yAxes: [{
+				ticks: {
+					fontStyle: "500",
+					beginAtZero: false,
+					maxTicksLimit: 5,
+					padding: 10
+				},
+				gridLines: {
+					drawTicks: false,
+					display: false
+				}
+			}],
+			xAxes: [{
+				gridLines: {
+					zeroLineColor: "transparent"
+				},
+				ticks: {
+					padding: 10,
+					fontStyle: "500"
+				}
+			}]
+		}, 
+		legendCallback: function(chart) { 
+			var text = []; 
+			text.push('<ul class="' + chart.id + '-legend html-legend">'); 
+			for (var i = 0; i < chart.data.datasets.length; i++) { 
+				text.push('<li><span style="background-color:' + chart.data.datasets[i].legendColor + '"></span>'); 
+				if (chart.data.datasets[i].label) { 
+					text.push(chart.data.datasets[i].label); 
+				} 
+				text.push('</li>'); 
+			} 
+			text.push('</ul>'); 
+			return text.join(''); 
+		}  
+	}
+});
+
+var myLegendContainer = document.getElementById("myChartLegend");
+
+// generate HTML legend
+myLegendContainer.innerHTML = statisticsChart.generateLegend();
+
+// bind onClick event to all LI-tags of the legend
+var legendItems = myLegendContainer.getElementsByTagName('li');
+for (var i = 0; i < legendItems.length; i += 1) {
+	legendItems[i].addEventListener("click", legendClickCallback, false);
+}
+
+var dailySalesChart = document.getElementById('dailySalesChart').getContext('2d');
+
+var myDailySalesChart = new Chart(dailySalesChart, {
+	type: 'line',
+	data: {
+		labels:["January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September"],
+		datasets:[ {
+			label: "Sales Analytics", fill: !0, backgroundColor: "rgba(255,255,255,0.2)", borderColor: "#fff", borderCapStyle: "butt", borderDash: [], borderDashOffset: 0, pointBorderColor: "#fff", pointBackgroundColor: "#fff", pointBorderWidth: 1, pointHoverRadius: 5, pointHoverBackgroundColor: "#fff", pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1, pointRadius: 1, pointHitRadius: 5, data: [65, 59, 80, 81, 56, 55, 40, 35, 30]
+		}]
+	},
+	options : {
+		maintainAspectRatio:!1, legend: {
+			display: !1
+		}
+		, animation: {
+			easing: "easeInOutBack"
+		}
+		, scales: {
+			yAxes:[ {
+				display:!1, ticks: {
+					fontColor: "rgba(0,0,0,0.5)", fontStyle: "bold", beginAtZero: !0, maxTicksLimit: 10, padding: 0
+				}
+				, gridLines: {
+					drawTicks: !1, display: !1
+				}
+			}
+			], xAxes:[ {
+				display:!1, gridLines: {
+					zeroLineColor: "transparent"
+				}
+				, ticks: {
+					padding: -20, fontColor: "rgba(255,255,255,0.2)", fontStyle: "bold"
+				}
+			}
+			]
+		}
+	}
+});
+
+$("#activeUsersChart").sparkline([112,109,120,107,110,85,87,90,102,109,120,99,110,85,87,94], {
+	type: 'bar',
+	height: '100',
+	barWidth: 9,
+	barSpacing: 10,
+	barColor: 'rgba(255,255,255,.3)'
+});
