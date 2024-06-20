@@ -47,7 +47,7 @@ class AuthController extends Controller
             return redirect()->back()->with('error', "Bạn chưa đăng nhập");
         }
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 
 }
