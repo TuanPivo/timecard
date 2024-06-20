@@ -14,11 +14,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
     public function index(Request $request)
     {
+        if(!Auth::check()){
+            return redirect()->route('home')->with('error', "You are not logged in");
+        }
+        
         $users = User::orderBy('created_at', 'DESC');
 
         if (!empty($request->get('keyword'))) {

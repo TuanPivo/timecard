@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\AttendanceRequest;
@@ -13,12 +14,13 @@ class HomeController extends Controller
     //
     public function index()
     {
-        return view('pages.home');
+        $user = Auth::user();
+        return view('pages.home',compact(['user']));
     }
 
     public function attendance(Request $request){
         if(!Auth::check()){
-            return redirect()->route('home')->with('error', "Bạn chưa đăng nhập");
+            return redirect()->route('home')->with('error', "You are not logged in");
         }
         $user = Auth::user();
         $type = $request->input('type');
@@ -29,7 +31,7 @@ class HomeController extends Controller
             'status' => 'success',
         ];
         Attendance::create($attendance);
-        return redirect()->route('home')->with('success', "thành công");
+        return redirect()->route('home')->with('success', "Success");
     }
 
     public function getDataAttendance(){
@@ -101,11 +103,12 @@ class HomeController extends Controller
         if (!Auth::check()) {
             return redirect()->route('home')->with('error', "Bạn chưa đăng nhập");
         }
+        $user = Auth::user();
         $data = Attendance::with('user')
         ->where('status', 'pending')
         ->orderBy('date','desc')
         ->get();
-        return view('pages.list_request', compact(['data']));
+        return view('pages.list_request', compact(['data','user']));
     }
 
     public function reject($id)
