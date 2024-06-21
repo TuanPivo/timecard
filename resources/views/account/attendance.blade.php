@@ -1,14 +1,24 @@
 @extends('layout.index')
 @section('content')
-    <div class="header">
-        <div class="col-6 text-left">
-            <p>Timecard of: <strong>{{ $user->name }}</strong></p>
+    <div class="card-header">
+        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div>
+                <h3 class="fw-bold mb-3">Attendance History Of: <strong>{{ $user->name }}</strong></h3>
+            </div>
+            <div class="ms-md-auto py-2 py-md-0">
+                <a href="{{ route('account.index') }}" class="btn btn-primary btn-round">Back</a>
+            </div>
         </div>
-        <div class="col-6 text-right">
-            <a href="{{ route('account.index') }}" class="btn-sm btn-primary">Back</a>
+        <div class="col-md-12 d-flex justify-content-center align-items-center bg-info">
+            <div class="clock" id="clock" style="font-size: 3rem;"></div>
         </div>
     </div>
-    <div id="calendar" class="pt-5"></div>
+    <div class="card">
+        <div id="calendar" class="pt-5"></div>
+    </div>
+@endsection
+    
+@section('customJs')    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
@@ -69,5 +79,24 @@
             });
             calendar.render();
         });
+
+        // Function to update the clock
+        function updateClock() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            // Ensure two digits for hours, minutes, and seconds
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            var time = hours + ':' + minutes + ':' + seconds;
+            // Update the clock element
+            document.getElementById('clock').textContent = time;
+        }
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+        // Initial call to display the clock immediately
+        updateClock();
     </script>
 @endsection

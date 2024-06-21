@@ -26,12 +26,12 @@ class AccountController extends Controller
         
         $users = User::orderBy('created_at', 'DESC');
 
-        if (!empty($request->get('keyword'))) {
-            $users = $users->Where('name', 'like', '%' . $request->get('keyword') . '%');
-            $users = $users->orWhere('email', 'like', '%' . $request->get('keyword') . '%');
-        }
+        // if (!empty($request->get('keyword'))) {
+        //     $users = $users->Where('name', 'like', '%' . $request->get('keyword') . '%');
+        //     $users = $users->orWhere('email', 'like', '%' . $request->get('keyword') . '%');
+        // }
 
-        $users = $users->paginate(15);
+        $users = $users->paginate(10);
 
         return view('account.index', [
             'users' => $users,
