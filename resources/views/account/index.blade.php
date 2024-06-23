@@ -167,11 +167,9 @@
 @section('customJs')
     <script>
         let userIdToDelete = null;
-
         function setDeleteUserId(id) {
             userIdToDelete = id;
         }
-
         function confirmDelete() {
             if (userIdToDelete) {
                 var url = '{{ route('account.delete', 'ID') }}';
@@ -200,6 +198,7 @@
                 $('#modal-notification').modal('hide');
             }
         }
+
         $(document).ready(function() {
             $('#basic-datatables').DataTable({});
 

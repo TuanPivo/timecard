@@ -1,13 +1,14 @@
 @extends('layout.index')
 
 @section('content')
+    @include('layout.message')
     <div class="card-header">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
-                <h3 class="fw-bold mb-3">Add new user</h3>
+                <h3 class="fw-bold mb-3">Add New User</h3>
             </div>
             <div class="ms-md-auto py-2 py-md-0">
-                <a href="{{ route('account.index') }}" class="btn btn-primary btn-round">Back</a>
+                <a href="{{ route('account.index') }}" class="btn btn-black btn-round">Back</a>
             </div>
         </div>
     </div>
@@ -102,15 +103,41 @@
             document.getElementById('password').value = password;
         }
 
-        function generateRandomPassword() {
-            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=';
-            var length = 8;
-            var password = '';
+        // function generateRandomPassword() {
+        //     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=';
+        //     var length = 8;
+        //     var password = '';
 
-            for (var i = 0; i < length; i++) {
-                var randomIndex = Math.floor(Math.random() * characters.length);
-                password += characters.charAt(randomIndex);
+        //     for (var i = 0; i < length; i++) {
+        //         var randomIndex = Math.floor(Math.random() * characters.length);
+        //         password += characters.charAt(randomIndex);
+        //     }
+        //     return password;
+        // }
+        function generateRandomPassword() {
+            var length = 8;
+            var upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var lowerCase = 'abcdefghijklmnopqrstuvwxyz';
+            var specialCharacters = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+            
+            var allCharacters = upperCase + lowerCase + specialCharacters;
+            var passwordArray = [];
+
+            // Ensure at least one character from each set is included
+            passwordArray.push(upperCase.charAt(Math.floor(Math.random() * upperCase.length)));
+            passwordArray.push(lowerCase.charAt(Math.floor(Math.random() * lowerCase.length)));
+            passwordArray.push(specialCharacters.charAt(Math.floor(Math.random() * specialCharacters.length)));
+
+            // Fill the rest of the password length with random characters
+            for (var i = 3; i < length; i++) {
+                var randomIndex = Math.floor(Math.random() * allCharacters.length);
+                passwordArray.push(allCharacters.charAt(randomIndex));
             }
+            // Shuffle the array to make the password more random
+            passwordArray = passwordArray.sort(() => Math.random() - 0.5);
+            // Convert array to string
+            var password = passwordArray.join('');
+
             return password;
         }
     </script>

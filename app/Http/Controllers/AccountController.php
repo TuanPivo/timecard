@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Mail\CreateAccount;
-use App\Mail\ResetPassword;
 use App\Mail\UpdateAccount;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -146,17 +143,17 @@ class AccountController extends Controller
             session()->flash('error', 'User not found');
 
             return response()->json([
-                'status' => true,
+                'status' => false,
                 'message' => 'User not found',
             ]);
         }
         $user->delete();
 
-        session()->flash('success', 'User deleted successfully');
+        session()->flash('success', 'User Deleted Successfully');
 
         return response()->json([
             'status' => true,
-            'message' => 'User deleted successfully',
+            'message' => 'User Deleted Successfully',
         ]);
     }
 
