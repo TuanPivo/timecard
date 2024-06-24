@@ -1,4 +1,3 @@
-<!-- template_email.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,11 +68,13 @@
         </div>
         <div class="content">
             <h2>Hello {{ $name }},</h2>
-            <p>Your password has been changed successfully. If you did not perform this action, please contact our support team immediately.</p>
-            <p>For your security, make sure to use a strong, unique password and never share it with anyone.</p>
+            <p>Your account has been created successfully. You can now log in and start using our services.</p>
+            <p>Email: <strong>{{ $email }}</strong></p>
             <p>Password: <strong>{{ $password }}</strong></p>
+            <p>For your security, change your password immediately and use a strong, unique password and never share it with anyone.</p>
             <p>If you have any questions or need assistance, feel free to contact our support team.</p>
             <a href="{{ $loginUrl }}" target="_blank">Log In to Your Account</a>
+            <p>Thanks,</p>
         </div>
         <div class="footer">
             <p>&copy; {{ date('Y') }} Uruca K.K. All rights reserved.</p>

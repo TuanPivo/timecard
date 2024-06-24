@@ -99,7 +99,7 @@ class AccountController extends Controller
             session()->flash('error', $message);
 
             return response()->json([
-                'status' => true,
+                'status' => false,
                 'message' => $message,
             ]);
         }

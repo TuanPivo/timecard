@@ -109,7 +109,7 @@
                                         <a href="{{ route('account.edit', $user->id) }}">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                    
+
                                         <a href="#" type="button" class="text-danger w-4 h-4 mr-1"
                                             data-bs-toggle="modal" data-bs-target="#modal-notification"
                                             onclick="setDeleteUserId({{ $user->id }})">
@@ -152,7 +152,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" onclick="confirmDelete()">Yes!</button>
 
-                        <button type="button" class="btn btn-link text-primary text-decoration-none" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-link text-primary text-decoration-none"
+                            data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -167,35 +168,41 @@
 @section('customJs')
     <script>
         let userIdToDelete = null;
+
+        // Function to set userIdToDelete when delete button is clicked
         function setDeleteUserId(id) {
             userIdToDelete = id;
         }
+
+        // Function to confirm deletion and send AJAX request
         function confirmDelete() {
             if (userIdToDelete) {
-                var url = '{{ route('account.delete', 'ID') }}';
-                var newUrl = url.replace('ID', userIdToDelete);
+                const url = '{{ route('account.delete', 'ID') }}';
+                const newUrl = url.replace('ID', userIdToDelete);
 
                 $.ajax({
                     url: newUrl,
-                    type: "delete",
-                    data: {},
-                    dataType: "json",
+                    type: 'DELETE',
+                    dataType: 'json',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
-                        if (response["status"]) {
+                        if (response.status) {
                             window.location.href = '{{ route('account.index') }}';
                         } else {
                             alert('Failed to delete user');
                         }
                     },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
+                    error: function(xhr, status, error) {
+                        console.error('AJAX request failed:', status, error);
+                        alert('Failed to delete user');
                     }
                 });
 
                 $('#modal-notification').modal('hide');
+            } else {
+                console.warn('No userIdToDelete set.');
             }
         }
 
@@ -209,7 +216,7 @@
                         var column = this;
                         var select = $(
                                 '<select class="form-select"><option value=""></option></select>'
-                                )
+                            )
                             .appendTo($(column.footer()).empty())
                             .on('change', function() {
                                 var val = $.fn.dataTable.util.escapeRegex(

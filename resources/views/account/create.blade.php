@@ -20,9 +20,7 @@
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label for="name">Full Name</label>
-                            <input type="text" value="{{ old('name') }}" name="name" id="name"
-                                class="form-control @error('name') is-invalid @enderror"
-                                placeholder="Enter full name of user">
+                            <input type="text" value="{{ old('name') }}" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Enter full name of user">
                             <span></span>
                         </div>
                     </div>
@@ -36,7 +34,7 @@
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label for="slug">Password</label>
-                            <input type="text" name="password" id="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                                 <span></span>
                         </div>
                     </div>
@@ -55,16 +53,17 @@
         $("#userForm").submit(function(e) {
             e.preventDefault();
             var element = $(this);
-            $("button[type='submit']").prop('disable', true);
+            $("button[type='submit']").prop('disabled', true);
             $.ajax({
                 url: '{{ route('account.store') }}',
-                type: 'post',
-                data: element.serializeArray(),
+                type: 'POST',
+                // data: element.serializeArray(),
+                data: element.serialize(),
                 dataType: 'json',
                 success: function(response) {
-                    $("button[type='submit']").prop('disable', false);
+                    $("button[type='submit']").prop('disabled', false);
 
-                    if (response["status"] == true) {
+                    if (response["status"] === true) {
                         window.location.href = "{{ route('account.index') }}";
                         $("#name").removeClass('is-invalid').siblings('span').empty();
                         $("#email").removeClass('is-invalid').siblings('span').empty();
