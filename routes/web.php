@@ -64,5 +64,8 @@ Route::group(['prefix' => '/'], function () {
         // show calendar of user
         Route::get('/account/attendance/{user}', 'showAttendance')->name('account.attendance');
         Route::get('/attendance/{user}', 'getAttendance')->name('account.attendanceData');
+        // export excel file
+        Route::get('/account/monthly/{id}', [AccountController::class, 'showMonthlyAttendance'])->name('account.monthly');
+        Route::get('/account/export-monthly/{id}', [AccountController::class, 'exportMonthlyAttendance'])->name('account.exportMonthly');
     });
 });

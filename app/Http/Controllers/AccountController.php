@@ -8,19 +8,21 @@ use App\Models\Attendance;
 use App\Mail\CreateAccount;
 use App\Mail\UpdateAccount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\MonthlyAttendanceExport;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
     public function index(Request $request)
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return redirect()->route('home')->with('error', "You are not logged in");
         }
-        
+
         $users = User::orderBy('created_at', 'DESC');
 
         // if (!empty($request->get('keyword'))) {
@@ -157,40 +159,134 @@ class AccountController extends Controller
         ]);
     }
 
-    public function showAttendance(User $user)
+    // public function showAttendance(User $user)
+    // {
+    //     return view('account.attendance', compact(['user']));
+    // }
+
+    // public function getAttendance(User $user)
+    // {
+    //     $attendances = Attendance::where('user_id', $user->id)
+    //         ->whereIn('status', ['success', 'approve', 'pending', 'reject'])
+    //         ->select('type', 'date', 'status')
+    //         ->orderBy('date', 'desc')
+    //         ->get()
+    //         ->groupBy(function ($date) {
+    //             return Carbon::parse($date->date)->format('Y-m-d');
+    //         })
+    //         ->map(function ($dayGroup) {
+    //             return $dayGroup->unique('type');
+    //         })
+    //         ->flatten()
+    //         ->map(function ($attendance) {
+    //             $title = ucfirst($attendance->type);
+    //             if ($attendance->status === 'pending') {
+    //                 $title .= ' - ' . $attendance->status;
+    //             }
+    //             if ($attendance->status === 'reject') {
+    //                 $title .= '-' . $attendance->status;
+    //             }
+    //             return [
+    //                 'title' => $title,
+    //                 'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
+    //                 'status' => $attendance->status,
+    //             ];
+    //         });
+
+    //     return response()->json($attendances);
+    // }
+
+    public function showMonthlyAttendance(Request $request, $userId)
     {
-        return view('account.attendance', compact(['user']));
+        // Lấy thông tin user
+        $user = User::findOrFail($userId);
+
+        // Lấy tháng và năm từ request, mặc định là tháng hiện tại nếu không có
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
+
+        // Tính ngày đầu và cuối tháng theo tháng và năm được chọn
+        $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
+
+        // Lấy dữ liệu attendance của user trong tháng được chọn
+        $attendances = Attendance::where('user_id', $userId)
+            ->whereBetween('date', [$startDate, $endDate])
+            ->orderBy('date')
+            ->get();
+
+        // Tạo một mảng để lưu trữ dữ liệu theo định dạng cần thiết
+        $monthlyAttendance = [];
+
+        // Đưa dữ liệu vào mảng theo ngày
+        foreach ($attendances as $attendance) {
+            $date = Carbon::parse($attendance->date)->format('j'); // Lấy ngày trong tháng (không có số 0 ở đầu)
+
+            // Kiểm tra và gán trạng thái check-in/check-out vào mảng
+            if (!isset($monthlyAttendance[$date])) {
+                $monthlyAttendance[$date] = [];
+            }
+
+            if ($attendance->type == 'check in') {
+                $monthlyAttendance[$date]['check_in'] = [
+                    'status' => 'Check in',
+                    'date' => Carbon::parse($attendance->date)->format('H:i'), // Format time
+                ];
+            } elseif ($attendance->type == 'check out') {
+                $monthlyAttendance[$date]['check_out'] = [
+                    'status' => 'Check out',
+                    'date' => Carbon::parse($attendance->date)->format('H:i'), // Format time
+                ];
+            }
+        }
+        // Truyền dữ liệu sang view để hiển thị
+        return view('account.monthly', [
+            'user' => $user,
+            'monthlyAttendance' => $monthlyAttendance,
+            'selectedMonth' => $month,
+            'selectedYear' => $year,
+        ]);
     }
 
-    public function getAttendance(User $user)
+    public function exportMonthlyAttendance($userId)
     {
-        $attendances = Attendance::where('user_id', $user->id)
-            ->whereIn('status', ['success', 'approve', 'pending', 'reject'])
-            ->select('type', 'date', 'status')
-            ->orderBy('date', 'desc')
-            ->get()
-            ->groupBy(function ($date) {
-                return Carbon::parse($date->date)->format('Y-m-d');
-            })
-            ->map(function ($dayGroup) {
-                return $dayGroup->unique('type');
-            })
-            ->flatten()
-            ->map(function ($attendance) {
-                $title = ucfirst($attendance->type);
-                if ($attendance->status === 'pending') {
-                    $title .= ' - ' . $attendance->status;
-                }
-                if ($attendance->status === 'reject') {
-                    $title .= '-' . $attendance->status;
-                }
-                return [
-                    'title' => $title,
-                    'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
-                    'status' => $attendance->status,
-                ];
-            });
+        // Lấy thông tin user
+        $user = User::findOrFail($userId);
 
-        return response()->json($attendances);
+        // Lấy dữ liệu attendance của user trong tháng hiện tại
+        $startDate = now()->startOfMonth();
+        $endDate = now()->endOfMonth();
+
+        $attendances = Attendance::where('user_id', $userId)
+            ->whereBetween('date', [$startDate, $endDate])
+            ->orderBy('date')
+            ->get();
+
+        // Tạo một mảng để lưu trữ dữ liệu theo định dạng cần thiết
+        $monthlyAttendance = [];
+
+        // Đưa dữ liệu vào mảng theo ngày
+        foreach ($attendances as $attendance) {
+            $date = Carbon::parse($attendance->date)->format('j'); // Lấy ngày trong tháng
+
+            // Kiểm tra và gán trạng thái check-in/check-out vào mảng
+            if (!isset($monthlyAttendance[$date])) {
+                $monthlyAttendance[$date] = [];
+            }
+
+            if ($attendance->type == 'check in') {
+                $monthlyAttendance[$date]['check_in'] = [
+                    'status' => 'Check in',
+                    'date' => Carbon::parse($attendance->date)->format('H:i'), // Format time
+                ];
+            } elseif ($attendance->type == 'check out') {
+                $monthlyAttendance[$date]['check_out'] = [
+                    'status' => 'Check out',
+                    'date' => Carbon::parse($attendance->date)->format('H:i'), // Format time
+                ];
+            }
+        }
+        // Xuất file Excel
+        return Excel::download(new MonthlyAttendanceExport($user, $monthlyAttendance),  'monthly_attendance_' . $user->name . '.xlsx');
     }
 }
