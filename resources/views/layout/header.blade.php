@@ -28,7 +28,7 @@
                  </div>
              @endif
              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                 <li class="nav-item topbar-user dropdown hidden-caret">
+                 <li class="nav-item topbar-user dropdown hidden-caret" style="background-color:#f5f7fd">
                      <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                          aria-expanded="false">
                          <span class="profile-username">
@@ -52,15 +52,13 @@
                                                  <h4>Guest</h4>
                                                  <p class="text-muted">No email available</p>
                                              @endif
-                                             <a href="{{ route('home') }}" class="btn btn-xs btn-danger btn-sm">View
-                                                 Calender</a>
+                                             <a href="{{ route('home') }}" class="btn btn-xs btn-danger btn-sm">View Calender</a>
                                          </div>
                                      </div>
                                  </li>
                                  <li>
                                      <div class="dropdown-divider"></div>
-                                     <a class="dropdown-item" href="{{ route('password.change-password') }}">Change
-                                         passwword</a>
+                                     <a class="dropdown-item" href="{{ route('password.change-password') }}">Change passwword</a>
                                  </li>
                                  <li>
                                      <div class="dropdown-divider"></div>

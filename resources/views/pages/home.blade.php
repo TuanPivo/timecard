@@ -51,6 +51,28 @@
         </div>
     </div>
     <div class="card">
+        <div class="my-4">
+            <div class="d-flex align-items-center justify-content-center" style="margin-left: 10px">
+                <label for="monthPicker" class="form-label me-2">Select Month:</label>
+                <select id="monthPicker" class="form-select w-auto me-2">
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+                <label for="yearPicker" class="form-label me-2">Select Year:</label>
+                <select id="yearPicker" class="form-select w-auto me-2"></select>
+                <button id="goToMonthYear" class="btn btn-primary">Go</button>
+            </div>
+        </div>
         <div id="calendar" class="pt-5">
         </div>
     </div>
@@ -151,6 +173,26 @@
                 }
             });
             calendar.render();
+            
+            // Populate the year dropdown
+            var yearPicker = document.getElementById('yearPicker');
+            var currentYear = new Date().getFullYear();
+            for (var i = currentYear - 10; i <= currentYear + 10; i++) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.text = i;
+                yearPicker.appendChild(option);
+            }
+
+            // Handle month and year selection
+            document.getElementById('goToMonthYear').addEventListener('click', function() {
+                var selectedMonth = document.getElementById('monthPicker').value;
+                var selectedYear = document.getElementById('yearPicker').value;
+                if (selectedMonth && selectedYear) {
+                    var newDate = new Date(selectedYear, selectedMonth, 1); // Create a new Date object with the selected month and year
+                    calendar.gotoDate(newDate); // Go to the selected month and year in the calendar
+                }
+            });
 
             function showModal(date) {
                 $('#attendanceDate').val(date);
