@@ -45,7 +45,8 @@
             </div>
         </div>
         <div class="col-md-4 d-flex justify-content-center align-items-center">
-            <div class="clock" id="clock" style="font-size: 3rem;">
+            <div class="card">
+                <div class="clock" id="clock" style="font-size: 3rem;"></div>
             </div>
         </div>
     </div>
