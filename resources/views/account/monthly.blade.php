@@ -40,7 +40,7 @@
             </div>
             <div class="ms-md-auto py-2 py-md-0">
                 <a href="{{ route('account.index') }}" class="btn btn-black btn-round">Back</a>
-                <a href="{{ route('account.exportMonthly', $user->id) }}" class="btn btn-success btn-round">Export Excel</a>
+                <a href="{{ route('account.exportMonthly', [$user->id, 'month' => $selectedMonth, 'year' => $selectedYear]) }}" class="btn btn-success btn-round">Export Excel</a>
             </div>
         </div>
         <div class="table-responsive">
