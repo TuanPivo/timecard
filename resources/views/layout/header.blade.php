@@ -22,12 +22,12 @@
      <!-- Navbar Header -->
      <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
          <div class="container-fluid">
-             @if (!Auth::check())
-                 <div>
-                     <a href="{{ route('login') }}" class="btn btn-danger btn-round me-1">Login</a>
-                 </div>
-             @endif
              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                @if (!Auth::check())
+                 <li class="nav-item topbar-user dropdown hidden-caret">
+                    <a href="{{ route('login') }}" class="btn btn-danger me-2">Login</a>
+                 </li>
+                @endif
                  <li class="nav-item topbar-user dropdown hidden-caret" style="background-color:#f5f7fd">
                      <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                          aria-expanded="false">
