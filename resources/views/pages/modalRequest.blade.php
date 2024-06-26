@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label for="attendanceDate">Date:</label>
                             <div class="input-group date" data-provide="datepicker">
-                                <input type="date" class="form-control" id="attendanceDate" name="date">
+                                <input type="datetime-local" class="form-control" id="attendanceDate" name="date">
                             </div>
                             @error('date')
                                 <div class="text-danger">{{ $message }}</div>

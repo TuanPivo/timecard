@@ -74,19 +74,11 @@ class HomeController extends Controller
 
     public function sendRequest(Request $request){
         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401); // Trả về lỗi 401 nếu người dùng chưa đăng nhập
+        }
         $type = $request->input('type');
         $date = $request->input('date');
-
-        switch ($type) {
-            case 'check in':
-                $date .= ' 08:30:00'; // Thêm giờ 08:30 nếu là check in
-                break;
-            case 'check out':
-                $date .= ' 17:30:00'; // Thêm giờ 17:30 nếu là check in 17h30
-                break;
-            default:
-                break;
-        }
 
         $attendance = [
             'user_id' => $user->id,

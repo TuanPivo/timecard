@@ -9,14 +9,12 @@
         }
 
         /* .btn-container .btn {
-            flex: 1;
-            margin: 5px;
-        }
-        .fc-day-sat .fc-daygrid-day-frame {
-            background-color: rgb(171, 47, 47) !important;
-        } */
-
-
+                flex: 1;
+                margin: 5px;
+            }
+            .fc-day-sat .fc-daygrid-day-frame {
+                background-color: rgb(171, 47, 47) !important;
+            } */
     </style>
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -37,8 +35,10 @@
                     @csrf
                     <div class="card-body">
                         <p class="demo">
-                            <button value="check in" onclick="handleButtonClick(this)" class="btn btn-danger">checkin</button>
-                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check out</button>
+                            <button value="check in" onclick="handleButtonClick(this)"
+                                class="btn btn-danger">checkin</button>
+                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check
+                                out</button>
                         </p>
                     </div>
                 </form>
@@ -156,6 +156,8 @@
                 $('#attendanceDate').val(date);
                 $('#attendanceModal').modal('show'); // Hiển thị modal
             }
+
+            //xử lý gửi request
             $('#saveAttendanceBtn').click(function() {
                 var type = $('#attendanceType').val();
                 var date = $('#attendanceDate').val();
@@ -174,24 +176,15 @@
                             $('#attendanceModal').modal('hide');
                             calendar.refetchEvents(); // Làm mới sự kiện trong lịch
                         } else {
-                            alert('Có lỗi xảy ra!');
+                            alert('Errors');
                         }
                     },
                     error: function(response) {
-                        var errors = response.responseJSON.errors;
-                        if (errors) {
-                            if (errors.type) {
-                                $('#attendanceType').next('.text-danger').remove();
-                                $('#attendanceType').after('<div class="text-danger">' + errors
-                                    .type[0] + '</div>');
-                            }
-                            if (errors.date) {
-                                $('#attendanceDate').next('.text-danger').remove();
-                                $('#attendanceDate').after('<div class="text-danger">' + errors
-                                    .date[0] + '</div>');
-                            }
+                         if (response.status == 401) {
+                             $('#attendanceModal').modal('hide');
+                            $('#loginModal').modal('show'); // Hiển thị modal đăng nhập
                         } else {
-                            alert('Có lỗi xảy ra!');
+                             alert('Errors!');
                         }
                     }
                 });
