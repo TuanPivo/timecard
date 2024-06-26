@@ -107,7 +107,10 @@ class HomeController extends Controller
         $data = Attendance::with('user')
         ->where('status', 'pending')
         ->orderBy('date','desc')
-        ->get();
+        ->get()
+        ->groupBy(function($date) {
+            return \Carbon\Carbon::parse($date->date)->format('d-m-Y'); // grouping by dates
+        });
         return view('pages.list_request', compact(['data','user']));
     }
 
