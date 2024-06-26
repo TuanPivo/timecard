@@ -21,7 +21,11 @@ class ChangePasswordController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|min:8',
-            'new_password' => ['required', 'min:8', 'regex:/^(?=.*[!@#$%^&*()\-_=+{};:,<.>ยง~`|[\]\\/"\'])/'],
+            'new_password' => [
+                'required',
+                'min:8',
+                'regex:/^(?=.*[!@#$%^&*()\-_=+{};:,<.>ยง~`|[\]\\/"\'])/'
+            ],
             'password_confirmation' => 'required|same:new_password',
         ]);
 
@@ -44,14 +48,13 @@ class ChangePasswordController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        $subject = 'Password change notification';
+        $subject = 'Password Changed Successfully';
         $name = $request->user()->name;
-        $email = $request->user()->email;
         $password = $request->new_password;
 
-        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ChangePassword($subject, $name, $email, $password));
+        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ChangePassword($subject, $name, $password));
 
-        session()->flash('success', 'Password updated successfully');
+        session()->flash('success', 'Password Changed Successfully');
 
         return response()->json([
             'status' => true

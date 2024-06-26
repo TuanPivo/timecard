@@ -160,32 +160,27 @@
                 @include('layout.footer')
                 @yield('customJs')
             </div>
-
             <!-- End Custom template -->
         </div>
+
+    <!--   Core JS Files   -->
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js')}}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js')}} "></script>
+
+    <!-- Chart Circle -->
+    <script src="{{asset('assets/js/plugin/chart-circle/circles.min.js')}} "></script>
+
+    <!-- Datatables -->
+    <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js')}} "></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+
 </body>
-
-<!--   Core JS Files   -->
-<script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-<script src="{{ asset('assets/js/core/bootstrap.min.js')}}"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
-
-<!-- jQuery Scrollbar -->
-<script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js')}} "></script>
-
-<!-- Chart Circle -->
-<script src="{{asset('assets/js/plugin/chart-circle/circles.min.js')}} "></script>
-
-<!-- Datatables -->
-<script src="{{ asset('assets/js/plugin/datatables/datatables.min.js')}} "></script>
-
-<!-- Kaiadmin JS -->
-<script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
-
-<!-- Kaiadmin DEMO methods, don't include it in your project! -->
-<script src="{{ asset('assets/js/setting-demo.js') }}"></script>
-<script src="{{ asset('assets/js/demo.js') }}"></script>
-
 </html>

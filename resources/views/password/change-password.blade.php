@@ -1,38 +1,49 @@
 @extends('layout.index')
 @section('content')
-<div class="hold-transition login-page">
-     <div class="login-box">
-        <div class="card card-outline card-primary">
-            @include('layout.message')
-            <div class="card-header text-center">
-                <h3>Change Password</h3>
+    @include('layout.message')
+    <div class="card-header">
+        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div>
+                <h3 class="fw-bold mb-3">Change Password</h3>
             </div>
-            <div class="card-body">
-                <form action="{{ route('password.updatePassword') }}" id="changePasswordForm" name="changePasswordForm" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="" class="mb-2">Old Password <span style="color:#FF0000">*</span></label>
-                        <input type="password" name="old_password" id="old_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Old Password">
-                        <p></p>
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="mb-2">New Password <span style="color:#FF0000">*</span></label>
-                        <input type="password" name="new_password" id="new_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter New Password">
-                        <p></p>
-                    </div>
-                    <div class="mb-3">
-                        <label for="" class="mb-2">Confirm Password <span style="color:#FF0000">*</span></label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control @error('password') is-invalid @enderror" placeholder="Confirm New Password">
-                        <p></p>
-                    </div>
-                    <div class="justify-content-between d-flex">
-                        <button type="submit" class="btn btn-primary">Change Password</button>
-                    </div>
-                </form>
+            <div class="ms-md-auto py-2 py-md-0">
+                <a href="{{ route('home') }}" class="btn btn btn-black btn-round">Back</a>
             </div>
         </div>
     </div>
-</div>
+    <form action="{{ route('password.updatePassword') }}" id="changePasswordForm" name="changePasswordForm" method="post">
+        @csrf
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="name">Old Password</label>
+                            <input type="password" name="old_password" id="old_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Old Password">
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="email">New Pasword</label>
+                            <input type="password" name="new_password" id="new_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter New Password">
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="slug">Confirm Password</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control @error('password') is-invalid @enderror" placeholder="Confirm New Password">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pb-5 pt-3">
+            <button type="submit" class="btn btn-primary">Change Password</button>
+        </div>
+    </form>
 @endsection
 
 @section('customJs')
@@ -51,26 +62,31 @@
 
                     if (response["status"] == true) {
                         window.location.href = "{{ route('password.change-password') }}";
-                        $("#old_password").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html();
-                        $("#new_password").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html();
-                        $("#password_confirmation").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html();
+                        $("#new_password").removeClass('is-invalid').siblings('span').empty();
+                        $("#email").removeClass('is-invalid').siblings('span').empty();
+                        $("#password_confirmation").removeClass('is-invalid').siblings('span').empty();
                     } else {
                         var errors = response['errors'];
 
                         if (errors['old_password']) {
-                            $("#old_password").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['old_password']);
+                            $("#old_password").addClass('is-invalid').siblings('span').addClass('invalid-feedback')
+                                .html(errors['old_password']);
                         } else {
-                            $("#old_password").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html();
+                            $("#old_password").removeClass('is-invalid').siblings('span').empty();
                         }
+
                         if (errors['new_password']) {
-                            $("#new_password").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['new_password']);
+                            $("#new_password").addClass('is-invalid').siblings('span').addClass('invalid-feedback')
+                                .html(errors['new_password']);
                         } else {
-                            $("#new_password").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html();
+                            $("#new_password").removeClass('is-invalid').siblings('span').empty();
                         }
+
                         if (errors['password_confirmation']) {
-                            $("#password_confirmation").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['password_confirmation']);
+                            $("#password_confirmation").addClass('is-invalid').siblings('span').addClass('invalid-feedback')
+                                .html(errors['password_confirmation']);
                         } else {
-                            $("#password_confirmation").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html();
+                            $("#password_confirmation").removeClass('is-invalid').siblings('span').empty();
                         }
                     }
                 },

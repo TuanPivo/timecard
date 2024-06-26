@@ -33,7 +33,8 @@
                          aria-expanded="false">
                          <span class="profile-username">
                              <span class="op-7">Hi,</span>
-                             <span class="fw-bold">{{ isset($user) ? $user->name : 'Guest' }}</span>
+                             {{-- <span class="fw-bold">{{ isset($user) ? $user->name : 'Guest' }}</span> --}}
+                             <span class="fw-bold">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</span>
                          </span>
                      </a>
                      @if (Auth::check())
@@ -42,8 +43,15 @@
                                  <li>
                                      <div class="user-box">
                                          <div class="u-text">
-                                             <h4>{{ $user->name }}</h4>
-                                             <p class="text-muted">{{ $user->email }}</p>
+                                             {{-- <h4>{{ $user->name }}</h4>
+                                             <p class="text-muted">{{ $user->email }}</p> --}}
+                                             @if (Auth::check())
+                                                 <h4>{{ Auth::user()->name }}</h4>
+                                                 <p class="text-muted">{{ Auth::user()->email }}</p>
+                                             @else
+                                                 <h4>Guest</h4>
+                                                 <p class="text-muted">No email available</p>
+                                             @endif
                                              <a href="{{ route('home') }}" class="btn btn-xs btn-danger btn-sm">View
                                                  Calender</a>
                                          </div>
@@ -51,7 +59,8 @@
                                  </li>
                                  <li>
                                      <div class="dropdown-divider"></div>
-                                     <a class="dropdown-item" href="{{ route('password.change-password') }}">Change passwword</a>
+                                     <a class="dropdown-item" href="{{ route('password.change-password') }}">Change
+                                         passwword</a>
                                  </li>
                                  <li>
                                      <div class="dropdown-divider"></div>

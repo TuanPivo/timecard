@@ -1,70 +1,83 @@
-<!-- template_email.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
         }
         .container {
+            width: 100%;
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #f7f7f7;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            background-color: #934caf;
-            padding: 20px;
-            color: #ffffff;
-        }
-        .content {
             background-color: #ffffff;
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .footer {
+        .header {
+            background-color: #007BFF;
+            color: #ffffff;
+            padding: 10px;
             text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #dddddd;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
-        .footer p {
+        .header h1 {
             margin: 0;
         }
-        .button {
+        .content {
+            padding: 20px;
             text-align: center;
-            margin-top: 30px;
         }
-        .button a {
+        .content h2 {
+            color: #333333;
+        }
+        .content p {
+            color: #666666;
+            line-height: 1.6;
+        }
+        .content a {
             display: inline-block;
+            margin-top: 20px;
             padding: 10px 20px;
-            background-color: #4caf50;
+            background-color: #007BFF;
             color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
         }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #999999;
+            margin-top: 20px;
+            border-top: 1px solid #dddddd;
+        }
     </style>
+    <title>Account Created Successfully</title>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h3>Notification of user account information.</h3>
+            <h1>Account Created Successfully</h1>
         </div>
         <div class="content">
-            <p>Dear, {{ $name }}</p>
-            <p>Your account has been created successfully. Here are your login details:</p>
-            <p><strong>Email:</strong> {{ $email }}</p>
-            <p><strong>Password:</strong> {{ $password }}</p>
-            <div class="button">
-                <a href="{{ $loginUrl }}">Click here to login</a>
-            </div>
+            <h2>Hello {{ $name }},</h2>
+            <p>Your account has been created successfully. You can now log in and start using our services.</p>
+            <p>Email: <strong>{{ $email }}</strong></p>
+            <p>Password: <strong>{{ $password }}</strong></p>
+            <p>For your security, change your password immediately and use a strong, unique password and never share it with anyone.</p>
+            <p>If you have any questions or need assistance, feel free to contact our support team.</p>
+            <a href="{{ $loginUrl }}" target="_blank">Log In to Your Account</a>
+            <p>Thanks,</p>
         </div>
         <div class="footer">
-            <p>Best regards!</p>
+            <p>&copy; {{ date('Y') }} Uruca K.K. All rights reserved.</p>
         </div>
     </div>
 </body>

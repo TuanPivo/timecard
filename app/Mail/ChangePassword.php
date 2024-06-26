@@ -15,7 +15,6 @@ class ChangePassword extends Mailable
 
     public $subject;
     public $name;
-    public $email;
     public $password;
 
     /**
@@ -23,11 +22,10 @@ class ChangePassword extends Mailable
      *
      * @return void
      */
-    public function __construct($subject, $name, $email, $password)
+    public function __construct($subject, $name, $password)
     {
         $this->subject = $subject;
         $this->name = $name;
-        $this->email = $email;
         $this->password = $password;
     }
 

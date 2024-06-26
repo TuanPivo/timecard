@@ -71,7 +71,11 @@ class ForgotPasswordController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'new_password' => 'required|min:8',
+            'new_password' => [
+                'required',
+                'min:8',
+                'regex:/^(?=.*[!@#$%^&*()\-_=+{};:,<.>ยง~`|[\]\\/"\'])/'
+            ],
             'confirm_password' => 'required|same:new_password',
         ]);
 

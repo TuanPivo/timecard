@@ -8,10 +8,15 @@
             width: 50%;
         }
 
-        .btn-container .btn {
+        /* .btn-container .btn {
             flex: 1;
             margin: 5px;
         }
+        .fc-day-sat .fc-daygrid-day-frame {
+            background-color: rgb(171, 47, 47) !important;
+        } */
+
+
     </style>
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -24,7 +29,7 @@
     @endif
     <div class="row">
         <div class="col-md-4">
-            <div class="card d-flex justify-content-center align-items-center">
+            <div class="card justify-content-center align-items-center ">
                 <div class="card-header">
                     <h4 class="card-title">Attendance</h4>
                 </div>
@@ -133,6 +138,14 @@
                         domNodes: [containerEl]
                     };
                 },
+                // dayCellDidMount: function(info) {
+                //     var day = info.date.getDay();
+                //     if (day === 6) { // Saturday
+                //         info.el.classList.add('.fc-day-sat');
+                //     } else if (day === 0) { // Sunday
+                //         info.el.classList.add('fc-day-sat');
+                //     }
+                // },
                 dateClick: function(info) {
                     showModal(info.dateStr)
                 }
