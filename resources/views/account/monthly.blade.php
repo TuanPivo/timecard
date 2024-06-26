@@ -40,16 +40,16 @@
             </div>
             <div class="ms-md-auto py-2 py-md-0">
                 <a href="{{ route('account.index') }}" class="btn btn-black btn-round">Back</a>
-                <a href="{{ route('account.exportMonthly', $user->id) }}" class="btn btn-success btn-round">Export Excel</a>
+                <a href="{{ route('account.exportMonthly', [$user->id, 'month' => $selectedMonth, 'year' => $selectedYear]) }}" class="btn btn-success btn-round">Export Excel</a>
             </div>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-center bg-secondary">Name</th>
+                        <th class="text-center bg-info">Name</th>
                         @for ($i = 1; $i <= Carbon\Carbon::createFromDate($selectedYear, $selectedMonth, 1)->endOfMonth()->day; $i++)
-                            <th class="text-center bg-secondary">{{ $i }}</th>
+                            <th class="text-center bg-info">{{ $i }}</th>
                         @endfor
                     </tr>
                 </thead>

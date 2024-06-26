@@ -61,11 +61,8 @@ Route::group(['prefix' => '/'], function () {
         Route::put('/users/{userId}', 'update')->name('account.update');
         Route::delete('/users/{userId}','destroy')->name('account.delete');
 
-        // show calendar of user
-        Route::get('/account/attendance/{user}', 'showAttendance')->name('account.attendance');
-        Route::get('/attendance/{user}', 'getAttendance')->name('account.attendanceData');
-        // export excel file
-        Route::get('/account/monthly/{id}', [AccountController::class, 'showMonthlyAttendance'])->name('account.monthly');
-        Route::get('/account/export-monthly/{id}', [AccountController::class, 'exportMonthlyAttendance'])->name('account.exportMonthly');
+        // show and export monthly attendance
+        Route::get('/account/monthly/{userId}', [AccountController::class, 'showMonthlyAttendance'])->name('account.monthly');
+        Route::get('/account/exportMonthly/{userId}', [AccountController::class, 'exportMonthlyAttendance'])->name('account.exportMonthly');
     });
 });

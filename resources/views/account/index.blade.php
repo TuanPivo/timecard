@@ -14,73 +14,9 @@
                 </div>
             </div>
         </div>
-        {{-- <form action="" method="get">
-        <div class="card-header">
-            <div class="card-tools">
-                <div class="input-group input-group" style="width: 100%;">
-                    <input type="text" value="{{ Request::get('keyword') }}" name="keyword" class="form-control float-right" placeholder="Search">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                        <button type="button" onclick="window.location.href='{{ route('account.index') }}'" class="btn btn-default"> <i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <div class="card-body">
-        <table class="table table-head-bg-primary mt-4">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role Name</th>
-                    <th>Joining Date</th>
-                    <th>Show Attendance</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if ($users->isNotEmpty())
-                    @foreach ($users as $user)
-                        <tr>
-                            <td class="text-center">{{ $user->id }}</td>
-                            <td class="text-center">{{ $user->name }}</td>
-                            <td class="text-center">{{ $user->email }}</td>
-                            <td class="text-center">
-                                {{ $user->role == 1 ? 'User' : ($user->role == 0 ? 'Admin' : '') }}</td>
-                            <td class="text-center">{{ \Carbon\Carbon::parse($user->date)->format('d/m/Y') }}</td>
-                            <td class="text-center">
-                                <a href="{{ route('account.attendance', $user->id) }}">
-                                    View Attendance
-                                </a>
-                            </td>
-                            <td class="text-center">
-                                <a href="{{ route('account.edit', $user->id) }}">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                                <a href="#" onclick="deleteUser({{ $user->id }})"
-                                    class="text-danger w-4 h-4 mr-1">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                @else
-                    <tr>
-                        <td colspan="5">Records Not Found</td>
-                    </tr>
-                @endif
-            </tbody>
-        </table>
-    </div>
-    <div class="bd-example">
-        {{ $users->links() }}
-    </div> --}}
-
         <div class="card-body">
             <div class="table-responsive">
-                <table id="basic-datatables" class="display table table-striped table-hover">
+                <table id="basic-datatables" class="table table-head-bg-info text-center">
                     <thead>
                         <th>ID</th>
                         <th>Name</th>
@@ -100,10 +36,7 @@
                                     <td>
                                         {{ $user->role == 1 ? 'User' : ($user->role == 0 ? 'Admin' : '') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($user->created_at)->format('d/m/Y') }}</td>
-                                    <td class="text-center">
-                                        {{-- <a href="{{ route('account.attendance', $user->id) }}">
-                                            View Attendance
-                                        </a> --}}
+                                    <td>
                                         <a href="{{ route('account.monthly', $user->id) }}">
                                             View Report
                                         </a>
