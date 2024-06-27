@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AttendanceRequest;
 use App\Models\Attendance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 
 class HomeController extends Controller
@@ -34,6 +35,7 @@ class HomeController extends Controller
         return redirect()->route('home')->with('success', "Success");
     }
 
+    // lấy danh dách chấm công
     public function getDataAttendance(){
 
         if (!Auth::check()) {
@@ -71,11 +73,20 @@ class HomeController extends Controller
 
         return response()->json($attendances);
     }
-
+    
     public function sendRequest(Request $request){
         $user = Auth::user();
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401); // Trả về lỗi 401 nếu người dùng chưa đăng nhập
+        }
+
+        $validator = Validator::make($request->all(), [
+
+            'date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
         $type = $request->input('type');
         $date = $request->input('date');
@@ -93,7 +104,7 @@ class HomeController extends Controller
 
     public function showRequest(){
         if (!Auth::check()) {
-            return redirect()->route('home')->with('error', "Bạn chưa đăng nhập");
+            return redirect()->route('home')->with('error', "You are not login");
         }
         $user = Auth::user();
         $data = Attendance::with('user')

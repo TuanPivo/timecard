@@ -9,12 +9,12 @@
         }
 
         /* .btn-container .btn {
-                flex: 1;
-                margin: 5px;
-            }
-            .fc-day-sat .fc-daygrid-day-frame {
-                background-color: rgb(171, 47, 47) !important;
-        } */
+                    flex: 1;
+                    margin: 5px;
+                }
+                .fc-day-sat .fc-daygrid-day-frame {
+                    background-color: rgb(171, 47, 47) !important;
+            } */
         .fc .fc-toolbar.fc-header-toolbar {
             padding: 5px
         }
@@ -164,14 +164,6 @@
                         domNodes: [containerEl]
                     };
                 },
-                // dayCellDidMount: function(info) {
-                //     var day = info.date.getDay();
-                //     if (day === 6) { // Saturday
-                //         info.el.classList.add('.fc-day-sat');
-                //     } else if (day === 0) { // Sunday
-                //         info.el.classList.add('fc-day-sat');
-                //     }
-                // },
                 dateClick: function(info) {
                     showModal(info.dateStr)
                 }
@@ -187,7 +179,7 @@
                 option.text = i;
                 yearPicker.appendChild(option);
             }
-             // Set the default selected month and year to the current month and year
+            // Set the default selected month and year to the current month and year
             document.getElementById('monthPicker').value = new Date().getMonth();
             document.getElementById('yearPicker').value = currentYear;
 
@@ -196,7 +188,8 @@
                 var selectedMonth = document.getElementById('monthPicker').value;
                 var selectedYear = document.getElementById('yearPicker').value;
                 if (selectedMonth && selectedYear) {
-                    var newDate = new Date(selectedYear, selectedMonth, 1); // Create a new Date object with the selected month and year
+                    var newDate = new Date(selectedYear, selectedMonth,
+                    1); // Create a new Date object with the selected month and year
                     calendar.gotoDate(newDate); // Go to the selected month and year in the calendar
                 }
             });
@@ -229,11 +222,16 @@
                         }
                     },
                     error: function(response) {
-                         if (response.status == 401) {
-                             $('#attendanceModal').modal('hide');
+                        if (response.status == 401) {
+                            $('#attendanceModal').modal('hide');
                             $('#loginModal').modal('show'); // Hiển thị modal đăng nhập
-                        } else {
-                             alert('Errors!');
+                        } else if (response.status == 422){
+                            var errors = response.responseJSON.errors;
+                            if (errors.date) {
+                                $('#errorDate').text(errors.date[0]);
+                            } else {
+                                $('#errorDate').text('');
+                            }
                         }
                     }
                 });
@@ -256,14 +254,14 @@
                     break;
             }
 
-             if (confirmationMessage) {
-            if (confirm(confirmationMessage)) {
-                submitForm(actionType);
-            } else {
-                // Ngăn chặn hành động mặc định khi nhấn "Cancel"
-                event.preventDefault();
+            if (confirmationMessage) {
+                if (confirm(confirmationMessage)) {
+                    submitForm(actionType);
+                } else {
+                    // Ngăn chặn hành động mặc định khi nhấn "Cancel"
+                    event.preventDefault();
+                }
             }
-        }
         }
 
         function submitForm(type) {
