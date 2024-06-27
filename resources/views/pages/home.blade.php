@@ -14,7 +14,10 @@
             }
             .fc-day-sat .fc-daygrid-day-frame {
                 background-color: rgb(171, 47, 47) !important;
-            } */
+        } */
+        .fc .fc-toolbar.fc-header-toolbar {
+            padding: 5px
+        }
     </style>
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -73,7 +76,7 @@
                 <button id="goToMonthYear" class="btn btn-primary">Go</button>
             </div>
         </div>
-        <div id="calendar" class="pt-5">
+        <div id="calendar">
         </div>
     </div>
     @include('pages.modalCheckLogin')
@@ -108,6 +111,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: 700,
                 initialView: 'dayGridMonth',
                 events: {
                     url: '{{ route('attendanceData') }}',
@@ -173,7 +177,7 @@
                 }
             });
             calendar.render();
-            
+
             // Populate the year dropdown
             var yearPicker = document.getElementById('yearPicker');
             var currentYear = new Date().getFullYear();
@@ -183,6 +187,9 @@
                 option.text = i;
                 yearPicker.appendChild(option);
             }
+             // Set the default selected month and year to the current month and year
+            document.getElementById('monthPicker').value = new Date().getMonth();
+            document.getElementById('yearPicker').value = currentYear;
 
             // Handle month and year selection
             document.getElementById('goToMonthYear').addEventListener('click', function() {
@@ -240,28 +247,23 @@
 
             switch (actionType) {
                 case 'check in':
-                    confirmationMessage = 'Bạn có chắc chắn muốn check in?';
+                    confirmationMessage = 'You are confirm check in?';
                     break;
                 case 'check out':
-                    confirmationMessage = 'Bạn có chắc chắn muốn check out?';
-                    break;
-                case 'WFH':
-                    confirmationMessage = 'Bạn có chắc chắn muốn WFH?';
+                    confirmationMessage = 'You are confirm check out?';
                     break;
                 default:
                     break;
             }
 
-            if (confirmationMessage) {
-                if (confirm(confirmationMessage)) {
-                    disableButton(button);
-                    submitForm(actionType);
-                }
+             if (confirmationMessage) {
+            if (confirm(confirmationMessage)) {
+                submitForm(actionType);
+            } else {
+                // Ngăn chặn hành động mặc định khi nhấn "Cancel"
+                event.preventDefault();
             }
         }
-
-        function disableButton(button) {
-            button.disabled = true;
         }
 
         function submitForm(type) {
