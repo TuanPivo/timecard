@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class MonthlyAttendanceExport implements FromView, WithStyles
@@ -50,7 +51,7 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => '48abf7'],
+                'startColor' => ['argb' => '808080'],
             ],
         ];
         $sheet->getStyle($headerRange)->applyFromArray($styleArray);
@@ -85,27 +86,25 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             $row = 2; // data starts from row 2
             $column = $this->getColumnName($day + 1);
 
+            $richText = new RichText();
+
             if (isset($attendance['check_in'])) {
                 $status = $attendance['check_in']['status'];
                 $color = $this->getColorForStatus($status);
-                $sheet->getStyle($column . $row)->applyFromArray([
-                    'fill' => [
-                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'startColor' => ['argb' => $color],
-                    ],
-                ]);
+
+                $checkInText = $richText->createTextRun("Checkin: {$attendance['check_in']['date']}\n");
+                $checkInText->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color($color));
             }
 
             if (isset($attendance['check_out'])) {
                 $status = $attendance['check_out']['status'];
                 $color = $this->getColorForStatus($status);
-                $sheet->getStyle($column . $row)->applyFromArray([
-                    'fill' => [
-                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'startColor' => ['argb' => $color],
-                    ],
-                ]);
+
+                $checkOutText = $richText->createTextRun("Checkout: {$attendance['check_out']['date']}");
+                $checkOutText->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color($color));
             }
+
+            $sheet->setCellValue($column . $row, $richText);
         }
 
         $sheet->getStyle('A1:' . $this->getColumnName($lastColumn) . '1000')->applyFromArray([
@@ -140,7 +139,7 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             case 'success':
                 return '00FF00'; // green
             default:
-                return 'FFFFFF'; // white
+                return 'FFFFFF'; // black
         }
     }
 }
