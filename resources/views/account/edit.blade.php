@@ -12,82 +12,38 @@
         </div>
     </div>
 
-    <form action="#" method="POST" id="updateBrandForm" name="updateBrandForm">
+    <form action="#" method="POST" id="updateForm" name="updateForm">
         @csrf
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="name">Full Name</label>
-                            <input type="text" value="{{ $user->name }}" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Enter Full Name Of User">
-                            <span></span>
-                        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="name">Full Name</label>
+                        <input type="text" value="{{ $user->name }}" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Enter Full Name Of User">
+                        <span></span>
                     </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="email">Email</label>
-                            <input type="email" value="{{ $user->email }}" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email">
-                            <span></span>
-                        </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" value="{{ $user->email }}" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email">
+                        <span></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pb-5 pt-3">
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="{{ route('account.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
-        </div>
+        <div class="card-footer">
+            <div class="pb-5 pt-3">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('account.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+            </div>
+        </div>    
     </form>
 @endsection
 
 @section('customJs')
-    {{-- <script>
-        $("#updateBrandForm").submit(function(e) {
-            e.preventDefault();
-            var element = $(this);
-            $("button[type=submit]").prop('disable', true);
-            $.ajax({
-                url: '{{ route('account.update', $user->id) }}',
-                type: 'put',
-                data: element.serializeArray(),
-                dataType: 'json',
-                success: function(response) {
-                    $("button[type=submit]").prop('disable', false);
-                    if (response["status"] == true) {
-                        window.location.href = "{{ route('account.index') }}";
-                        $("#name").removeClass('is-invalid').siblings('span').empty();
-                        $("#email").removeClass('is-invalid').siblings('span').empty();
-                    } else {
-                        if (response['notFound'] == true) {
-                            window.location.href = "{{ route('account.index') }}";
-                            return false;
-                        }
-                        var errors = response['errors'];
-
-                        if (errors['name']) {
-                            $("#name").addClass('is-invalid').siblings('span').addClass(
-                                    'invalid-feedback')
-                                .html(errors['name']);
-                        } else {
-                            $("#name").removeClass('is-invalid').siblings('span').empty();
-                        }
-                        if (errors['email']) {
-                            $("#email").addClass('is-invalid').siblings('span').addClass(
-                                'invalid-feedback').html(errors['email']);
-                        } else {
-                            $("#email").removeClass('is-invalid').siblings('span').empty();
-                        }
-                    }
-                },
-                error: function(jqXHR, exception) {
-                    console.log("Something went wrong.");
-                }
-            })
-        });
-    </script> --}}
     <script>
-        $("#updateBrandForm").submit(function(e) {
+        $("#updateForm").submit(function(e) {
             e.preventDefault();
             var element = $(this);
             $("button[type=submit]").prop('disabled', true);

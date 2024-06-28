@@ -19,67 +19,60 @@
             padding: 5px
         }
     </style>
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-    @if (session('warning'))
-        <div class="alert alert-warning">{{ session('warning') }}</div>
-    @endif
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card justify-content-center align-items-center ">
-                <div class="card-header">
-                    <h4 class="card-title">Attendance</h4>
-                </div>
+
+    @include('layout.message')
+
+    <div class="card">
+        <div class="card-header">
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <h3 class="card-title">ATTENDANCE</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <div class="clock" id="clock" style="font-size: 3rem;"></div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
                 <form method="POST" id="attendanceForm" action="{{ route('attendance') }}">
                     @csrf
                     <div class="card-body">
                         <p class="demo">
-                            <button value="check in" onclick="handleButtonClick(this)"
-                                class="btn btn-danger">checkin</button>
-                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-danger">check
-                                out</button>
+                            <button value="check in" onclick="handleButtonClick(this)" class="btn btn-info">Check In</button>
+                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-info">Check Out</button>
                         </p>
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="col-md-4 d-flex justify-content-center align-items-center">
-            <div class="card">
-                <div class="clock" id="clock" style="font-size: 3rem;"></div>
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <div class="d-flex align-items-center justify-content-center" style="margin-left: 10px">
+                    <label for="monthPicker" class="form-label me-2">Select Month:</label>
+                    <select id="monthPicker" class="form-select w-auto me-2">
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+                    <label for="yearPicker" class="form-label me-2">Select Year:</label>
+                    <select id="yearPicker" class="form-select w-auto me-2"></select>
+                    <button id="goToMonthYear" class="btn btn-info"><i class="fas fa-search"></i></button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="my-4">
-            <div class="d-flex align-items-center justify-content-center" style="margin-left: 10px">
-                <label for="monthPicker" class="form-label me-2">Select Month:</label>
-                <select id="monthPicker" class="form-select w-auto me-2">
-                    <option value="0">January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                </select>
-                <label for="yearPicker" class="form-label me-2">Select Year:</label>
-                <select id="yearPicker" class="form-select w-auto me-2"></select>
-                <button id="goToMonthYear" class="btn btn-primary">Go</button>
-            </div>
-        </div>
-        <div id="calendar">
+        <div class="card-footer">
+            <div id="calendar"></div>
         </div>
     </div>
+
     @include('pages.modalCheckLogin')
+
     @include('pages.modalRequest')
 
     <script>

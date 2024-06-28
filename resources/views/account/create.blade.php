@@ -14,36 +14,36 @@
     </div>
     <form action="#" method="post" id="userForm" name="userForm">
         @csrf
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="name">Full Name</label>
-                            <input type="text" value="{{ old('name') }}" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Enter full name of user">
-                            <span></span>
-                        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="name">Full Name</label>
+                        <input type="text" value="{{ old('name') }}" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Enter full name of user">
+                        <span></span>
                     </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="email">Email</label>
-                            <input type="email" value="{{ old('email') }}" name="email" id="email" class="form-control  @error('email') is-invalid @enderror" placeholder="Email">
-                            <span></span>
-                        </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" value="{{ old('email') }}" name="email" id="email" class="form-control  @error('email') is-invalid @enderror" placeholder="Email">
+                        <span></span>
                     </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="slug">Password</label>
-                            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                                <span></span>
-                        </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="slug">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                            <span></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pb-5 pt-3">
-            <button type="submit" class="btn btn-primary" onclick="generatePassword()">Create</button>
-            <a href="{{ route('account.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+        <div class="card-footer">
+            <div class="pb-5 pt-3">
+                <button type="submit" class="btn btn-primary" onclick="generatePassword()">Create</button>
+                <a href="{{ route('account.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+            </div>
         </div>
     </form>
 @endsection
@@ -102,17 +102,7 @@
             document.getElementById('password').value = password;
         }
 
-        // function generateRandomPassword() {
-        //     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=';
-        //     var length = 8;
-        //     var password = '';
-
-        //     for (var i = 0; i < length; i++) {
-        //         var randomIndex = Math.floor(Math.random() * characters.length);
-        //         password += characters.charAt(randomIndex);
-        //     }
-        //     return password;
-        // }
+        // automatically generate password
         function generateRandomPassword() {
             var length = 8;
             var upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

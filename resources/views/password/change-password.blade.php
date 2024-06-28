@@ -13,35 +13,36 @@
     </div>
     <form action="{{ route('password.updatePassword') }}" id="changePasswordForm" name="changePasswordForm" method="post">
         @csrf
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="name">Old Password</label>
-                            <input type="password" name="old_password" id="old_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Old Password">
-                            <span></span>
-                        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="name">Old Password</label>
+                        <input type="password" name="old_password" id="old_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Old Password">
+                        <span></span>
                     </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="email">New Pasword</label>
-                            <input type="password" name="new_password" id="new_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter New Password">
-                            <span></span>
-                        </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="email">New Pasword</label>
+                        <input type="password" name="new_password" id="new_password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter New Password">
+                        <span></span>
                     </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="slug">Confirm Password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control @error('password') is-invalid @enderror" placeholder="Confirm New Password">
-                            <span></span>
-                        </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="slug">Confirm Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control @error('password') is-invalid @enderror" placeholder="Confirm New Password">
+                        <span></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pb-5 pt-3">
-            <button type="submit" class="btn btn-primary">Change Password</button>
+        <div class="card-footer">
+            <div class="pb-5 pt-3">
+                <button type="submit" class="btn btn-primary">Change Password</button>
+                <a href="{{ route('home') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+            </div>
         </div>
     </form>
 @endsection
