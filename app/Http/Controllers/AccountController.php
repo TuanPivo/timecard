@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Mail\CreateAccount;
 use App\Mail\UpdateAccount;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -221,9 +222,12 @@ class AccountController extends Controller
         // Định dạng tháng với 2 chữ số
         $formattedMonth = str_pad($month, 2, '0', STR_PAD_LEFT);
 
+        $fileName = Str::slug($user->name, '_') . '_' . $formattedMonth . '_' . $year . '.xlsx';
+        $fileName = str_replace('-', '_', $fileName);
+
         return Excel::download(
             new MonthlyAttendanceExport($user, $monthlyAttendance, $month, $year),
-            'monthly_attendance_' . $user->name . '_' . $formattedMonth . '_' . $year . '.xlsx'
+            $fileName
         );
     }
 }
