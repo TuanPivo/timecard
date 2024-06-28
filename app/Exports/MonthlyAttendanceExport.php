@@ -7,16 +7,14 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class MonthlyAttendanceExport implements FromView, WithStyles
 {
     protected $user;
-
     protected $monthlyAttendance;
-
     protected $selectedMonth;
-
     protected $selectedYear;
 
     public function __construct(User $user, $monthlyAttendance, $selectedMonth, $selectedYear)
@@ -84,6 +82,31 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             }
         }
 
+        foreach ($this->monthlyAttendance as $day => $attendance) {
+            $row = 2; // data starts from row 2
+            $column = $this->getColumnName($day + 1);
+
+            $richText = new RichText();
+
+            if (isset($attendance['check_in'])) {
+                $status = $attendance['check_in']['status'];
+                $color = $this->getColorForStatus($status);
+
+                $checkInText = $richText->createTextRun("Checkin: {$attendance['check_in']['date']}\n");
+                $checkInText->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color($color));
+            }
+
+            if (isset($attendance['check_out'])) {
+                $status = $attendance['check_out']['status'];
+                $color = $this->getColorForStatus($status);
+
+                $checkOutText = $richText->createTextRun("Checkout: {$attendance['check_out']['date']}");
+                $checkOutText->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color($color));
+            }
+
+            $sheet->setCellValue($column . $row, $richText);
+        }
+
         $sheet->getStyle('A1:' . $this->getColumnName($lastColumn) . '1000')->applyFromArray([
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -104,5 +127,19 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             $index = intval(($index - $mod) / 26);
         }
         return $letters;
+    }
+
+    private function getColorForStatus($status)
+    {
+        switch ($status) {
+            case 'pending':
+                return 'FFFF00'; // yellow
+            case 'reject':
+                return 'FF0000'; // red
+            case 'success':
+                return '00FF00'; // green
+            default:
+                return 'FFFFFF'; // black
+        }
     }
 }
