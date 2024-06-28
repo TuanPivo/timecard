@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\AttendanceRequest;
 use App\Models\Attendance;
+use App\Models\Holiday;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -70,8 +71,10 @@ class HomeController extends Controller
                     'status' => $attendance->status,
                 ];
             });
+        $holidays = Holiday::select('title', 'start')->get()->toArray();
+        $combinedEvents = $attendances->merge($holidays);
 
-        return response()->json($attendances);
+        return response()->json($combinedEvents);
     }
     
     public function sendRequest(Request $request){
@@ -137,6 +140,42 @@ class HomeController extends Controller
         }
         return redirect()->back()->with('error', 'Request not found.');
     }
+
+    public function showRequestUser()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('home')->with('error', "You are not login");
+        }
+
+        $user = Auth::user();
+        $data = Attendance::with('user')
+            ->where('user_id', $user->id) // Only get requests for the logged-in user
+            ->where('status', 'pending')
+            ->orderBy('date', 'desc')
+            ->get();
+    
+
+        return view('pages.list_request_user', compact(['data', 'user']));
+    }
+
+    public function deleteRequestUser($id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('home')->with('error', "You are not logged in");
+        }
+
+        $user = Auth::user();
+        $attendance = Attendance::find($id);
+
+        if ($attendance && $attendance->user_id == $user->id) {
+            $attendance->delete();
+            return redirect()->back()->with('success', "Request deleted successfully");
+        }
+
+        return redirect()->route('your-route-name')->with('error', "You cannot delete this request");
+    }
+
+
 
 
 }

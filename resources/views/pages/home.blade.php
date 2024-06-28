@@ -118,21 +118,26 @@
                     var status = arg.event.extendedProps.status;
                     var containerEl = document.createElement('div');
                     containerEl.style.color = '#fff';
+                    
 
                     // Thiết lập màu sắc dựa trên status
-                    switch (status) {
-                        case 'success':
-                            containerEl.style.backgroundColor = '#2eb85c';
-                            break;
-                        case 'pending':
-                            containerEl.style.backgroundColor =
-                                '#f9b115'; // Màu vàng cho status pending
-                            break;
-                        case 'reject':
-                            containerEl.style.backgroundColor = '#e55353'; // Màu đỏ cho status reject
-                            break;
-                        default:
-                            break;
+                    if (status) {
+                        switch (status) {
+                            case 'success':
+                                containerEl.style.backgroundColor = '#2eb85c';
+                                break;
+                            case 'pending':
+                                containerEl.style.backgroundColor = '#f9b115';
+                                break;
+                            case 'reject':
+                                containerEl.style.backgroundColor = '#e55353';
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        // Màu xanh cho ngày lễ
+                        containerEl.style.backgroundColor = '#007bff';
                     }
 
                     // Thiết lập tiêu đề của sự kiện
@@ -140,6 +145,11 @@
                     titleEl.textContent = arg.event
                         .title; // Tiêu đề của sự kiện (ví dụ: Check In, Check Out)
                     containerEl.appendChild(titleEl);
+
+                    // nếu là ngày lễ thì không cần hiển thị giờ
+                    if (!status) {
+                        return { domNodes: [containerEl] };
+                    }
 
                     // Lấy và thiết lập thời gian của sự kiện
                     var timeEl = document.createElement('div');
