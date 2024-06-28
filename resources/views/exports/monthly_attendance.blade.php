@@ -4,12 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monthly Attendance {{ \Carbon\Carbon::createFromDate($selectedYear, $selectedMonth, 1)->format('F Y') }}
-    </title>
+    <title>Monthly Attendance {{ \Carbon\Carbon::createFromDate($selectedYear, $selectedMonth, 1)->format('F Y') }}</title>
+    <style>
+        .pending {
+            background-color: yellow;
+        }
+        .reject {
+            background-color: red;
+        }
+        .success {
+            background-color: green;
+        }
+    </style>
 </head>
 
 <body>
-
     <table>
         <thead>
             <tr class="header-row">
@@ -30,11 +39,15 @@
                     <td class="text-center {{ $isWeekend ? 'weekend' : '' }}">
                         @if (isset($monthlyAttendance[$i]))
                             @if (isset($monthlyAttendance[$i]['check_in']))
-                                <div>Checkin {{ $monthlyAttendance[$i]['check_in']['date'] }}</div>
+                                <div class="{{ $monthlyAttendance[$i]['check_in']['status'] }}">
+                                    Checkin {{ $monthlyAttendance[$i]['check_in']['date'] }}
+                                </div>
                             @endif
                             <br>
                             @if (isset($monthlyAttendance[$i]['check_out']))
-                                <div>Checkout {{ $monthlyAttendance[$i]['check_out']['date'] }}</div>
+                                <div class="{{ $monthlyAttendance[$i]['check_out']['status'] }}">
+                                    Checkout {{ $monthlyAttendance[$i]['check_out']['date'] }}
+                                </div>
                             @endif
                         @endif
                     </td>
@@ -42,7 +55,6 @@
             </tr>
         </tbody>
     </table>
-
 </body>
 
 </html>

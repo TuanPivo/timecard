@@ -180,12 +180,12 @@ class AccountController extends Controller
 
             if ($attendance->type == 'check in') {
                 $monthlyAttendance[$date]['check_in'] = [
-                    'status' => 'Check in',
+                    'status' => $attendance->status,
                     'date' => Carbon::parse($attendance->date)->format('H:i'),
                 ];
             } elseif ($attendance->type == 'check out') {
                 $monthlyAttendance[$date]['check_out'] = [
-                    'status' => 'Check out',
+                    'status' => $attendance->status,
                     'date' => Carbon::parse($attendance->date)->format('H:i'),
                 ];
             }

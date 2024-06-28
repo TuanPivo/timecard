@@ -12,11 +12,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class MonthlyAttendanceExport implements FromView, WithStyles
 {
     protected $user;
-
     protected $monthlyAttendance;
-
     protected $selectedMonth;
-
     protected $selectedYear;
 
     public function __construct(User $user, $monthlyAttendance, $selectedMonth, $selectedYear)
@@ -53,7 +50,7 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => '808080'],
+                'startColor' => ['argb' => '48abf7'],
             ],
         ];
         $sheet->getStyle($headerRange)->applyFromArray($styleArray);
@@ -84,6 +81,33 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             }
         }
 
+        foreach ($this->monthlyAttendance as $day => $attendance) {
+            $row = 2; // data starts from row 2
+            $column = $this->getColumnName($day + 1);
+
+            if (isset($attendance['check_in'])) {
+                $status = $attendance['check_in']['status'];
+                $color = $this->getColorForStatus($status);
+                $sheet->getStyle($column . $row)->applyFromArray([
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'startColor' => ['argb' => $color],
+                    ],
+                ]);
+            }
+
+            if (isset($attendance['check_out'])) {
+                $status = $attendance['check_out']['status'];
+                $color = $this->getColorForStatus($status);
+                $sheet->getStyle($column . $row)->applyFromArray([
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'startColor' => ['argb' => $color],
+                    ],
+                ]);
+            }
+        }
+
         $sheet->getStyle('A1:' . $this->getColumnName($lastColumn) . '1000')->applyFromArray([
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -104,5 +128,19 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             $index = intval(($index - $mod) / 26);
         }
         return $letters;
+    }
+
+    private function getColorForStatus($status)
+    {
+        switch ($status) {
+            case 'pending':
+                return 'FFFF00'; // yellow
+            case 'reject':
+                return 'FF0000'; // red
+            case 'success':
+                return '00FF00'; // green
+            default:
+                return 'FFFFFF'; // white
+        }
     }
 }

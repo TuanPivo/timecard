@@ -64,11 +64,23 @@
                             <td class="text-center {{ $isWeekend ? 'bg-danger-gradient' : '' }}">
                                 @if (isset($monthlyAttendance[$i]))
                                     @if (isset($monthlyAttendance[$i]['check_in']))
-                                        <div>Checkin {{ $monthlyAttendance[$i]['check_in']['date'] }}</div>
+                                        <div class="
+                                            {{ $monthlyAttendance[$i]['check_in']['status'] == 'pending' ? 'bg-warning' : '' }}
+                                            {{ $monthlyAttendance[$i]['check_in']['status'] == 'reject' ? 'bg-danger' : '' }}
+                                            {{ $monthlyAttendance[$i]['check_in']['status'] == 'success' ? 'bg-success' : '' }}
+                                        ">
+                                            Checkin {{ $monthlyAttendance[$i]['check_in']['date'] }}
+                                        </div>
                                     @endif
                                     <br>
                                     @if (isset($monthlyAttendance[$i]['check_out']))
-                                        <div>Checkout {{ $monthlyAttendance[$i]['check_out']['date'] }}</div>
+                                        <div class="
+                                            {{ $monthlyAttendance[$i]['check_out']['status'] == 'pending' ? 'bg-warning' : '' }}
+                                            {{ $monthlyAttendance[$i]['check_out']['status'] == 'reject' ? 'bg-danger' : '' }}
+                                            {{ $monthlyAttendance[$i]['check_out']['status'] == 'success' ? 'bg-success' : '' }}
+                                        ">
+                                            Checkout {{ $monthlyAttendance[$i]['check_out']['date'] }}
+                                        </div>
                                     @endif
                                 @endif
                             </td>
@@ -77,5 +89,40 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <hr>
+    <div class="card-footer">
+        <strong>Corresponding color and status</strong>
+        <table class="table-bordered">
+            <thead class="text-center">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td>1</td>
+                    <td class="bg-danger-gradient"></td>
+                    <td>Holidays, Saturday, Sunday</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="bg-warning"></td>
+                    <td>Pending</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="bg-danger"></td>
+                    <td>Reject</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="bg-success"></td>
+                    <td>Success</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 @endsection
