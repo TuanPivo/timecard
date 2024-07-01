@@ -73,6 +73,9 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/admin/holiday', 'index')->name('holiday.index');
         Route::get('/admin/holiday/create', 'create')->name('holiday.create');
         Route::post('/admin/holiday/store', 'store')->name('holiday.store');
+        Route::get('/admin/holiday/edit/{id}', 'edit')->name('holiday.edit');
+        Route::post('/admin/holiday/update/{id}', 'update')->name('holiday.update');
+        Route::get('/admin/holiday/delete/{id}', 'delete')->name('holiday.delete');
 
     });
 });

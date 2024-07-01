@@ -31,6 +31,37 @@ class HolidayController extends Controller
 
         Holiday::create($request->all());
 
-        return redirect()->route('holidays.index')->with('success', 'Holiday created successfully.');
+        return redirect()->back()->with('success', 'Holiday created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $holiday = Holiday::findOrFail($id);
+        return response()->json($holiday);
+    }
+
+
+    // Phương thức cập nhật ngày nghỉ
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'start' => 'required|date',
+        ]);
+
+        $holiday = Holiday::findOrFail($id);
+        $holiday->title = $request->title;
+        $holiday->start = $request->start;
+        $holiday->save();
+
+        return redirect()->route('holiday.index')->with('success', 'Holiday updated successfully.');
+    }
+
+    public function delete($id)
+    {
+        $holiday = Holiday::findOrFail($id);
+        $holiday->delete();
+
+        return redirect()->back()->with('success', 'Holiday deleted successfully.');
     }
 }
