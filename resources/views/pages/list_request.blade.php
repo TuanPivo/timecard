@@ -28,8 +28,14 @@
                                 <td>{{ $attendance->type }}</td>
                                 <td>{{ $attendance->status }}</td>
                                 <td>
-                                    <a class="btn btn-danger" href="{{ route('reject',$attendance->id)}}">Reject</a>
-                                    <a href="{{ route('approve', $attendance->id)}}"  class="btn btn-primary">Approve</a>
+                                    @if (auth()->user()->role == 1 || $attendance->user_id != auth()->id())
+                                        <a class="btn btn-danger" href="{{ route('reject', $attendance->id) }}">Reject</a>
+                                        <a href="{{ route('approve', $attendance->id) }}" class="btn btn-primary">Approve</a>
+                                    @else
+                                        <!-- Disable buttons for user's own requests -->
+                                        <button class="btn btn-danger" disabled>Reject</button>
+                                        <button class="btn btn-primary" disabled>Approve</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

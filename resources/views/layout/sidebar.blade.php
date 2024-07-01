@@ -31,15 +31,14 @@
                          <span class="caret"></span>
                      </a>
                  </li>
-                 @if (Auth::check() && Auth::user()->role === 1)
-                     <li class="nav-item">
-                         <a href="{{ route('showRequestUser') }}">
-                             <i class="fa fa-list-alt"></i>
-                             <p>Request user</p>
-                             <span class="caret"></span>
-                         </a>
-                     </li>
-                 @endif
+                 @if (Auth::check())
+                 <li class="nav-item">
+                     <a href="{{ route('showRequestUser') }}">
+                         <i class="fa fa-list-alt"></i>
+                         <p>Request</p>
+                         <span class="caret"></span>
+                     </a>
+                 </li>
                  @if (Auth::check() && Auth::user()->role === 0)
                      <li class="nav-item">
                          <a href="{{ route('account.index') }}">
@@ -51,7 +50,7 @@
                      <li class="nav-item">
                          <a href="{{ route('showRequest') }}">
                              <i class="fa fa-list-alt"></i>
-                             <p>Request user</p>
+                             <p>Manager request user</p>
                              <span class="caret"></span>
                          </a>
                      </li>
@@ -63,6 +62,7 @@
                          </a>
                      </li>
                  @endif
+                @endif
              </ul>
          </div>
      </div>
