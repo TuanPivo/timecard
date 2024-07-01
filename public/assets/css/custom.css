@@ -1,0 +1,22 @@
+.table thead th {
+    font-size:.90rem;
+}
+
+.table>tbody>tr>td,.table>tbody>tr>th {
+    padding: 8px 16px!important
+}
+
+.card .card-footer,.card-light .card-footer {
+    background-color: transparent;
+    line-height: 20px;
+    border-top: 1px solid #ebecec!important;
+    font-size: 10px
+}
+
+.btn {
+    padding: .3rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 1;
+    border-radius: 3px
+}
