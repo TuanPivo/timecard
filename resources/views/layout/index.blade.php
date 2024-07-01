@@ -10,6 +10,10 @@
     <!-- Fonts and icons -->
     <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
     <script src=" {{asset('assets/js/plugin/webfont/webfont.min.js')}} "></script>
+    <!-- jQuery Scrollbar -->
+    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js')}} "></script>
+	<script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
+
     <script>
         WebFont.load({
             google: {
@@ -33,6 +37,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css')}}" />
 
 </head>
 
@@ -61,12 +66,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
-
-    <!-- jQuery Scrollbar -->
-    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js')}} "></script>
-
-    <!-- Chart Circle -->
-    <script src="{{asset('assets/js/plugin/chart-circle/circles.min.js')}} "></script>
 
     <!-- Datatables -->
     <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js')}} "></script>

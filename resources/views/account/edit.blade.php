@@ -3,18 +3,12 @@
 @section('content')
     <div class="card-header">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-                <h3 class="fw-bold mb-3">Edit User</h3>
-            </div>
-            <div class="ms-md-auto py-2 py-md-0">
-                <a href="{{ route('account.index') }}" class="btn btn-black btn-round">Back</a>
-            </div>
+            <h5>Edit User</h5>
         </div>
     </div>
-
-    <form action="#" method="POST" id="updateForm" name="updateForm">
-        @csrf
-        <div class="card-body">
+    <div class="card-body">
+        <form action="#" method="POST" id="updateForm" name="updateForm">
+            @csrf
             <div class="row">
                 <div class="col-md-12">
                     <div class="mb-3">
@@ -31,14 +25,14 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="pb-5 pt-3">
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('account.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
-            </div>
-        </div>    
-    </form>
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button class="btn btn-outline-dark"><a href="{{ route('account.index') }}">Cancel</a></button>
+                </div>
+            </div>    
+        </form>
+    </div>
 @endsection
 
 @section('customJs')

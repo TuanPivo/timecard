@@ -109,15 +109,11 @@ class HomeController extends Controller
         if (!Auth::check()) {
             return redirect()->route('home')->with('error', "You are not login");
         }
-        $user = Auth::user();
         $data = Attendance::with('user')
         ->where('status', 'pending')
         ->orderBy('date','desc')
-        ->get()
-        ->groupBy(function($date) {
-            return \Carbon\Carbon::parse($date->date)->format('d-m-Y'); // grouping by dates
-        });
-        return view('pages.list_request', compact(['data','user']));
+        ->get();
+        return view('pages.list_request', compact(['data']));
     }
 
     public function reject($id)

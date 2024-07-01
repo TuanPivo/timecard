@@ -4,17 +4,12 @@
     @include('layout.message')
     <div class="card-header">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-                <h3 class="fw-bold mb-3">Add New User</h3>
-            </div>
-            <div class="ms-md-auto py-2 py-md-0">
-                <a href="{{ route('account.index') }}" class="btn btn-black btn-round">Back</a>
-            </div>
+            <h5 class="fw-bold mb-3">Create User</h5>
         </div>
     </div>
-    <form action="#" method="post" id="userForm" name="userForm">
-        @csrf
-        <div class="card-body">
+    <div class="card-body">
+        <form action="#" method="post" id="userForm" name="userForm">
+            @csrf
             <div class="row">
                 <div class="col-md-12">
                     <div class="mb-3">
@@ -32,20 +27,21 @@
                 </div>
                 <div class="col-md-12">
                     <div class="mb-3">
-                        <label for="slug">Password</label>
+                        <label for="password">Password</label>
                         <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                             <span></span>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="pb-5 pt-3">
-                <button type="submit" class="btn btn-primary" onclick="generatePassword()">Create</button>
-                <a href="{{ route('account.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" onclick="generatePassword()">Create</button>
+                    <a href="{{ route('account.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+
 @endsection
 
 @section('customJs')

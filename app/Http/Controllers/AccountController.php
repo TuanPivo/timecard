@@ -24,14 +24,7 @@ class AccountController extends Controller
             return redirect()->route('home')->with('error', "You are not logged in");
         }
 
-        $users = User::orderBy('created_at', 'DESC');
-
-        // if (!empty($request->get('keyword'))) {
-        //     $users = $users->Where('name', 'like', '%' . $request->get('keyword') . '%');
-        //     $users = $users->orWhere('email', 'like', '%' . $request->get('keyword') . '%');
-        // }
-
-        $users = $users->paginate(10);
+        $users = User::orderBy('created_at', 'ASC')->get();
 
         return view('account.index', [
             'users' => $users,
