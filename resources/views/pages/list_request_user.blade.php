@@ -55,57 +55,6 @@
             </div>
         </div>
     </section>
-    {{-- <div class="card">
-        <div class="card-header">
-            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-                <div>
-                    <h3 class="fw-bold mb-3">List of requests from the User</h3>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                @if ($data->isNotEmpty())
-                    @foreach ($data as $date => $attendances)
-                        <h3 class="p-2">{{ $date }}</h3>
-                        <table id="basic-datatables" class="table table-head-bg-info text-center">
-                            <thead>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </thead>
-                            <tbody>
-                                @foreach ($attendances as $attendance)
-                                    <tr>
-                                        <td>{{ $attendance->id }}</td>
-                                        <td>{{ $attendance->user->name }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($attendance->date)->format('d-m-Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($attendance->date)->format('H:i') }}</td>
-                                        <td>{{ $attendance->type }}</td>
-                                        <td>{{ $attendance->status }}</td>
-                                        <td>
-                                            <a class="btn btn-danger"
-                                                href="{{ route('reject', $attendance->id) }}">Reject</a>
-                                            <a href="{{ route('approve', $attendance->id) }}"
-                                                class="btn btn-primary">Approve</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @endforeach
-                @else
-                    <tr>
-                        <td colspan="7">Records Not Found</td>
-                    </tr>
-                @endif
-            </div>
-        </div>
-    </div> --}}
 @endsection
 
 @section('customJs')

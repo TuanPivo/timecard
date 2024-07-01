@@ -38,45 +38,49 @@ class HomeController extends Controller
 
     // lấy danh dách chấm công
     public function getDataAttendance(){
-
-        if (!Auth::check()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
         
-        $user = Auth::user();
+        $attendances = [];
 
-        $attendances = Attendance::where('user_id', $user->id)
-            ->whereIn('status', ['success', 'approve', 'pending','reject']) // Chỉ lấy các sự kiện có status là success, approve hoặc pending
-            ->select('type', 'date', 'status')
-            ->orderBy('date','desc')
-            ->get()
-            ->groupBy(function ($date) {
-                return Carbon::parse($date->date)->format('Y-m-d');
-            })
-            ->map(function ($dayGroup) {
-                return $dayGroup->unique('type'); // Lấy sự kiện gần nhất của mỗi loại trong ngày
-            })
-            ->flatten()
-            ->map(function ($attendance) {
-                $title = ucfirst($attendance->type);
-                if ($attendance->status === 'pending') {
-                    $title .= ' - ' . $attendance->status;
-                }
-                if($attendance->status === 'reject'){
-                    $title .= '-' . $attendance->status;
-                }
-                return [
-                    'title' => $title,
-                    'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
-                    'status' => $attendance->status,
-                ];
-            });
+        // Fetch attendance data if user is authenticated
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            $attendances = Attendance::where('user_id', $user->id)
+                ->whereIn('status', ['success', 'approve', 'pending', 'reject'])
+                ->select('type', 'date', 'status')
+                ->orderBy('date', 'desc')
+                ->get()
+                ->groupBy(function ($date) {
+                    return Carbon::parse($date->date)->format('Y-m-d');
+                })
+                ->map(function ($dayGroup) {
+                    return $dayGroup->unique('type');
+                })
+                ->flatten()
+                ->map(function ($attendance) {
+                    $title = ucfirst($attendance->type);
+                    if ($attendance->status === 'pending') {
+                        $title .= ' - ' . $attendance->status;
+                    }
+                    if ($attendance->status === 'reject') {
+                        $title .= '-' . $attendance->status;
+                    }
+                    return [
+                        'title' => $title,
+                        'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
+                        'status' => $attendance->status,
+                    ];
+                });
+        }
+
+        // Always fetch holidays
         $holidays = Holiday::select('title', 'start')->get()->toArray();
-        $combinedEvents = $attendances->merge($holidays);
+        $combinedEvents = collect($attendances)->merge($holidays);
 
         return response()->json($combinedEvents);
     }
-    
+
+
     public function sendRequest(Request $request){
         $user = Auth::user();
         if (!$user) {
