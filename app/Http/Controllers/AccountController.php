@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Holiday;
 use App\Models\Attendance;
 use App\Mail\CreateAccount;
 use App\Mail\UpdateAccount;
@@ -196,11 +197,21 @@ class AccountController extends Controller
 
         $monthlyAttendance = $this->getMonthlyAttendance($userId, $month, $year);
 
+        // Fetch holidays for the specified month and year
+        $holidays = Holiday::whereYear('start', $year)
+                            ->whereMonth('start', $month)
+                            ->get()
+                            ->pluck('start')
+                            ->map(function ($date) {
+                                return Carbon::parse($date)->day;
+                            });
+
         return view('account.monthly', [
             'user' => $user,
             'monthlyAttendance' => $monthlyAttendance,
             'selectedMonth' => $month,
             'selectedYear' => $year,
+            'holidays' => $holidays,
         ]);
     }
 
@@ -214,7 +225,7 @@ class AccountController extends Controller
 
         // Định dạng tháng với 2 chữ số
         $formattedMonth = str_pad($month, 2, '0', STR_PAD_LEFT);
-
+        // Định dạng tên file
         $fileName = Str::slug($user->name, '_') . '_' . $formattedMonth . '_' . $year . '.xlsx';
         $fileName = str_replace('-', '_', $fileName);
 

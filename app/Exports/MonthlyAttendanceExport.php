@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Holiday;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -16,6 +17,7 @@ class MonthlyAttendanceExport implements FromView, WithStyles
     protected $monthlyAttendance;
     protected $selectedMonth;
     protected $selectedYear;
+    protected $holidays;
 
     public function __construct(User $user, $monthlyAttendance, $selectedMonth, $selectedYear)
     {
@@ -23,6 +25,16 @@ class MonthlyAttendanceExport implements FromView, WithStyles
         $this->monthlyAttendance = $monthlyAttendance;
         $this->selectedMonth = $selectedMonth;
         $this->selectedYear = $selectedYear;
+
+        // Fetch holidays for the specified month and year
+        $this->holidays = Holiday::whereYear('start', $selectedYear)
+                            ->whereMonth('start', $selectedMonth)
+                            ->get()
+                            ->pluck('start')
+                            ->map(function ($date) {
+                                return Carbon::parse($date)->day;
+                            })
+                            ->toArray();
     }
 
     public function view(): View
@@ -32,6 +44,7 @@ class MonthlyAttendanceExport implements FromView, WithStyles
             'monthlyAttendance' => $this->monthlyAttendance,
             'selectedMonth' => $this->selectedMonth,
             'selectedYear' => $this->selectedYear,
+            'holidays' => $this->holidays,
         ]);
     }
 
@@ -59,7 +72,8 @@ class MonthlyAttendanceExport implements FromView, WithStyles
         for ($i = 2; $i <= Carbon::createFromDate($this->selectedYear, $this->selectedMonth, 1)->endOfMonth()->day + 1; $i++) {
             $date = Carbon::createFromDate($this->selectedYear, $this->selectedMonth, $i - 1);
             $column = $this->getColumnName($i);
-            if ($date->isWeekend()) {
+
+            if ($date->isWeekend() || in_array($date->day, $this->holidays)) {
                 $sheet->getStyle($column . '2')->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -92,7 +106,8 @@ class MonthlyAttendanceExport implements FromView, WithStyles
                 $status = $attendance['check_in']['status'];
                 $color = $this->getColorForStatus($status);
 
-                $checkInText = $richText->createTextRun("Checkin: {$attendance['check_in']['date']}\n");
+                // $checkInText = $richText->createTextRun("Checkin: {$attendance['check_in']['date']}\n");
+                $checkInText = $richText->createTextRun("{$attendance['check_in']['date']}\n");
                 $checkInText->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color($color));
             }
 
@@ -100,7 +115,8 @@ class MonthlyAttendanceExport implements FromView, WithStyles
                 $status = $attendance['check_out']['status'];
                 $color = $this->getColorForStatus($status);
 
-                $checkOutText = $richText->createTextRun("Checkout: {$attendance['check_out']['date']}");
+                // $checkOutText = $richText->createTextRun("Checkout: {$attendance['check_out']['date']}");
+                $checkOutText = $richText->createTextRun("{$attendance['check_out']['date']}");
                 $checkOutText->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color($color));
             }
 
@@ -133,13 +149,13 @@ class MonthlyAttendanceExport implements FromView, WithStyles
     {
         switch ($status) {
             case 'pending':
-                return 'FFFF00'; // yellow
+                return '000000';
             case 'reject':
-                return 'FF0000'; // red
+                return '000000';
             case 'success':
-                return '00FF00'; // green
+                return '000000';
             default:
-                return 'FFFFFF'; // black
+                return '000000';
         }
     }
 }
