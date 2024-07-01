@@ -162,7 +162,19 @@
                 },
                 dateClick: function(info) {
                     showModal(info.dateStr)
-                }
+                },
+                // đổi màu cho tiêu đề thứ 7 cn
+                dayHeaderContent: function(arg) {
+                    var date = arg.date;
+                    var day = date.getUTCDay();
+                    var text = arg.text;
+
+                    if (day === 0 || day === 6) { // 0: Sunday, 6: Saturday
+                        return { html: '<span style="color: red;">' + text + '</span>' };
+                    } else {
+                        return { html: '<span>' + text + '</span>' };
+                    }
+                },
             });
             calendar.render();
 
