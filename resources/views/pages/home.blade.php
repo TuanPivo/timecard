@@ -9,12 +9,12 @@
         }
 
         /* .btn-container .btn {
-                    flex: 1;
-                    margin: 5px;
-                }
-                .fc-day-sat .fc-daygrid-day-frame {
-                    background-color: rgb(171, 47, 47) !important;
-            } */
+                        flex: 1;
+                        margin: 5px;
+                    }
+                    .fc-day-sat .fc-daygrid-day-frame {
+                        background-color: rgb(171, 47, 47) !important;
+                } */
         .fc .fc-toolbar.fc-header-toolbar {
             padding: 5px
         }
@@ -23,28 +23,20 @@
     @include('layout.message')
 
     <div class="card">
-        <div class="card-header">
-            <div class="col-md-12 d-flex justify-content-center align-items-center">
-                <h3 class="card-title">ATTENDANCE</h3>
-            </div>
-        </div>
         <div class="card-body">
             <div class="col-md-12 d-flex justify-content-center align-items-center">
-                <div class="clock" id="clock" style="font-size: 3rem;"></div>
-            </div>
-            <div class="col-md-12 d-flex justify-content-center align-items-center">
-                <form method="POST" id="attendanceForm" action="{{ route('attendance') }}">
+                <!-- Attendance Form -->
+                <form method="POST" id="attendanceForm" action="{{ route('attendance') }}" class="d-flex align-items-center me-3">
                     @csrf
                     <div class="card-body">
                         <p class="demo">
-                            <button value="check in" onclick="handleButtonClick(this)" class="btn btn-info">Check In</button>
+                            <button value="check in" onclick="handleButtonClick(this)" class="btn btn-info me-2">Check In</button>
                             <button value="check out" onclick="handleButtonClick(this)" class="btn btn-info">Check Out</button>
                         </p>
                     </div>
                 </form>
-            </div>
-            <div class="col-md-12 d-flex justify-content-center align-items-center">
-                <div class="d-flex align-items-center justify-content-center" style="margin-left: 10px">
+                <!-- Month and Year Picker -->
+                <div class="d-flex align-items-center justify-content-center">
                     <label for="monthPicker" class="form-label me-2">Select Month:</label>
                     <select id="monthPicker" class="form-select w-auto me-2">
                         <option value="0">January</option>
@@ -65,7 +57,6 @@
                     <button id="goToMonthYear" class="btn btn-info"><i class="fas fa-search"></i></button>
                 </div>
             </div>
-        </div>
         <div class="card-footer">
             <div id="calendar"></div>
         </div>
@@ -119,20 +110,25 @@
                     var containerEl = document.createElement('div');
                     containerEl.style.color = '#fff';
 
+
                     // Thiết lập màu sắc dựa trên status
-                    switch (status) {
-                        case 'success':
-                            containerEl.style.backgroundColor = '#2eb85c';
-                            break;
-                        case 'pending':
-                            containerEl.style.backgroundColor =
-                                '#f9b115'; // Màu vàng cho status pending
-                            break;
-                        case 'reject':
-                            containerEl.style.backgroundColor = '#e55353'; // Màu đỏ cho status reject
-                            break;
-                        default:
-                            break;
+                    if (status) {
+                        switch (status) {
+                            case 'success':
+                                containerEl.style.backgroundColor = '#2eb85c';
+                                break;
+                            case 'pending':
+                                containerEl.style.backgroundColor = '#f9b115';
+                                break;
+                            case 'reject':
+                                containerEl.style.backgroundColor = '#e55353';
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        // Màu xanh cho ngày lễ
+                        containerEl.style.backgroundColor = '#007bff';
                     }
 
                     // Thiết lập tiêu đề của sự kiện
@@ -140,6 +136,13 @@
                     titleEl.textContent = arg.event
                         .title; // Tiêu đề của sự kiện (ví dụ: Check In, Check Out)
                     containerEl.appendChild(titleEl);
+
+                    // nếu là ngày lễ thì không cần hiển thị giờ
+                    if (!status) {
+                        return {
+                            domNodes: [containerEl]
+                        };
+                    }
 
                     // Lấy và thiết lập thời gian của sự kiện
                     var timeEl = document.createElement('div');
@@ -182,7 +185,7 @@
                 var selectedYear = document.getElementById('yearPicker').value;
                 if (selectedMonth && selectedYear) {
                     var newDate = new Date(selectedYear, selectedMonth,
-                    1); // Create a new Date object with the selected month and year
+                        1); // Create a new Date object with the selected month and year
                     calendar.gotoDate(newDate); // Go to the selected month and year in the calendar
                 }
             });
@@ -218,7 +221,7 @@
                         if (response.status == 401) {
                             $('#attendanceModal').modal('hide');
                             $('#loginModal').modal('show'); // Hiển thị modal đăng nhập
-                        } else if (response.status == 422){
+                        } else if (response.status == 422) {
                             var errors = response.responseJSON.errors;
                             if (errors.date) {
                                 $('#errorDate').text(errors.date[0]);

@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\HolidayController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +29,10 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/data', 'getDataAttendance')->name('attendanceData');
         Route::post('/send', 'sendRequest')->name('sendRequest');
         Route::get('/show', 'showRequest')->name('showRequest');
+        Route::get('/show-request-user', 'showRequestUser')->name('showRequestUser');
         Route::get('/reject/{id}', 'reject')->name('reject');
         Route::get('/approve/{id}', 'approve')->name('approve');
+        Route::delete('/delete/{id}', 'deleteRequestUser')->name('delete.request');
 
     });
     Route::controller(AuthController::class)->group(function () {
@@ -64,5 +67,15 @@ Route::group(['prefix' => '/'], function () {
         // show and export monthly attendance
         Route::get('/account/monthly/{userId}', [AccountController::class, 'showMonthlyAttendance'])->name('account.monthly');
         Route::get('/account/exportMonthly/{userId}', [AccountController::class, 'exportMonthlyAttendance'])->name('account.exportMonthly');
+    });
+
+    Route::middleware('CheckAdmin')->controller(HolidayController::class)->group(function () {
+        Route::get('/admin/holiday', 'index')->name('holiday.index');
+        Route::get('/admin/holiday/create', 'create')->name('holiday.create');
+        Route::post('/admin/holiday/store', 'store')->name('holiday.store');
+        Route::get('/admin/holiday/edit/{id}', 'edit')->name('holiday.edit');
+        Route::post('/admin/holiday/update/{id}', 'update')->name('holiday.update');
+        Route::get('/admin/holiday/delete/{id}', 'delete')->name('holiday.delete');
+
     });
 });
