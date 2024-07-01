@@ -20,14 +20,20 @@
          <!-- End Logo Header -->
      </div>
      <!-- Navbar Header -->
-     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+         style="min-height: 60px">
          <div class="container-fluid">
              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                @if (!Auth::check())
                  <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a href="{{ route('login') }}" class="btn btn-danger me-2">Login</a>
+                     <div>
+                         <div class="clock" id="clock" style="font-size: 1.5rem; padding-right: 15px"></div>
+                     </div>
                  </li>
-                @endif
+                 @if (!Auth::check())
+                     <li class="nav-item topbar-user dropdown hidden-caret">
+                         <a href="{{ route('login') }}" class="btn btn-danger me-2">Login</a>
+                     </li>
+                 @endif
                  <li class="nav-item topbar-user dropdown hidden-caret" style="background-color:#f5f7fd">
                      <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                          aria-expanded="false">
@@ -52,13 +58,15 @@
                                                  <h4>Guest</h4>
                                                  <p class="text-muted">No email available</p>
                                              @endif
-                                             <a href="{{ route('home') }}" class="btn btn-xs btn-danger btn-sm">View Calender</a>
+                                             <a href="{{ route('home') }}" class="btn btn-xs btn-danger btn-sm">View
+                                                 Calender</a>
                                          </div>
                                      </div>
                                  </li>
                                  <li>
                                      <div class="dropdown-divider"></div>
-                                     <a class="dropdown-item" href="{{ route('password.change-password') }}">Change passwword</a>
+                                     <a class="dropdown-item" href="{{ route('password.change-password') }}">Change
+                                         passwword</a>
                                  </li>
                                  <li>
                                      <div class="dropdown-divider"></div>
