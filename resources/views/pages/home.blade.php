@@ -175,6 +175,12 @@
                         return { html: '<span>' + text + '</span>' };
                     }
                 },
+                dayCellDidMount: function(info) {
+                    var day = info.date.getDay(); // Changed from getUTCDay to getDay
+                    if (day === 0 || day === 6) { // 0: Sunday, 6: Saturday
+                        info.el.style.backgroundColor = 'rgba(216 216 216 / 20%)'; // Light red background
+                    }
+                },
             });
             calendar.render();
 

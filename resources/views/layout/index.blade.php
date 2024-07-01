@@ -54,12 +54,12 @@
                 <div class="page-inner">
                     @yield('content')
                 </div>
-                @include('layout.footer')
                 @yield('customJs')
             </div>
+            @include('layout.footer')
             <!-- End Custom template -->
         </div>
-
+    </div>
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js')}}"></script>
