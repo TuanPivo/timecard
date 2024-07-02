@@ -45,9 +45,9 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-center btn-primary">Name</th>
+                        <th class="text-center btn-info">Name</th>
                         @for ($i = 1; $i <= Carbon\Carbon::createFromDate($selectedYear, $selectedMonth, 1)->endOfMonth()->day; $i++)
-                            <th class="text-center btn-primary">{{ $i }}</th>
+                            <th class="text-center btn-info">{{ $i }}</th>
                         @endfor
                     </tr>
                 </thead>

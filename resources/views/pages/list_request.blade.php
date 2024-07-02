@@ -6,7 +6,7 @@
         <div class="card-header">
             <h5 class="fw-bold mb-3">Lists Request</h5>
         </div>
-        <div class="card-body">								
+        <div class="card-body">							
             <table id="basic-datatables" class="table table-head-bg-info text-center">
                 <thead>
                     <tr>
@@ -33,8 +33,8 @@
                                         <a href="{{ route('approve', $attendance->id) }}" class="btn btn-primary">Approve</a>
                                     @else
                                         <!-- Disable buttons for user's own requests -->
-                                        <button class="btn btn-danger" disabled>Reject</button>
-                                        <button class="btn btn-primary" disabled>Approve</button>
+                                        <button class="btn btn-danger" onclick="return handleAction('reject', {{ $attendance->id }});">Reject</button>
+                                        <button class="btn btn-primary" onclick="return handleAction('approve', {{ $attendance->id }});">Approve</button>
                                     @endif
                                 </td>
                             </tr>
@@ -53,6 +53,13 @@
 
 @section('customJs')
     <script>
+         function handleAction(action, id) {
+            if (action === 'reject' || action === 'approve') {
+                alert('You cannot confirm your request yourself.');
+                return false;
+            }
+        }
+
         $(document).ready(function() {
 			$('#basic-datatables').DataTable({});
 
