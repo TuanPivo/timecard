@@ -22,7 +22,7 @@
 
     @include('layout.message')
 
-    <div class="card">
+    <div class="card" style="border-radius:0px">
         <div class="card-body">
             <div class="col-md-12 d-flex justify-content-center align-items-center">
                 <!-- Attendance Form -->
@@ -104,6 +104,8 @@
                         console.log('Events data:', data); // Log the events data here
                     },
                 },
+                dayMaxEventRows: true, // giới hạn số dòng sự kiện
+                dayMaxEvents: true,
 
                 eventContent: function(arg) {
                     var status = arg.event.extendedProps.status;
