@@ -7,7 +7,7 @@
             <h5 class="fw-bold mb-3">Create User</h5>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body page-inner">
         <form action="#" method="post" id="userForm" name="userForm">
             @csrf
             <div class="row">

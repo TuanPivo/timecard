@@ -6,7 +6,7 @@
             <h5>Edit User</h5>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body page-inner">
         <form action="#" method="POST" id="updateForm" name="updateForm">
             @csrf
             <div class="row">

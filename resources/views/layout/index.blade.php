@@ -51,7 +51,7 @@
             @include('layout.header')
 
             <div class="container">
-                <div class="">
+                <div>
                     @yield('content')
                 </div>
                 @yield('customJs')
