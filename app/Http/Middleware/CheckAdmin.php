@@ -24,7 +24,7 @@ class CheckAdmin
                 return redirect()->route('home')->with('warning', 'You cannot access this website');
             }
         } else {
-            return redirect()->route('login')->with('warning', 'You cannot access this website');
+            return redirect()->route('home')->with('error', "You are not login");
         }
 
     }

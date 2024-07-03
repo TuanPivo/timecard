@@ -113,6 +113,9 @@ class HomeController extends Controller
         if (!Auth::check()) {
             return redirect()->route('home')->with('error', "You are not login");
         }
+        if (Auth::user()->role !== 0) {
+            return redirect()->route('home')->with('warning', 'You cannot access this website');
+        }
         $data = Attendance::with('user')
         ->where('status', 'pending')
         ->orderBy('date','desc')
