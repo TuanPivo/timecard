@@ -57,8 +57,9 @@
                     <button id="goToMonthYear" class="btn btn-info"><i class="fas fa-search"></i></button>
                 </div>
             </div>
-        <div class="card-footer">
-            <div id="calendar"></div>
+            <div class="card-footer">
+                <div id="calendar"></div>
+            </div>
         </div>
     </div>
 
