@@ -28,7 +28,7 @@
             <div class="col-md-12">
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ route('account.index') }}" class="btn btn-black">Cancel</a>
+                    <a href="{{ route('account.index') }}" class="btn btn-danger">Cancel</a>
                 </div>
             </div>    
         </form>

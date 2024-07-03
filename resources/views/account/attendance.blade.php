@@ -6,7 +6,7 @@
                 <h3 class="fw-bold mb-3">Attendance History Of: <strong>{{ $user->name }}</strong></h3>
             </div>
             <div class="ms-md-auto py-2 py-md-0">
-                <a href="{{ route('account.index') }}" class="btn btn-black btn-round">Back</a>
+                <a href="{{ route('account.index') }}" class="btn btn-danger btn-round">Back</a>
                 <a href="{{ route('account.exportMonthly', $user->id) }}" class="btn btn-success btn-round">Export Excel</a>
             </div>
         </div>

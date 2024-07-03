@@ -26,7 +26,7 @@
                         </div>
                         <div class="pb-5">
                             <button type="submit" class="btn btn-primary">Search</button>
-                            <a href="{{ route('account.monthly', $user->id) }}" class="btn btn-dark ml-3">Cancel</a>
+                            <a href="{{ route('account.monthly', $user->id) }}" class="btn btn-danger ml-3">Back</a>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <h3 class="fw-bold mb-3">Monthly Attendance Report of: {{ $user->name }}</h3>
             <div class="ms-md-auto py-2 py-md-0">
-                <a href="{{ route('account.index') }}" class="btn btn-black btn-round">Back</a>
+                <a href="{{ route('account.index') }}" class="btn btn-danger btn-round">Back</a>
                 <a href="{{ route('account.exportMonthly', [$user->id, 'month' => $selectedMonth, 'year' => $selectedYear]) }}" class="btn bg-primary btn-round">Export Excel</a>
             </div>
         </div>
