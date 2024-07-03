@@ -74,7 +74,7 @@ class HomeController extends Controller
         }
 
         // Always fetch holidays
-        $holidays = Holiday::select('title', 'start')->get()->toArray();
+        $holidays = Holiday::select('title', 'start','color')->get()->toArray();
         $combinedEvents = collect($attendances)->merge($holidays);
 
         return response()->json($combinedEvents);
