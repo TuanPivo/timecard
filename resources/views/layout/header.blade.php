@@ -36,7 +36,7 @@
                  @endif
                  <li class="nav-item topbar-user dropdown hidden-caret" style="background-color:#f5f7fd">
                      <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                         aria-expanded="false">
+                         aria-expanded="false" style="height: 33px">
                          <span class="profile-username">
                              <span class="op-7">Hi,</span>
                              {{-- <span class="fw-bold">{{ isset($user) ? $user->name : 'Guest' }}</span> --}}

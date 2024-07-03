@@ -65,6 +65,9 @@ class HomeController extends Controller
                     if ($attendance->status === 'reject') {
                         $title .= '-' . $attendance->status;
                     }
+                    if ($attendance->status === 'approve') {
+                        $title .= '-' . $attendance->status;
+                    }
                     return [
                         'title' => $title,
                         'start' => Carbon::parse($attendance->date)->format('Y-m-d\TH:i:s'),
@@ -134,7 +137,7 @@ class HomeController extends Controller
     {
         $attendance = Attendance::find($id);
         if ($attendance) {
-            $attendance->status = 'success';
+            $attendance->status = 'approve';
             $attendance->save();
             return redirect()->back()->with('success', 'Request has been approve.');
         }

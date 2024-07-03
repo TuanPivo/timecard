@@ -9,12 +9,12 @@
         }
 
         /* .btn-container .btn {
-                        flex: 1;
-                        margin: 5px;
-                    }
-                    .fc-day-sat .fc-daygrid-day-frame {
-                        background-color: rgb(171, 47, 47) !important;
-                } */
+                            flex: 1;
+                            margin: 5px;
+                        }
+                        .fc-day-sat .fc-daygrid-day-frame {
+                            background-color: rgb(171, 47, 47) !important;
+                    } */
         .fc .fc-toolbar.fc-header-toolbar {
             padding: 5px
         }
@@ -23,7 +23,7 @@
     @include('layout.message')
 
     <div class="card" style="border-radius:0px">
-        <div class="card-body">
+        <div class="card-body p-0">
             <div class="col-md-12 d-flex justify-content-center align-items-center">
                 <!-- Attendance Form -->
                 <form method="POST" id="attendanceForm" action="{{ route('attendance') }}" class="d-flex align-items-center me-3">
@@ -133,82 +133,87 @@
                         containerEl.style.backgroundColor = '#007bff';
                     }
 
-                    // Thiết lập tiêu đề của sự kiện
-                    var titleEl = document.createElement('div');
-                    titleEl.textContent = arg.event
-                        .title; // Tiêu đề của sự kiện (ví dụ: Check In, Check Out)
-                    containerEl.appendChild(titleEl);
+                        // Thiết lập tiêu đề của sự kiện
+                        var titleEl = document.createElement('div');
+                        titleEl.style.display = 'inline';
+                        titleEl.textContent = arg.event.title; // Tiêu đề của sự kiện (ví dụ: Check In, Check Out)
 
-                    // nếu là ngày lễ thì không cần hiển thị giờ
-                    if (!status) {
+                        // nếu là ngày lễ thì không cần hiển thị giờ
+                        if (!status) {
+                            containerEl.appendChild(titleEl);
+                            return {
+                                domNodes: [containerEl]
+                            };
+                        }
+
+                        // Lấy và thiết lập thời gian của sự kiện
+                        var timeEl = document.createElement('span');
+                        var startTime = arg.event.start;
+                        if (startTime) {
+                            var formattedStartTime = new Date(startTime).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                            });
+                            timeEl.textContent = ' : ' + formattedStartTime;
+                        }
+
+                        containerEl.appendChild(titleEl);
+                        containerEl.appendChild(timeEl);
+
                         return {
                             domNodes: [containerEl]
                         };
-                    }
+                    },
+                    dateClick: function(info) {
+                        showModal(info.dateStr)
+                    },
+                    // đổi màu cho tiêu đề thứ 7 cn
+                    dayHeaderContent: function(arg) {
+                        var date = arg.date;
+                        var day = date.getUTCDay();
+                        var text = arg.text;
 
-                    // Lấy và thiết lập thời gian của sự kiện
-                    var timeEl = document.createElement('div');
-                    var startTime = arg.event.start;
-                    if (startTime) {
-                        var formattedStartTime = new Date(startTime).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                        timeEl.textContent = formattedStartTime;
-                        containerEl.appendChild(timeEl);
-                    }
+                        if (day === 0 || day === 6) { // 0: Sunday, 6: Saturday
+                            return {
+                                html: '<span style="color: red;">' + text + '</span>'
+                            };
+                        } else {
+                            return {
+                                html: '<span>' + text + '</span>'
+                            };
+                        }
+                    },
+                    dayCellDidMount: function(info) {
+                        var day = info.date.getDay(); // Changed from getUTCDay to getDay
+                        if (day === 0 || day === 6) { // 0: Sunday, 6: Saturday
+                            info.el.style.backgroundColor = 'rgba(216 216 216 / 20%)'; // Light red background
+                        }
+                    },
+                });
+                calendar.render();
 
-                    return {
-                        domNodes: [containerEl]
-                    };
-                },
-                dateClick: function(info) {
-                    showModal(info.dateStr)
-                },
-                // đổi màu cho tiêu đề thứ 7 cn
-                dayHeaderContent: function(arg) {
-                    var date = arg.date;
-                    var day = date.getUTCDay();
-                    var text = arg.text;
-
-                    if (day === 0 || day === 6) { // 0: Sunday, 6: Saturday
-                        return { html: '<span style="color: red;">' + text + '</span>' };
-                    } else {
-                        return { html: '<span>' + text + '</span>' };
-                    }
-                },
-                dayCellDidMount: function(info) {
-                    var day = info.date.getDay(); // Changed from getUTCDay to getDay
-                    if (day === 0 || day === 6) { // 0: Sunday, 6: Saturday
-                        info.el.style.backgroundColor = 'rgba(216 216 216 / 20%)'; // Light red background
-                    }
-                },
-            });
-            calendar.render();
-
-            // Populate the year dropdown
-            var yearPicker = document.getElementById('yearPicker');
-            var currentYear = new Date().getFullYear();
-            for (var i = currentYear - 10; i <= currentYear + 10; i++) {
-                var option = document.createElement('option');
-                option.value = i;
-                option.text = i;
-                yearPicker.appendChild(option);
-            }
-            // Set the default selected month and year to the current month and year
-            document.getElementById('monthPicker').value = new Date().getMonth();
-            document.getElementById('yearPicker').value = currentYear;
-
-            // Handle month and year selection
-            document.getElementById('goToMonthYear').addEventListener('click', function() {
-                var selectedMonth = document.getElementById('monthPicker').value;
-                var selectedYear = document.getElementById('yearPicker').value;
-                if (selectedMonth && selectedYear) {
-                    var newDate = new Date(selectedYear, selectedMonth,
-                        1); // Create a new Date object with the selected month and year
-                    calendar.gotoDate(newDate); // Go to the selected month and year in the calendar
+                // Populate the year dropdown
+                var yearPicker = document.getElementById('yearPicker');
+                var currentYear = new Date().getFullYear();
+                for (var i = currentYear - 10; i <= currentYear + 10; i++) {
+                    var option = document.createElement('option');
+                    option.value = i;
+                    option.text = i;
+                    yearPicker.appendChild(option);
                 }
-            });
+                // Set the default selected month and year to the current month and year
+                document.getElementById('monthPicker').value = new Date().getMonth();
+                document.getElementById('yearPicker').value = currentYear;
+
+                // Handle month and year selection
+                document.getElementById('goToMonthYear').addEventListener('click', function() {
+                    var selectedMonth = document.getElementById('monthPicker').value;
+                    var selectedYear = document.getElementById('yearPicker').value;
+                    if (selectedMonth && selectedYear) {
+                        var newDate = new Date(selectedYear, selectedMonth, 1); // Create a new Date object with the selected month and year
+                        calendar.gotoDate(newDate); // Go to the selected month and year in the calendar
+                    }
+                });
 
             function showModal(date) {
                 $('#attendanceDate').val(date);
