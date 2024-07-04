@@ -81,7 +81,7 @@
                     url: '{{ route('attendanceData') }}',
                     method: 'GET',
                     success: function(data) {
-                        console.log('Events data:', data); // Log the events data here
+                         // Log the events data here
                     },
                 },
                 dayMaxEventRows: true, // giới hạn số dòng sự kiện
