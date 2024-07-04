@@ -1,8 +1,8 @@
 @extends('layout.index')
 @section('content')
     <div class="card-header">
-        <h5>Search By Month/Year</h5>
-        <form action="{{ route('account.monthly', $user->id) }}" method="GET" class="form-inline">
+        <h5 class="fw-bold">Search By Month/Year</h5>
+        <form action="{{ route('account.monthly', $user->id) }}" method="GET" class="form-inline" id="searchForm">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -21,12 +21,18 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="year">Year:</label>
-                                <input type="number" id="year" name="year" value="{{ $selectedYear }}" class="form-control mr-2">
+                                <select name="year" id="year" class="form-control mr-2">
+                                    @foreach (range(2000, 2030) as $y)
+                                        <option value="{{ $y }}" {{ $selectedYear == $y ? 'selected' : '' }}>
+                                            {{ $y }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                        <div class="pb-5">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                            <a href="{{ route('account.monthly', $user->id) }}" class="btn btn-danger ml-3">Back</a>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary" style="display: none;">Search</button>
+                            <a href="{{ route('account.monthly', $user->id) }}" class="btn btn-danger">Clear</a>
                         </div>
                     </div>
                 </div>
@@ -126,4 +132,23 @@
             </tbody>
         </table>
     </div>
+@endsection
+
+@section('customJs')
+    <script>
+        // auto search on select
+        document.addEventListener('DOMContentLoaded', function() {
+            let monthSelect = document.getElementById('month');
+            let yearInput = document.getElementById('year');
+            let form = document.getElementById('searchForm');
+
+            monthSelect.addEventListener('change', function() {
+                form.submit();
+            });
+
+            yearInput.addEventListener('change', function() {
+                form.submit();
+            });
+        });
+    </script>
 @endsection
