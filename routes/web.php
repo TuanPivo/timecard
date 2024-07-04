@@ -7,6 +7,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\LeaveRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,13 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/process-reset-password/{token}', 'processResetPassword')->name('password.processResetPassword');
     });
 
+    Route::controller(LeaveRequestController::class)->group(function () {
+        // Route::get('leave-requests', [LeaveRequestController::class, 'index'])->name('leave_requests.index');
+        Route::get('/leave-requests', [LeaveRequestController::class, 'index'])->name('leave_requests.index');
+        // Route::get('leave-requests/create', [LeaveRequestController::class, 'create'])->name('leave_requests.create');
+        Route::post('leave-requests', [LeaveRequestController::class, 'store'])->name('leave_requests.store');
+    });
+
     Route::middleware('CheckAdmin')->controller(AccountController::class)->group(function () {
         Route::get('/account', 'index')->name('account.index');
         Route::get('/account/create', 'create')->name('account.create');
@@ -77,5 +85,10 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/admin/holiday/update/{id}', 'update')->name('holiday.update');
         Route::get('/admin/holiday/delete/{id}', 'delete')->name('holiday.delete');
 
+    });
+
+    Route::middleware('CheckAdmin')->controller(HolidayController::class)->group(function () {
+        Route::get('/admin/leave-requests', [LeaveRequestController::class, 'adminIndex'])->name('admin_leave_requests.index');
+        Route::post('/admin/leave-requests/{leaveRequest}/status', [LeaveRequestController::class, 'updateStatus'])->name('admin_leave_requests.updateStatus');
     });
 });
