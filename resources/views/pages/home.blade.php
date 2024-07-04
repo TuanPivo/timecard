@@ -28,34 +28,13 @@
                 <!-- Attendance Form -->
                 <form method="POST" id="attendanceForm" action="{{ route('attendance') }}" class="d-flex align-items-center me-3">
                     @csrf
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <p class="demo">
                             <button value="check in" onclick="handleButtonClick(this)" class="btn btn-info me-2">Check In</button>
                             <button value="check out" onclick="handleButtonClick(this)" class="btn btn-info">Check Out</button>
                         </p>
                     </div>
                 </form>
-                <!-- Month and Year Picker -->
-                <div class="d-flex align-items-center justify-content-center">
-                    <label for="monthPicker" class="form-label me-2">Select Month:</label>
-                    <select id="monthPicker" class="form-select w-auto me-2">
-                        <option value="0">January</option>
-                        <option value="1">February</option>
-                        <option value="2">March</option>
-                        <option value="3">April</option>
-                        <option value="4">May</option>
-                        <option value="5">June</option>
-                        <option value="6">July</option>
-                        <option value="7">August</option>
-                        <option value="8">September</option>
-                        <option value="9">October</option>
-                        <option value="10">November</option>
-                        <option value="11">December</option>
-                    </select>
-                    <label for="yearPicker" class="form-label me-2">Select Year:</label>
-                    <select id="yearPicker" class="form-select w-auto me-2"></select>
-                    <button id="goToMonthYear" class="btn btn-info"><i class="fas fa-search"></i></button>
-                </div>
             </div>
             <div class="card-footer">
                 <div id="calendar"></div>
@@ -187,6 +166,36 @@
             });
             calendar.render();
 
+            var toolbarChunks = calendar.el.querySelectorAll('.fc-toolbar-chunk');
+            if (toolbarChunks.length > 0) {
+                // Lấy div giữa của toolbar
+                var middleChunk = toolbarChunks[Math.floor(toolbarChunks.length / 2)];
+                if (middleChunk) {
+                    var centerElement = document.createElement('div');
+                    centerElement.classList.add('d-flex', 'align-items-center', 'justify-content-center');
+                    centerElement.innerHTML = `
+                        <label for="monthPicker" class="form-label me-2">Select Month:</label>
+                        <select id="monthPicker" class="form-select w-auto me-2">
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                        <label for="yearPicker" class="form-label me-2">Select Year:</label>
+                        <select id="yearPicker" class="form-select w-auto me-2"></select>
+                    `;
+                    middleChunk.appendChild(centerElement);
+                }
+            }
+
             // Populate the year dropdown
             var yearPicker = document.getElementById('yearPicker');
             var currentYear = new Date().getFullYear();
@@ -200,16 +209,26 @@
             document.getElementById('monthPicker').value = new Date().getMonth();
             document.getElementById('yearPicker').value = currentYear;
 
-            // Handle month and year selection
-            document.getElementById('goToMonthYear').addEventListener('click', function() {
+            // Bắt sự kiện khi người dùng thay đổi tháng và năm
+            document.getElementById('monthPicker').addEventListener('change', function() {
+                search(); // Gọi hàm search khi có thay đổi ở monthPicker
+            });
+
+            document.getElementById('yearPicker').addEventListener('change', function() {
+                search(); // Gọi hàm search khi có thay đổi ở yearPicker
+            });
+
+            // Hàm search được gọi khi có thay đổi tháng hoặc năm
+            function search() {
                 var selectedMonth = document.getElementById('monthPicker').value;
                 var selectedYear = document.getElementById('yearPicker').value;
+
                 if (selectedMonth && selectedYear) {
-                    var newDate = new Date(selectedYear, selectedMonth,
-                        1); // Create a new Date object with the selected month and year
-                    calendar.gotoDate(newDate); // Go to the selected month and year in the calendar
+                    var newDate = new Date(selectedYear, selectedMonth, 1); // Tạo một đối tượng Date mới với tháng và năm đã chọn
+                    calendar.gotoDate(newDate); // Chuyển đến tháng và năm đã chọn trong lịch
                 }
-            });
+            }
+
 
             function showModal(date) {
                 $('#attendanceDate').val(date);
