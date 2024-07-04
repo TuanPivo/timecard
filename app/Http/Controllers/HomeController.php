@@ -161,6 +161,25 @@ class HomeController extends Controller
         return view('pages.list_request_user', compact(['data', 'user']));
     }
 
+    public function editRequestUser(Request $request, $id)
+    {
+        $request->validate([
+            'type' => 'required|string',
+            'date' => 'required|date',
+        ]);
+
+        $attendance = Attendance::find($id);
+        if ($attendance) {
+            $attendance->type = $request->input('type');
+            $attendance->date = $request->input('date');
+            $attendance->save();
+
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Request not found.']);
+        }
+    }
+
     public function deleteRequestUser($id)
     {
         if (!Auth::check()) {
