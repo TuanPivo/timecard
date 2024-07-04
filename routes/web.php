@@ -32,6 +32,7 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/show-request-user', 'showRequestUser')->name('showRequestUser');
         Route::get('/reject/{id}', 'reject')->name('reject');
         Route::get('/approve/{id}', 'approve')->name('approve');
+        Route::post('/edit/{id}', 'editRequestUser')->name('edit.request');
         Route::delete('/delete/{id}', 'deleteRequestUser')->name('delete.request');
 
     });
