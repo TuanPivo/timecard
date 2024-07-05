@@ -52,6 +52,7 @@ class HolidayController extends Controller
         $holiday = Holiday::findOrFail($id);
         $holiday->title = $request->title;
         $holiday->start = $request->start;
+        $holiday->end = $request->end;
         $holiday->save();
 
         return redirect()->route('holiday.index')->with('success', 'Holiday updated successfully.');

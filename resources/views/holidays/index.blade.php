@@ -15,7 +15,8 @@
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Date</th>
+                        <th>Date start</th>
+                        <th>Date end</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -25,6 +26,7 @@
                             <tr>
                                 <td>{{ $holiday->title }}</td>
                                 <td>{{ $holiday->start }}</td>
+                                <td>{{ $holiday->end }}</td>
                                 <td>
                                     <button class="btn btn-primary me-2" data-bs-toggle="modal"
                                         data-bs-target="#editHolidayModal"
@@ -60,12 +62,16 @@
                             <input type="text" class="form-control" id="holidayTitle" name="title" required>
                         </div>
                         <div class="mb-3">
-                            <label for="holidayDate" class="form-label">Date</label>
+                            <label for="holidayDate" class="form-label">Date start</label>
                             <input type="date" class="form-control" id="holidayDate" name="start" required>
                         </div>
                         <div class="mb-3">
+                            <label for="holidayDate" class="form-label">Date end</label>
+                            <input type="date" class="form-control" id="holidayDate" name="end" >
+                        </div>
+                        <div class="mb-3">
                             <label for="holidayColor" class="form-label">Color</label>
-                            <input type="color" class="form-control" id="holidayColor" name="color" required>
+                            <input type="color" class="form-control" id="holidayColor" name="color" >
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -93,8 +99,12 @@
                             <input type="text" class="form-control" id="editHolidayTitle" name="title" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editHolidayDate" class="form-label">Date</label>
+                            <label for="editHolidayDate" class="form-label">Date start</label>
                             <input type="date" class="form-control" id="editHolidayDate" name="start" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editHolidayDateEnd" class="form-label">Date end</label>
+                            <input type="date" class="form-control" id="editHolidayDateEnd" name="end">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -110,6 +120,7 @@
             $.get('/admin/holiday/edit/' + id, function(holiday) {
                 $('#editHolidayTitle').val(holiday.title);
                 $('#editHolidayDate').val(holiday.start);
+                $('#editHolidayDateEnd').val(holiday.end);
                 $('#editHolidayForm').attr('action', '/admin/holiday/update/' + holiday.id);
                 $('#editHolidayModal').modal('show');
             });

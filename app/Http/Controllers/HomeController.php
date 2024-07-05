@@ -77,7 +77,13 @@ class HomeController extends Controller
         }
 
         // Always fetch holidays
-        $holidays = Holiday::select('title', 'start','color')->get()->toArray();
+        $holidays = Holiday::select('title', 'start', 'end', 'color')->get()->map(function ($holiday) {
+            return [
+                'title' => $holiday->title,
+                'start' => $holiday->start,
+                'end' => $holiday->end ? Carbon::parse($holiday->end)->addDay()->format('Y-m-d\TH:i:s') : null, // Thêm một ngày vào ngày kết thúc nếu có
+            ];
+        });
         $combinedEvents = collect($attendances)->merge($holidays);
 
         return response()->json($combinedEvents);

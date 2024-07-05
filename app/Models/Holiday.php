@@ -12,6 +12,7 @@ class Holiday extends Model
     protected $fillable = [
         'title',
         'start',
-        'color'
+        'color',
+        'end',
     ];
 }
