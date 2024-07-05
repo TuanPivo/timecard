@@ -7,82 +7,83 @@ use Illuminate\Http\Request;
 
 class LeaveRequestController extends Controller
 {
-    // public function index()
-    // {
-    //     $leaveRequests = LeaveRequest::where('user_id', auth()->id())->get();
-    //     return view('leave_requests.index', compact('leaveRequests'));
-    // }
-
-    // public function create()
-    // {
-    //     return view('leave_requests.create');
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'start_date' => 'required|date',
-    //         'end_date' => 'required|date|after_or_equal:start_date',
-    //         'reason' => 'nullable|string',
-    //     ]);
-
-    //     LeaveRequest::create([
-    //         'user_id' => auth()->id(),
-    //         'start_date' => $request->start_date,
-    //         'end_date' => $request->end_date,
-    //         'reason' => $request->reason,
-    //         'status' => 'pending',
-    //     ]);
-
-    //     return redirect()->route('leave_requests.index')->with('success', 'Leave request submitted successfully.');
-    // }
-    
     public function index()
     {
         $leaveRequests = LeaveRequest::all();
+        return view('leave_requests.index', compact('leaveRequests'));
+    }
 
-        // Chuyển đổi dữ liệu thành định dạng mà FullCalendar có thể sử dụng
-        $events = $leaveRequests->map(function ($leaveRequest) {
+    public function getLeaveRequest()
+    {
+        $leaveRequests = LeaveRequest::all();
+        $leaveRequests = $leaveRequests->map(function ($leaveRequest) {
             return [
                 'id' => $leaveRequest->id,
                 'title' => $leaveRequest->reason,
-                'start' => $leaveRequest->leave_date,
+                'start' => $leaveRequest->start_date,
+                'end' => $leaveRequest->end_date,
                 'status' => $leaveRequest->status,
             ];
         });
 
-        return response()->json($events);
+        return response()->json($leaveRequests);
     }
 
     public function store(Request $request)
     {
-        // Validate and store the leave request data
         $validated = $request->validate([
-            'leave_date' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string',
         ]);
 
+        $userId = auth()->user()->id;
+        $validated['user_id'] = $userId;
+
         LeaveRequest::create($validated);
 
-        return response()->json(['success' => true]);
+        session()->flash('success', 'Created a leave request successfully.');
+        return response()->json([
+            'status' => true,
+            'message' => 'Created a leave request successfully.',
+        ]);
     }
 
-    public function adminIndex()
+    public function list()
     {
-        $leaveRequests = LeaveRequest::with('user')->where('status', 'pending')->get();
-        return view('admin_leave_requests.index', compact('leaveRequests'));
+        $leaveRequests = LeaveRequest::where('user_id', auth()->id())
+            ->where('status', 'pending')
+            ->get();
+
+        return view('leave_requests.list', compact('leaveRequests'));
     }
 
-public function updateStatus(Request $request, LeaveRequest $leaveRequest)
+    public function edit($id)
     {
-        $request->validate([
-            'status' => 'required|in:approved,rejected',
+        $leaveRequest = LeaveRequest::where('id', $id)->where('status', 'pending')->firstOrFail();
+        return view('leave_requests.edit', compact('leaveRequest'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'reason' => 'required|string',
         ]);
 
-        $leaveRequest->update([
-            'status' => $request->status,
-        ]);
+        $leaveRequest = LeaveRequest::where('id', $id)->where('status', 'pending')->firstOrFail();
+        $leaveRequest->update($validated);
 
-        return response()->json(['message' => 'Leave request status updated successfully']);
+        session()->flash('success', 'Updated leave request successfully.');
+        return redirect()->route('leave_requests.list');
+    }
+
+    public function destroy($id)
+    {
+        $leaveRequest = LeaveRequest::where('id', $id)->where('status', 'pending')->firstOrFail();
+        $leaveRequest->delete();
+
+        return response()->json(['status' => true, 'message' => 'Successfully deleted leave request.']);
     }
 }

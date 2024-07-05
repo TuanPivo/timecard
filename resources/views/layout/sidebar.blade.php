@@ -42,9 +42,14 @@
 
                 <li class="nav-item">
                     <a href="{{ route('leave_requests.index') }}">
-                        <i class="fa fa-list-alt"></i>
-                        <p>Leave Requests</p>
-                        <span class="caret"></span>
+                        <i class="far fa-calendar-alt"></i>
+                        <p>Calendar Leave Requests</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('leave_requests.list') }}">
+                        <i class="far fa-calendar-alt"></i>
+                        <p>List Of Leave Requests</p>
                     </a>
                 </li>
                 @if (Auth::check() && Auth::user()->role === 0)
@@ -72,7 +77,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('admin_leave_requests.index') }}">
-                            <i class="icon-list"></i>
+                            <i class="far fa-calendar-alt"></i>
                             <p>List Leave Request</p>
                         </a>
                     </li>
