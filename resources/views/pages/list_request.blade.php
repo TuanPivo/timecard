@@ -29,7 +29,7 @@
                                 <td>{{ $attendance->status }}</td>
                                 <td>
                                     @if (auth()->user()->role == 1 || $attendance->user_id != auth()->id())
-                                        <a class="btn btn-danger" href="{{ route('reject', $attendance->id) }}">Reject</a>
+                                       <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal" data-id="{{ $attendance->id }}">Reject</a>
                                         <a href="{{ route('approve', $attendance->id) }}" class="btn btn-primary">Approve</a>
                                     @else
                                         <!-- Disable buttons for user's own requests -->
@@ -48,9 +48,52 @@
             </table>										
         </div>
     </div>
+
+    <!-- Reject Modal -->
+<!-- Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">Reject Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="rejectForm" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="rejectReason">Reason for rejection:</label>
+                        <textarea class="form-control" id="rejectReason" name="note" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
 @endsection
 
 @section('customJs')
+   <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var rejectModal = document.getElementById('rejectModal');
+            rejectModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var attendanceId = button.getAttribute('data-id');
+                var form = document.getElementById('rejectForm');
+                form.setAttribute('action', '{{ url("/reject") }}/' + attendanceId);
+            });
+        });
+    </script>
+
+
     <script>
          function handleAction(action, id) {
             if (action === 'reject' || action === 'approve') {

@@ -47,7 +47,7 @@ class HomeController extends Controller
 
             $attendances = Attendance::where('user_id', $user->id)
                 ->whereIn('status', ['success', 'approve', 'pending', 'reject'])
-                ->select('type', 'date', 'status')
+                ->select('type', 'date', 'status', 'note')
                 ->orderBy('date', 'desc')
                 ->get()
                 ->groupBy(function ($date) {
@@ -64,6 +64,9 @@ class HomeController extends Controller
                     }
                     if ($attendance->status === 'reject') {
                         $title .= '-' . $attendance->status;
+                        if (!empty($attendance->note)) {
+                            $title .= ': ' . $attendance->note;
+                        }
                     }
                     return [
                         'title' => $title,
@@ -123,11 +126,12 @@ class HomeController extends Controller
         return view('pages.list_request', compact(['data']));
     }
 
-    public function reject($id)
+    public function reject(Request $request, $id)
     {
         $attendance = Attendance::find($id);
         if ($attendance) {
             $attendance->status = 'reject';
+            $attendance->note = $request->input('note');
             $attendance->save();
             return redirect()->back()->with('success', 'Request has been rejected.');
         }
