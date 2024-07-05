@@ -149,13 +149,13 @@ class MonthlyAttendanceExport implements FromView, WithStyles
     {
         switch ($status) {
             case 'pending':
-                return '000000';
+                return 'FFFF00'; // yellow
             case 'reject':
-                return '000000';
+                return 'FF0000'; // red
             case 'success':
-                return '000000';
+                return '00FF00'; // green
             default:
-                return '000000';
+                return 'FFFFFF'; // white
         }
     }
 }
