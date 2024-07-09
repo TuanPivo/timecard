@@ -31,7 +31,8 @@
                     <div class="card-body">
                         <p class="demo">
                             <button value="check in" onclick="handleButtonClick(this)" class="btn btn-info me-2">Check In</button>
-                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-info">Check Out</button>
+                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-info me-2">Check Out</button>
+                            <a href="#" class="btn btn-info" id="createLeaveRequestButton">Leave Request</a>
                         </p>
                     </div>
                 </form>
@@ -67,6 +68,8 @@
 
     @include('pages.modalRequest')
 
+    @include('pages.leaveRequestModal')
+
     <script>
         // Function to update the clock
         function updateClock() {
@@ -91,8 +94,6 @@
 
         // Initial call to display the clock immediately
         updateClock();
-    </script>
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -215,6 +216,38 @@
                 $('#attendanceDate').val(date);
                 $('#attendanceModal').modal('show'); // Hiển thị modal
             }
+
+            // show modal leaveRequestModal
+            document.getElementById('createLeaveRequestButton').addEventListener('click', function() {
+                var leaveRequestModal = new bootstrap.Modal(document.getElementById('leaveRequestModal'));
+                leaveRequestModal.show();
+            });
+
+            // Xử lý gửi form và nạp lại lịch sau khi gửi thành công
+            document.getElementById('leaveRequestForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var form = this;
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        form.reset();
+                        var leaveRequestModal = bootstrap.Modal.getInstance(document.getElementById('leaveRequestModal'));
+                        leaveRequestModal.hide();
+                        calendar.refetchEvents();
+                        window.location.href = '{{ route("leave_requests.index") }}';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
 
             //xử lý gửi request
             $('#saveAttendanceBtn').click(function() {

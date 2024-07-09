@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class LeaveRequestController extends Controller
 {
@@ -15,7 +17,8 @@ class LeaveRequestController extends Controller
 
     public function getLeaveRequest()
     {
-        $leaveRequests = LeaveRequest::all();
+        $user = Auth::user();
+        $leaveRequests = LeaveRequest::where('user_id', $user->id)->get();
         $leaveRequests = $leaveRequests->map(function ($leaveRequest) {
             return [
                 'id' => $leaveRequest->id,
@@ -66,24 +69,64 @@ class LeaveRequestController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
+        $leaveRequest = LeaveRequest::where('id', $id)->where('status', 'pending')->firstOrFail();
+        if ($leaveRequest == null) {
+            $message = 'Leave not found.';
+            session()->flash('error', $message);
+
+            return response()->json([
+                'status' => false,
+                'message' => $message,
+            ]);
+        }
+
+        $validator = Validator::make($request->all(), [
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string',
         ]);
 
-        $leaveRequest = LeaveRequest::where('id', $id)->where('status', 'pending')->firstOrFail();
-        $leaveRequest->update($validated);
+        if ($validator->passes()) {
+            $leaveRequest->start_date = $request->start_date;
+            $leaveRequest->end_date = $request->end_date;
+            $leaveRequest->reason = $request->reason;
 
-        session()->flash('success', 'Updated leave request successfully.');
-        return redirect()->route('leave_requests.list');
+            $leaveRequest->update();
+
+            session()->flash('success', 'Updated leave successfully.');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Updated leave successfully.',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
     }
 
-    public function destroy($id)
+    public function destroy($leaveId)
     {
-        $leaveRequest = LeaveRequest::where('id', $id)->where('status', 'pending')->firstOrFail();
+        $leaveRequest = LeaveRequest::where('id', $leaveId)->where('user_id', auth()->id())->first();
+
+        if (!$leaveRequest) {
+            session()->flash('error', 'Leave not found');
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Leave not found',
+            ]);
+        }
+
         $leaveRequest->delete();
 
-        return response()->json(['status' => true, 'message' => 'Successfully deleted leave request.']);
+        session()->flash('success', 'Successfully deleted leave request.');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully deleted leave request.',
+        ]);
     }
 }

@@ -63,10 +63,10 @@ Route::group(['prefix' => '/'], function () {
         Route::post('leave-requests', [LeaveRequestController::class, 'store'])->name('leave_requests.store');
         Route::get('/leave-requests/data', [LeaveRequestController::class, 'getLeaveRequest'])->name('leave_requests.getLeaveRequest');
 
-        Route::get('leave-requests/list', [LeaveRequestController::class, 'list'])->name('leave_requests.list');
-        Route::get('leave-requests/{id}/edit', [LeaveRequestController::class, 'edit'])->name('leave_requests.edit');
-        Route::put('leave-requests/{id}', [LeaveRequestController::class, 'update'])->name('leave_requests.update');
-        Route::delete('leave-requests/{id}', [LeaveRequestController::class, 'destroy'])->name('leave_requests.destroy');
+        Route::get('/leave-requests/list', [LeaveRequestController::class, 'list'])->name('leave_requests.list');
+        Route::get('/leave-requests/{id}/edit', [LeaveRequestController::class, 'edit'])->name('leave_requests.edit');
+        Route::put('/leave-requests/{id}', [LeaveRequestController::class, 'update'])->name('leave_requests.update');
+        Route::delete('/leave-requests/{id}', [LeaveRequestController::class, 'destroy'])->name('leave_requests.destroy');
     });
 
     Route::middleware('CheckAdmin')->controller(AccountController::class)->group(function () {

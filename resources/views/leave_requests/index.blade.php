@@ -12,13 +12,12 @@
         <div class="card-header">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                 <div>
-                    <h5>Show Leave Request of: 
-                        @if (Auth::check())
-                           {{ Auth::user()->name }}
-                        @endif
-                    </h5>
+                    @if (Auth::check())
+                        <h5>Show Leave Request of: {{ Auth::user()->name }}</h5>
+                    @endif
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
+                    <a href="{{ route('leave_requests.list') }}" class="btn btn-primary">My Request</a>
                     <a href="#" class="btn btn-primary" id="createLeaveRequestButton">Create Leave Request</a>
                 </div>
             </div>
@@ -43,15 +42,15 @@
                         @csrf
                         <div class="mb-3">
                             <label for="start_date" class="form-label">Start Date</label>
-                            <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
+                            <input type="datetime-local" class="form-control" id="start_date" name="start_date">
                         </div>
                         <div class="mb-3">
                             <label for="end_date" class="form-label">End Date</label>
-                            <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
+                            <input type="datetime-local" class="form-control" id="end_date" name="end_date">
                         </div>
                         <div class="mb-3">
                             <label for="reason" class="form-label">Reason</label>
-                            <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                            <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -97,7 +96,7 @@
                     }
 
                     var titleEl = document.createElement('div');
-                    titleEl.textContent = arg.event.title;
+                    titleEl.textContent = "Request: " + arg.event.title;
                     containerEl.appendChild(titleEl);
 
                     var startEl = document.createElement('div');
@@ -166,6 +165,7 @@
                         var leaveRequestModal = bootstrap.Modal.getInstance(document.getElementById('leaveRequestModal'));
                         leaveRequestModal.hide();
                         calendar.refetchEvents();
+                        window.location.href = '{{ route("leave_requests.index") }}';
                     }
                 })
                 .catch(error => console.error('Error:', error));
