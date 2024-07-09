@@ -47,7 +47,7 @@ class HomeController extends Controller
 
             $attendances = Attendance::where('user_id', $user->id)
                 ->whereIn('status', ['success', 'approve', 'pending', 'reject'])
-                ->select('type', 'date', 'status')
+                ->select('type', 'date', 'status', 'note')
                 ->orderBy('date', 'desc')
                 ->get()
                 ->groupBy(function ($date) {
@@ -64,6 +64,9 @@ class HomeController extends Controller
                     }
                     if ($attendance->status === 'reject') {
                         $title .= '-' . $attendance->status;
+                        if (!empty($attendance->note)) {
+                            $title .= ': ' . $attendance->note;
+                        }
                     }
                     return [
                         'title' => $title,
@@ -74,7 +77,13 @@ class HomeController extends Controller
         }
 
         // Always fetch holidays
-        $holidays = Holiday::select('title', 'start')->get()->toArray();
+        $holidays = Holiday::select('title', 'start', 'end', 'color')->get()->map(function ($holiday) {
+            return [
+                'title' => $holiday->title,
+                'start' => $holiday->start,
+                'end' => $holiday->end ? Carbon::parse($holiday->end)->addDay()->format('Y-m-d\TH:i:s') : null, // Thêm một ngày vào ngày kết thúc nếu có
+            ];
+        });
         $combinedEvents = collect($attendances)->merge($holidays);
 
         return response()->json($combinedEvents);
@@ -123,11 +132,12 @@ class HomeController extends Controller
         return view('pages.list_request', compact(['data']));
     }
 
-    public function reject($id)
+    public function reject(Request $request, $id)
     {
         $attendance = Attendance::find($id);
         if ($attendance) {
             $attendance->status = 'reject';
+            $attendance->note = $request->input('note');
             $attendance->save();
             return redirect()->back()->with('success', 'Request has been rejected.');
         }
@@ -159,6 +169,25 @@ class HomeController extends Controller
     
 
         return view('pages.list_request_user', compact(['data', 'user']));
+    }
+
+    public function editRequestUser(Request $request, $id)
+    {
+        $request->validate([
+            'type' => 'required|string',
+            'date' => 'required|date',
+        ]);
+
+        $attendance = Attendance::find($id);
+        if ($attendance) {
+            $attendance->type = $request->input('type');
+            $attendance->date = $request->input('date');
+            $attendance->save();
+
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Request not found.']);
+        }
     }
 
     public function deleteRequestUser($id)

@@ -215,22 +215,59 @@ class AccountController extends Controller
         ]);
     }
 
+    public function getMonthlyAttendanceExcel($userId, $month, $year)
+{
+    $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
+    $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
+
+    $attendances = Attendance::where('user_id', $userId)
+        ->where('status', 'success')
+        ->whereIn('type', ['check in', 'check out'])
+        ->whereBetween('date', [$startDate, $endDate])
+        ->orderBy('date')
+        ->get();
+
+    $monthlyAttendanceExcel = [];
+
+    foreach ($attendances as $attendance) {
+        $date = Carbon::parse($attendance->date)->format('j');
+
+        if (!isset($monthlyAttendanceExcel[$date])) {
+            $monthlyAttendanceExcel[$date] = [];
+        }
+
+        if ($attendance->type == 'check in') {
+            $monthlyAttendanceExcel[$date]['check_in'] = [
+                'status' => $attendance->status,
+                'date' => Carbon::parse($attendance->date)->format('H:i'),
+            ];
+        } elseif ($attendance->type == 'check out') {
+            $monthlyAttendanceExcel[$date]['check_out'] = [
+                'status' => $attendance->status,
+                'date' => Carbon::parse($attendance->date)->format('H:i'),
+            ];
+        }
+    }
+
+    return $monthlyAttendanceExcel;
+}
+
     public function exportMonthlyAttendance(Request $request, $userId)
     {
         $user = User::findOrFail($userId);
         $month = $request->input('month', now()->month);
         $year = $request->input('year', now()->year);
 
-        $monthlyAttendance = $this->getMonthlyAttendance($userId, $month, $year);
+        $monthlyAttendanceExcel = $this->getMonthlyAttendanceExcel($userId, $month, $year);
 
-        // Định dạng tháng với 2 chữ số
+        // Format month with two digits
         $formattedMonth = str_pad($month, 2, '0', STR_PAD_LEFT);
-        // Định dạng tên file
+        // File name format
         $fileName = Str::slug($user->name, '_') . '_' . $formattedMonth . '_' . $year . '.xlsx';
         $fileName = str_replace('-', '_', $fileName);
 
         return Excel::download(
-            new MonthlyAttendanceExport($user, $monthlyAttendance, $month, $year),
+            new MonthlyAttendanceExport($user, $monthlyAttendanceExcel, $month, $year),
             $fileName
         );
     }
