@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Holiday;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,8 @@ class LeaveRequestController extends Controller
 {
     public function index()
     {
-        $leaveRequests = LeaveRequest::all();
+        // $leaveRequests = LeaveRequest::all();
+        $leaveRequests = LeaveRequest::orderBy('updated_at', 'desc')->get();
         return view('leave_requests.index', compact('leaveRequests'));
     }
 
@@ -32,7 +34,18 @@ class LeaveRequestController extends Controller
             ];
         });
 
-        return response()->json($leaveRequests);
+        // Always fetch holidays
+        $holidays = Holiday::select('title', 'start', 'end', 'color')->get()->map(function ($holiday) {
+            return [
+                'title' => $holiday->title,
+                'start' => $holiday->start,
+                'end' => $holiday->end ? Carbon::parse($holiday->end)->addDay()->format('Y-m-d\TH:i:s') : null,
+            ];
+        });
+        $combinedEvents = collect($leaveRequests)->merge($holidays);
+
+        return response()->json($combinedEvents);
+        // return response()->json($leaveRequests);
     }
 
     public function store(Request $request)
@@ -68,6 +81,7 @@ class LeaveRequestController extends Controller
     {
         $leaveRequests = LeaveRequest::where('user_id', auth()->id())
             ->where('status', 'pending')
+            ->orderBy('updated_at', 'DESC')
             ->get();
 
         return view('leave_requests.list', compact('leaveRequests'));

@@ -249,23 +249,23 @@
                 var formData = new FormData(form);
 
                 fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status) {
-                        form.reset();
-                        var leaveRequestModal = bootstrap.Modal.getInstance(document.getElementById('leaveRequestModal'));
-                        leaveRequestModal.hide();
-                        calendar.refetchEvents();
-                        window.location.href = '{{ route("leave_requests.index") }}';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status) {
+                            form.reset();
+                            var leaveRequestModal = bootstrap.Modal.getInstance(document.getElementById('leaveRequestModal'));
+                            leaveRequestModal.hide();
+                            calendar.refetchEvents();
+                            window.location.href = '{{ route('leave_requests.index') }}';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             });
 
             //xử lý gửi request

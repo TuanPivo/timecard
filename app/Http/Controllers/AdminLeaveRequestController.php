@@ -9,7 +9,7 @@ class AdminLeaveRequestController extends Controller
 {
     public function index()
     {
-        $leaveRequests = LeaveRequest::with('user')->where('status', 'pending')->get();
+        $leaveRequests = LeaveRequest::with('user')->where('status', 'pending')->orderBy('updated_at', 'DESC')->get();
         return view('admin_leave_requests.index', compact('leaveRequests'));
     }
 
