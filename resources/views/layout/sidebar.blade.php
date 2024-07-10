@@ -28,58 +28,93 @@
                 <a href="{{ route('home') }}" class="collapsed" aria-expanded="false">
                     <i class="fas fa-home"></i>
                     <p>Home</p>
-                    <span class="caret"></span>
                 </a>
             </li>
             @if (Auth::check())
                 <li class="nav-item">
-                    <a href="{{ route('showRequestUser') }}">
-                        <i class="fa fa-list-alt"></i>
-                        <p>Request</p>
+                    <a data-bs-toggle="collapse" href="#myrequest">
+                        <i class="fas fa-calendar-alt"></i>
+                        <p>Manage My Request</p>
                         <span class="caret"></span>
                     </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('leave_requests.index') }}">
-                        <i class="far fa-calendar-alt"></i>
-                        <p>Leave Requests</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('leave_requests.list') }}">
-                        <i class="far fa-calendar-alt"></i>
-                        <p>My Leave Requests</p>
-                    </a>
+                    <div class="collapse" id="myrequest">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('showRequestUser') }}">
+                                    <span class="sub-item">Check-in/Check-out</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('leave_requests.index') }}">
+                                    <span class="sub-item">Calendar Leave</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('leave_requests.list') }}">
+                                    <span class="sub-item">Leaves Request</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 @if (Auth::check() && Auth::user()->role === 0)
                     <li class="nav-item">
-                        <a href="{{ route('account.index') }}">
-                            <i class="fas fa-user"></i>
+                        <a data-bs-toggle="collapse" href="#base">
+                            <i class="fas fa-users-cog"></i>
                             <p>Manage User</p>
                             <span class="caret"></span>
                         </a>
+                        <div class="collapse" id="base">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('account.index') }}">
+                                        <span class="sub-item">Lists User</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('account.create') }}">
+                                        <span class="sub-item">Create User</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('showRequest') }}">
-                            <i class="fa fa-list-alt"></i>
-                            <p>Manager request user</p>
+                        <a data-bs-toggle="collapse" href="#manage">
+                            <i class="far fa-calendar-check"></i>
+                            <p>Manages Request</p>
                             <span class="caret"></span>
                         </a>
+                        <div class="collapse" id="manage">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('showRequest') }}">
+                                        <span class="sub-item">Check-in/Check-out</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin_leave_requests.index') }}">
+                                        <span class="sub-item">Leaves Request</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('holiday.index') }}">
-                            <i class="fa fa-list-alt"></i>
-                            <p>List Holiday</p>
-                            <span class="caret"></span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('admin_leave_requests.index') }}">
+                        <a data-bs-toggle="collapse" href="#holiday">
                             <i class="far fa-calendar-alt"></i>
-                            <p>List User Leave Request</p>
+                            <p>Manages Holiday</p>
+                            <span class="caret"></span>
                         </a>
+                        <div class="collapse" id="holiday">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('holiday.index') }}">
+                                        <span class="sub-item">Lists Holiday</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 @endif
             @endif

@@ -7,7 +7,7 @@
         <div class="card-header">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                 <div>
-                    <h5 class="fw-bold mb-3">Lists Leave Request</h5>
+                    <h5 class="fw-bold mb-3">Approve or Reject Leave Request</h5>
                 </div>
             </div>
         </div>
