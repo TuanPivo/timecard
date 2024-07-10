@@ -50,6 +50,26 @@
     @include('pages.leaveRequestModal')
 
     <script>
+        // check input start_date and end_date
+        document.addEventListener('DOMContentLoaded', function() {
+            var startDateInput = document.getElementById('start_date');
+            var endDateInput = document.getElementById('end_date');
+
+            function validateDates() {
+                var startDate = new Date(startDateInput.value);
+                var endDate = new Date(endDateInput.value);
+
+                if (startDate >= endDate) {
+                    endDateInput.setCustomValidity('End date must be later than start date.');
+                } else {
+                    endDateInput.setCustomValidity('');
+                }
+            }
+
+            startDateInput.addEventListener('input', validateDates);
+            endDateInput.addEventListener('input', validateDates);
+        });
+        
         // Function to update the clock
         function updateClock() {
             var now = new Date();
@@ -247,6 +267,11 @@
                 e.preventDefault();
                 var form = this;
                 var formData = new FormData(form);
+
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
 
                 fetch(form.action, {
                         method: 'POST',
