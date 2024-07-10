@@ -11,15 +11,15 @@
                     @csrf
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
-                        <input type="datetime-local" class="form-control" id="start_date" name="start_date">
+                        <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
                     </div>
                     <div class="mb-3">
                         <label for="end_date" class="form-label">End Date</label>
-                        <input type="datetime-local" class="form-control" id="end_date" name="end_date">
+                        <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
                     </div>
                     <div class="mb-3">
                         <label for="reason" class="form-label">Reason</label>
-                        <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                        <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

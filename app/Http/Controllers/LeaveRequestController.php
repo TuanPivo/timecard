@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\LeaveRequestNotification;
 
 class LeaveRequestController extends Controller
 {
@@ -43,7 +46,16 @@ class LeaveRequestController extends Controller
         $userId = auth()->user()->id;
         $validated['user_id'] = $userId;
 
-        LeaveRequest::create($validated);
+        // LeaveRequest::create($validated);
+        $leaveRequest = LeaveRequest::create($validated);
+
+        // Định dạng thời gian bắt đầu và kết thúc
+        $formattedStartDate = Carbon::parse($leaveRequest->start_date)->format('H:i d/m/Y');
+        $formattedEndDate = Carbon::parse($leaveRequest->end_date)->format('H:i d/m/Y');
+
+         // Gửi thông báo đến Slack cho admin với thời gian đã định dạng
+        Notification::route('slack', config('services.slack.webhook_url'))
+        ->notify(new LeaveRequestNotification($leaveRequest, $formattedStartDate, $formattedEndDate));
 
         session()->flash('success', 'Created a leave request successfully.');
         return response()->json([
@@ -92,6 +104,13 @@ class LeaveRequestController extends Controller
             $leaveRequest->reason = $request->reason;
 
             $leaveRequest->update();
+
+            $formattedStartDate = Carbon::parse($leaveRequest->start_date)->format('H:i d/m/Y');
+            $formattedEndDate = Carbon::parse($leaveRequest->end_date)->format('H:i d/m/Y');
+    
+             // Gửi thông báo đến Slack cho admin với thời gian đã định dạng
+            Notification::route('slack', config('services.slack.webhook_url'))
+            ->notify(new LeaveRequestNotification($leaveRequest, $formattedStartDate, $formattedEndDate));
 
             session()->flash('success', 'Updated leave successfully.');
 

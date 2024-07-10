@@ -28,7 +28,7 @@
                 <div class="col-md-12">
                     <div class="mb-3">
                         <label for="reason" class="form-label">Reason</label>
-                        <textarea class="form-control" id="reason" name="reason" rows="3" required>{{ old('reason', $leaveRequest->reason) }}</textarea>
+                        <textarea class="form-control" id="reason" name="reason" rows="3">{{ old('reason', $leaveRequest->reason) }}</textarea>
                         <span></span>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
             <div class="col-md-12">
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="#" class="btn btn-danger">Cancel</a>
+                    <a href="{{ route('leave_requests.list') }}" class="btn btn-danger">Cancel</a>
                 </div>
             </div>    
         </form>

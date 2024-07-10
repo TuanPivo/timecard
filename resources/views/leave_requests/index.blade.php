@@ -1,4 +1,5 @@
 @extends('layout.index')
+
 @section('content')
     <style>
         .fc .fc-toolbar.fc-header-toolbar {
@@ -13,12 +14,12 @@
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                 <div>
                     @if (Auth::check())
-                        <h5>Show Leave Request of: {{ Auth::user()->name }}</h5>
+                        <h5>Leave Requests Of: {{ Auth::user()->name }}</h5>
                     @endif
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
-                    <a href="{{ route('leave_requests.list') }}" class="btn btn-primary">My Request</a>
-                    <a href="#" class="btn btn-primary" id="createLeaveRequestButton">Create Leave Request</a>
+                    <a href="{{ route('leave_requests.list') }}" class="btn btn-primary">My Requests</a>
+                    <a href="#" class="btn btn-primary" id="createLeaveRequestButton">Create Request</a>
                 </div>
             </div>
         </div>
@@ -42,15 +43,15 @@
                         @csrf
                         <div class="mb-3">
                             <label for="start_date" class="form-label">Start Date</label>
-                            <input type="datetime-local" class="form-control" id="start_date" name="start_date">
+                            <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
                         </div>
                         <div class="mb-3">
                             <label for="end_date" class="form-label">End Date</label>
-                            <input type="datetime-local" class="form-control" id="end_date" name="end_date">
+                            <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
                         </div>
                         <div class="mb-3">
                             <label for="reason" class="form-label">Reason</label>
-                            <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                            <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -72,7 +73,7 @@
                     url: '{{ route('leave_requests.getLeaveRequest') }}',
                     method: 'GET',
                     success: function(data) {
-                        console.log('Events data:', data); // Log the events data here
+                        console.log('Events data:', data);
                     },
                 },
                 eventContent: function(arg) {
@@ -100,7 +101,7 @@
                     containerEl.appendChild(titleEl);
 
                     var startEl = document.createElement('div');
-                    startEl.textContent = "Start: " + new Date(arg.event.start).toLocaleString('vi-VN', {
+                    startEl.textContent = "Start Time: " + new Date(arg.event.start).toLocaleString('vi-VN', {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric',
@@ -110,7 +111,7 @@
                     containerEl.appendChild(startEl);
 
                     var endEl = document.createElement('div');
-                    endEl.textContent = "End: " + new Date(arg.event.end).toLocaleString('vi-VN', {
+                    endEl.textContent = "End Time: " + new Date(arg.event.end).toLocaleString('vi-VN', {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric',
@@ -140,7 +141,7 @@
                 dayCellDidMount: function(info) {
                     var day = info.date.getDay();
                     if (day === 0 || day === 6) { // 0: Sunday, 6: Saturday
-                        info.el.style.backgroundColor = 'rgba(216 216 216 / 20%)';
+                        info.el.style.backgroundColor = 'RGBA( 245, 245, 245, 1 )';
                     }
                 },
             });
@@ -179,5 +180,4 @@
             leaveRequestModal.show();
         });
     </script>
-
 @endsection
