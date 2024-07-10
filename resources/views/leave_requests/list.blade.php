@@ -16,25 +16,22 @@
         <div class="card-body">
             <table id="basic-datatables" class="table table-head-bg-info text-center">
                 <thead>
+                    <th>Reason</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Reason</th>
-                    <th>Status</th>
                     <th>Action</th>
                 </thead>
                 <tbody>
                     @foreach($leaveRequests as $request)
                         <tr>
-                            <td>{{ $request->start_date }}</td>
-                            <td>{{ $request->end_date }}</td>
                             <td>{{ $request->reason }}</td>
-                            <td>{{ $request->status }}</td>
+                            <td>{{ \Carbon\Carbon::parse($request->start_date)->format('H:i d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($request->end_date)->format('H:i d/m/Y') }}</td>
                             <td>
                                 @if ($request->status === 'pending')
                                     <a href="{{ route('leave_requests.edit', $request->id) }}">
                                         <i class="fas fa-pen"></i>
                                     </a>
-                                   
                                     <a href="#" type="button" class="text-danger w-4 h-4 mr-1"
                                         data-bs-toggle="modal" data-bs-target="#modal-notification"
                                         onclick="setDeleteLeaveId({{ $request->id }})">

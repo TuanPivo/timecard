@@ -93,6 +93,26 @@
 
 @section('customJs')
     <script>
+        // check input start_date and end_date
+        document.addEventListener('DOMContentLoaded', function() {
+            var startDateInput = document.getElementById('start_date');
+            var endDateInput = document.getElementById('end_date');
+
+            function validateDates() {
+                var startDate = new Date(startDateInput.value);
+                var endDate = new Date(endDateInput.value);
+
+                if (startDate >= endDate) {
+                    endDateInput.setCustomValidity('End date must be later than start date.');
+                } else {
+                    endDateInput.setCustomValidity('');
+                }
+            }
+
+            startDateInput.addEventListener('input', validateDates);
+            endDateInput.addEventListener('input', validateDates);
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -153,7 +173,7 @@
 
             function getBackgroundColor(status) {
                 switch (status) {
-                    case 'success':
+                    case 'approved':
                         return '#2eb85c';
                     case 'pending':
                         return '#f9b115';
@@ -179,6 +199,11 @@
                 e.preventDefault();
                 var form = this;
                 var formData = new FormData(form);
+
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
 
                 fetch(form.action, {
                         method: 'POST',

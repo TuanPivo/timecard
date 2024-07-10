@@ -14,27 +14,25 @@
         <div class="card-body">
             <table id="basic-datatables" class="table table-head-bg-info text-center">
                 <thead>
-                    <th>User</th>
+                    <th>User Name</th>
+                    <th>Reason</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Reason</th>
-                    <th>Status</th>
                     <th>Action</th>
                 </thead>
                 <tbody>
                     @foreach($leaveRequests as $request)
                         <tr>
                             <td>{{ $request->user->name }}</td>
-                            <td>{{ $request->start_date }}</td>
-                            <td>{{ $request->end_date }}</td>
                             <td>{{ $request->reason }}</td>
-                            <td>{{ $request->status }}</td>
+                            <td>{{ \Carbon\Carbon::parse($request->start_date)->format('H:i d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($request->end_date)->format('H:i d/m/Y') }}</td>
                             <td>
                                 <form action="{{ route('admin_leave_requests.updateStatus', $request) }}" method="POST" id="status-form-{{ $request->id }}">
                                     @csrf
                                     <input type="hidden" name="status" id="status-input-{{ $request->id }}" value="{{ $request->status }}">
-                                    <button type="button" class="btn btn-primary" id="approve-button-{{ $request->id }}" onclick="submitForm('approved', {{ $request->id }})">Approve</button>
-                                    <button type="button" class="btn btn-danger" id="reject-button-{{ $request->id }}" onclick="submitForm('rejected', {{ $request->id }})">Reject</button>
+                                    <button type="button" class="btn btn-primary" id="approve-button-{{ $request->id }}" onclick="submitForm('approved', {{ $request->id }}, {{ $request->user_id }})">Approve</button>
+                                    <button type="button" class="btn btn-danger" id="reject-button-{{ $request->id }}" onclick="submitForm('rejected', {{ $request->id }}, {{ $request->user_id }})">Reject</button>
                                 </form>
                             </td>
                         </tr>
@@ -46,7 +44,7 @@
 @endsection
 
 @section('customJs')
-    <script>
+    <script>        
         $(document).ready(function() {
             $('#basic-datatables').DataTable({});
 
@@ -75,7 +73,15 @@
             });
         });
 
-        function submitForm(status, requestId) {
+        const currentUserRole = {{ Auth::user()->role }};
+        const currentUserId = {{ Auth::user()->id }};
+
+        function submitForm(status, requestId, requestUserId) {
+            if (currentUserRole === 1 || currentUserId === requestUserId) {
+                alert('You cannot confirm your request yourself.');
+                return;
+            }
+            
             document.getElementById('status-input-' + requestId).value = status;
             var form = document.getElementById('status-form-' + requestId);
             var formData = new FormData(form);

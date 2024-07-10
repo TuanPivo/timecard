@@ -34,7 +34,7 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#myrequest">
                         <i class="fas fa-calendar-alt"></i>
-                        <p>Manage My Request</p>
+                        <p>My Request</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="myrequest">
