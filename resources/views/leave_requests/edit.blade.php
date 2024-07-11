@@ -10,7 +10,21 @@
     <div class="card-body page-inner">
         <form action="#" method="POST" id="updateForm" name="updateForm">
             @csrf
+            @method('PUT')
             <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <select class="form-select" id="title" name="title" required>
+                            <option value="Take off" {{ old('title', $leaveRequest->title) === 'Take off' ? 'selected' : '' }}>Take off</option>
+                            <option value="Come late" {{ old('title', $leaveRequest->title) === 'Come late' ? 'selected' : '' }}>Come late</option>
+                            <option value="Go home early" {{ old('title', $leaveRequest->title) === 'Go home early' ? 'selected' : '' }}>Go home early</option>
+                            <option value="WFH" {{ old('title', $leaveRequest->title) === 'WFH' ? 'selected' : '' }}>WFH</option>
+                            <option value="WFH" {{ old('title', $leaveRequest->title) === 'Go out' ? 'selected' : '' }}>Go out</option>
+                        </select>
+                        <span class="invalid-feedback"></span>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
@@ -78,6 +92,7 @@
                         $("button[type=submit]").prop('disabled', false);
                         if (response.status === true) {
                             window.location.href = "{{ route('leave_requests.list') }}";
+                            $("#title").removeClass('is-invalid').siblings('span').empty();
                             $("#start_date").removeClass('is-invalid').siblings('span').empty();
                             $("#end_date").removeClass('is-invalid').siblings('span').empty();
                             $("#reason").removeClass('is-invalid').siblings('span').empty();
@@ -88,6 +103,11 @@
                             }
                             var errors = response.errors;
 
+                            if (errors.title) {
+                                $("#title").addClass('is-invalid').siblings('span').addClass('invalid-feedback').html(errors.title);
+                            } else {
+                                $("#title").removeClass('is-invalid').siblings('span').empty();
+                            }
                             if (errors.start_date) {
                                 $("#start_date").addClass('is-invalid').siblings('span').addClass('invalid-feedback').html(errors.start_date);
                             } else {

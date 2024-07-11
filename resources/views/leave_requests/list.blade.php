@@ -16,17 +16,19 @@
         <div class="card-body">
             <table id="basic-datatables" class="table table-head-bg-info text-center">
                 <thead>
-                    <th>Reason</th>
+                    <th>Title</th>
                     <th>Start Date</th>
                     <th>End Date</th>
+                    <th>Reason</th>
                     <th>Action</th>
                 </thead>
                 <tbody>
                     @foreach($leaveRequests as $request)
                         <tr>
-                            <td>{{ $request->reason }}</td>
+                            <td>{{ $request->title }}</td>
                             <td>{{ \Carbon\Carbon::parse($request->start_date)->format('H:i d/m/Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($request->end_date)->format('H:i d/m/Y') }}</td>
+                            <td>{{ $request->reason }}</td>
                             <td>
                                 @if ($request->status === 'pending')
                                     <a href="{{ route('leave_requests.edit', $request->id) }}">

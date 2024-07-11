@@ -13,19 +13,15 @@ class LeaveRequestNotification extends Notification
     use Queueable;
 
     protected $leaveRequest;
-    protected $formattedStartDate;
-    protected $formattedEndDate;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($leaveRequest, $formattedStartDate, $formattedEndDate)
+    public function __construct($leaveRequest)
     {
         $this->leaveRequest = $leaveRequest;
-        $this->formattedStartDate = $formattedStartDate;
-        $this->formattedEndDate = $formattedEndDate;
     }
 
     /**
@@ -36,7 +32,6 @@ class LeaveRequestNotification extends Notification
      */
     public function via($notifiable)
     {
-        // return ['mail'];
         return ['slack'];
     }
 
@@ -46,15 +41,9 @@ class LeaveRequestNotification extends Notification
 
         return (new SlackMessage)
             ->from('New Notification')
-            ->content("New leave request from {$this->leaveRequest->user->name}: {$this->leaveRequest->reason}")
+            ->content("New request from {$this->leaveRequest->user->name}: {$this->leaveRequest->title}")
             ->attachment(function ($attachment) use ($url) {
-                $attachment
-                    // ->title('Leave Details')
-                    // ->fields([
-                    //     'Start' => $this->formattedStartDate,
-                    //     'End' => $this->formattedEndDate,
-                    // ])
-                    ->action('Click to view requirements', $url);
+                $attachment->title('Attendance Request')->action('Click to view requirements', $url);
             });
     }
 

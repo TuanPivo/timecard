@@ -50,6 +50,9 @@
     @include('pages.leaveRequestModal')
 
     <script>
+        // Biến lưu trạng thái đăng nhập của người dùng
+        var isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+
         // check input start_date and end_date
         document.addEventListener('DOMContentLoaded', function() {
             var startDateInput = document.getElementById('start_date');
@@ -258,6 +261,11 @@
 
             // show modal leaveRequestModal
             document.getElementById('createLeaveRequestButton').addEventListener('click', function() {
+                if (!isLoggedIn) {
+                    alert('You must log in to continue.');
+                    window.location.href = '{{ route('login') }}';
+                    return;
+                }
                 var leaveRequestModal = new bootstrap.Modal(document.getElementById('leaveRequestModal'));
                 leaveRequestModal.show();
             });

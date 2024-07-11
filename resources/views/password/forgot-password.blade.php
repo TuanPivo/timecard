@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/image/logo.png')}}" type="image/x-icon" />
     <title>Forgot Password</title>
     <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>

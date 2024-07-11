@@ -10,6 +10,16 @@
                 <form id="leaveRequestForm" action="{{ route('leave_requests.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <select class="form-select" id="title" name="title" required>
+                            <option value="Take off">Take off</option>
+                            <option value="Come late">Come late</option>
+                            <option value="Go home early">Go home early</option>
+                            <option value="WFH">WFH</option>
+                            <option value="Go out">Go out</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
                         <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
                     </div>
