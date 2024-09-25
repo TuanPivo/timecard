@@ -14,7 +14,6 @@ class HolidaysTableSeeder extends Seeder
      */
     public function run()
     {
-        //
         DB::table('holidays')->insert([
             ['title' => 'Tết Dương lịch', 'start' => '2024-01-01'],
             ['title' => 'Giỗ Tổ Hùng Vương', 'start' => '2024-04-18'],

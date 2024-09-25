@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      args:
+        php_version: ${PHP_VERSION}
+      context: ./
+      dockerfile: Dockerfile
+    image: php:${PHP_VERSION}-${PROJECT_NAME}
+    container_name: ${PROJECT_NAME}
+    working_dir: /var/www/html
+    extra_hosts:
+      - ${PROJECT_NAME}.local:127.0.0.1
+    ports:
+      - 8888:80
+    volumes:
+      - ../src:/var/www/html
+    links:
+      - db
+
+  db:
+    image: mysql:latest
+    container_name: ${PROJECT_NAME}-mysql
+    ports:
+      - "3321:3306"
+    environment:
+      MYSQL_DATABASE: ${PROJECT_NAME}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./db/mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: ${PROJECT_NAME}-pma
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 2M
+    ports:
+      - 8080:80
+
+  maildev:
+    image: maildev/maildev
+    container_name: ${PROJECT_NAME}-maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
