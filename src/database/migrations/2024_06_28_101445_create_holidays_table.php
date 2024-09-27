@@ -15,9 +15,12 @@ return new class extends Migration
     {
         Schema::create('holidays', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title', 255);
             $table->date('start');
+            $table->date('end');
+            $table->char('color', 7)->default('#FFFFFF');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

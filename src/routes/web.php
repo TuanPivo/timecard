@@ -25,6 +25,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::group(['prefix' => '/'], function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/login', [AuthController::class, 'loginForm'])->name('login.form');
+        Route::post('/login', [AuthController::class, 'login'])->name('login');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    });
+    
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index')->name('home');
         Route::post('/', 'attendance')->name('attendance');
@@ -36,14 +42,12 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/approve/{id}', 'approve')->name('approve');
         Route::post('/edit/{id}', 'editRequestUser')->name('edit.request');
         Route::delete('/delete/{id}', 'deleteRequestUser')->name('delete.request');
-
     });
-    Route::controller(AuthController::class)->group(function () {
-        Route::get('/login', 'showLoginForm')->name('login');
-        Route::post('/login', 'login')->name('loginPost');
-
-        Route::get('/logout', 'logout')->name('logout');
-    });
+    // Route::controller(AuthController::class)->group(function () {
+    //     Route::get('/login', 'showLoginForm')->name('login');
+    //     Route::post('/login', 'login')->name('loginPost');
+    //     Route::get('/logout', 'logout')->name('logout');
+    // });
 
     Route::controller(ChangePasswordController::class)->group(function () {
         // change password

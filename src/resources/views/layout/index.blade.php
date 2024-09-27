@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Uruca</title>
@@ -13,7 +12,6 @@
     <!-- jQuery Scrollbar -->
     <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }} "></script>
     <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
-
     <script>
         WebFont.load({
             google: {
@@ -32,24 +30,19 @@
             },
         });
     </script>
-
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
-
 </head>
-
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
         @include('layout.sidebar')
         <!-- End Sidebar -->
-
         <div class="main-panel">
             @include('layout.header')
-
             <div class="container">
                 <div>
                     @yield('content')
@@ -69,7 +62,6 @@
     <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }} "></script>
     <!-- Kaiadmin JS -->
     <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
-
+    <script src="{{ asset('js/custom.js') }}"></script>
 </body>
-
 </html>

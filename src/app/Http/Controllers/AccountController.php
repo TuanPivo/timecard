@@ -25,7 +25,6 @@ class AccountController extends Controller
             return redirect()->route('home')->with('error', "You are not logged in");
         }
 
-        // $users = User::orderBy('created_at', 'ASC')->get();
         $users = User::orderBy('updated_at', 'DESC')->get();
 
         return view('account.index', [
@@ -217,41 +216,41 @@ class AccountController extends Controller
     }
 
     public function getMonthlyAttendanceExcel($userId, $month, $year)
-{
-    $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
-    $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
+    {
+        $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
 
-    $attendances = Attendance::where('user_id', $userId)
-        ->where('status', 'success')
-        ->whereIn('type', ['check in', 'check out'])
-        ->whereBetween('date', [$startDate, $endDate])
-        ->orderBy('date')
-        ->get();
+        $attendances = Attendance::where('user_id', $userId)
+            ->where('status', 'success')
+            ->whereIn('type', ['check in', 'check out'])
+            ->whereBetween('date', [$startDate, $endDate])
+            ->orderBy('date')
+            ->get();
 
-    $monthlyAttendanceExcel = [];
+        $monthlyAttendanceExcel = [];
 
-    foreach ($attendances as $attendance) {
-        $date = Carbon::parse($attendance->date)->format('j');
+        foreach ($attendances as $attendance) {
+            $date = Carbon::parse($attendance->date)->format('j');
 
-        if (!isset($monthlyAttendanceExcel[$date])) {
-            $monthlyAttendanceExcel[$date] = [];
+            if (!isset($monthlyAttendanceExcel[$date])) {
+                $monthlyAttendanceExcel[$date] = [];
+            }
+
+            if ($attendance->type == 'check in') {
+                $monthlyAttendanceExcel[$date]['check_in'] = [
+                    'status' => $attendance->status,
+                    'date' => Carbon::parse($attendance->date)->format('H:i'),
+                ];
+            } elseif ($attendance->type == 'check out') {
+                $monthlyAttendanceExcel[$date]['check_out'] = [
+                    'status' => $attendance->status,
+                    'date' => Carbon::parse($attendance->date)->format('H:i'),
+                ];
+            }
         }
 
-        if ($attendance->type == 'check in') {
-            $monthlyAttendanceExcel[$date]['check_in'] = [
-                'status' => $attendance->status,
-                'date' => Carbon::parse($attendance->date)->format('H:i'),
-            ];
-        } elseif ($attendance->type == 'check out') {
-            $monthlyAttendanceExcel[$date]['check_out'] = [
-                'status' => $attendance->status,
-                'date' => Carbon::parse($attendance->date)->format('H:i'),
-            ];
-        }
+        return $monthlyAttendanceExcel;
     }
-
-    return $monthlyAttendanceExcel;
-}
 
     public function exportMonthlyAttendance(Request $request, $userId)
     {

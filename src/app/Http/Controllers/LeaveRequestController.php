@@ -67,9 +67,9 @@ class LeaveRequestController extends Controller
 
         // Gửi thông báo đến Slack cho admin
         Notification::route('slack', config('services.slack.webhook_url'))
+            ->route('mail', 'admin@example.com')
             ->notify(new LeaveRequestNotification($leaveRequest));
 
-        session()->flash('success', 'Created a leave request successfully.');
         return response()->json([
             'status' => true,
             'message' => 'Created a leave request successfully.',
@@ -94,14 +94,20 @@ class LeaveRequestController extends Controller
 
     public function update(Request $request, $id)
     {
-        $leaveRequest = LeaveRequest::where('id', $id)->where('status', 'pending')->firstOrFail();
-        if ($leaveRequest == null) {
-            $message = 'Leave not found.';
-            session()->flash('error', $message);
+        if (!Auth::check()) {
+            return response()->json(['status' => false, 'message' => 'You must log in to continue.'], 401);
+        }
 
+        // Kiểm tra quyền sở hữu yêu cầu nghỉ
+        $leaveRequest = LeaveRequest::where('id', $id)
+            ->where('user_id', auth()->user()->id)
+            ->where('status', 'pending')
+            ->firstOrFail();
+
+        if ($leaveRequest == null) {
             return response()->json([
                 'status' => false,
-                'message' => $message,
+                'message' => 'Leave not found or already processed.',
             ]);
         }
 
@@ -113,22 +119,17 @@ class LeaveRequestController extends Controller
         ]);
 
         if ($validator->passes()) {
-            $leaveRequest->title = $request->title;
-            $leaveRequest->start_date = $request->start_date;
-            $leaveRequest->end_date = $request->end_date;
-            $leaveRequest->reason = $request->reason;
+            // Sử dụng update để cập nhật tất cả các trường cùng lúc
+            $leaveRequest->update($validator->validated());
 
-            $leaveRequest->update();
-    
-             // Gửi thông báo đến Slack cho admin
+            // Gửi thông báo đến Slack cho admin
             Notification::route('slack', config('services.slack.webhook_url'))
+                ->route('mail', 'admin@example.com')
                 ->notify(new LeaveRequestNotification($leaveRequest));
-
-            session()->flash('success', 'Updated leave successfully.');
 
             return response()->json([
                 'status' => true,
-                'message' => 'Updated leave successfully.',
+                'message' => 'Updated leave request successfully.',
             ]);
         } else {
             return response()->json([

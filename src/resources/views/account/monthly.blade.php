@@ -8,8 +8,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="month">Month:</label>
-                                <select name="month" id="month" class="form-control mr-2">
+                                <label for="month">Month</label>
+                                <select name="month" id="month" class="form-control">
                                     @foreach (range(1, 12) as $m)
                                         <option value="{{ $m }}" {{ $selectedMonth == $m ? 'selected' : '' }}>
                                             {{ Carbon\Carbon::create(null, $m, 1)->format('F') }}
@@ -20,8 +20,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="year">Year:</label>
-                                <select name="year" id="year" class="form-control mr-2">
+                                <label for="year">Year</label>
+                                <select name="year" id="year" class="form-control">
                                     @foreach (range(2000, 2030) as $y)
                                         <option value="{{ $y }}" {{ $selectedYear == $y ? 'selected' : '' }}>
                                             {{ $y }}

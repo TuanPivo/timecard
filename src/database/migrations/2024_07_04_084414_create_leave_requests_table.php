@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('leave_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
-            $table->string('reason');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('title', ['Take off', 'Come late', 'Go home early', 'WFH', 'Go out'])->nullable(false);
+            $table->timestamp('start_date')->nullable(false);
+            $table->timestamp('end_date')->nullable(false);
+            $table->string('reason', 255)->nullable(false);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
-        
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

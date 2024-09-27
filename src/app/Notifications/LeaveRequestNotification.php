@@ -32,13 +32,12 @@ class LeaveRequestNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['slack'];
+        return ['slack', 'mail'];
     }
 
     public function toSlack($notifiable)
     {
         $url = url('/admin/leave-requests');
-
         return (new SlackMessage)
             ->from('New Notification')
             ->content("New request from {$this->leaveRequest->user->name}: {$this->leaveRequest->title}")
@@ -55,10 +54,13 @@ class LeaveRequestNotification extends Notification
      */
     public function toMail($notifiable)
     {
+        $url = url('/admin/leave-requests');
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->from('no-reply@example.com', 'New Notification')  // Đặt địa chỉ và tên người gửi
+            ->subject('New Leave Request')  // Chủ đề email
+            ->line("New request from {$this->leaveRequest->user->name}: {$this->leaveRequest->title}")  // Nội dung chính
+            ->action('Click to view request details', $url)  // Nút để dẫn tới URL trang leave request
+            ->line('Thank you for using our application!');  // Lời kết
     }
 
     /**

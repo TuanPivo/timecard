@@ -34,9 +34,8 @@
                         <a href="{{ route('login') }}" class="btn btn-danger me-2">Login</a>
                     </li>
                 @endif
-                <li class="nav-item topbar-user dropdown hidden-caret" style="background-color:#f5f7fd">
-                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                        aria-expanded="false">
+                {{-- <li class="nav-item topbar-user dropdown hidden-caret" style="background-color:#f5f7fd">
+                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                         <span class="profile-username">
                         @auth
                             <span class="fw-bold">{{ Auth::user()->name }}</span>
@@ -49,8 +48,6 @@
                                 <li>
                                     <div class="user-box">
                                         <div class="u-text">
-                                            {{-- <h4>{{ $user->name }}</h4>
-                                            <p class="text-muted">{{ $user->email }}</p> --}}
                                             @if (Auth::check())
                                                 <h4>{{ Auth::user()->name }}</h4>
                                                 <p class="text-muted">{{ Auth::user()->email }}</p>
@@ -70,12 +67,49 @@
                                 </li>
                                 <li>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button class="dropdown-item" type="submit">Logout</button>
+                                    </form>
                                 </li>
                             </div>
                         </ul>
                     @endif
-                </li>
+                </li> --}}
+                <li class="nav-item topbar-user dropdown hidden-caret" style="background-color:#f5f7fd">
+                    @auth
+                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                            <span class="profile-username">
+                                <span class="fw-bold">{{ Auth::user()->name }}</span>
+                            </span>
+                        </a>
+                
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <div class="dropdown-user-scroll scrollbar-outer">
+                                <li>
+                                    <div class="user-box">
+                                        <div class="u-text">
+                                            <h4>{{ Auth::user()->name }}</h4>
+                                            <p class="text-muted">{{ Auth::user()->email }}</p>
+                                            <a href="{{ route('home') }}" class="btn btn-xs btn-danger btn-sm">View Calender</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('password.change-password') }}">Change password</a>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button class="dropdown-item" type="submit">Logout</button>
+                                    </form>
+                                </li>
+                            </div>
+                        </ul>
+                    @endauth
+                </li>                
             </ul>
         </div>
     </nav>

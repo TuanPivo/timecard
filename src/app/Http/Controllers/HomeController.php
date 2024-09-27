@@ -1,19 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Http\Requests\AttendanceRequest;
 use App\Models\Attendance;
 use App\Models\Holiday;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
-
 class HomeController extends Controller
 {
-    //
     public function index()
     {
         $user = Auth::user();
@@ -88,7 +85,6 @@ class HomeController extends Controller
 
         return response()->json($combinedEvents);
     }
-
 
     public function sendRequest(Request $request){
         $user = Auth::user();
@@ -206,8 +202,4 @@ class HomeController extends Controller
 
         return redirect()->route('your-route-name')->with('error', "You cannot delete this request");
     }
-
-
-
-
 }

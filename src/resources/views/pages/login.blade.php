@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +19,6 @@
             height: 100vh;
             margin: 0;
         }
-
         .login-container {
             background-color: #fff;
             padding: 20px;
@@ -29,21 +27,17 @@
             width: 400px;
             max-width: 100%;
         }
-
         h2 {
             margin-bottom: 20px;
             text-align: center;
         }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 5px;
         }
-
         .form-group input {
             width: 100%;
             padding: 8px;
@@ -51,12 +45,10 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
         .text-danger {
             color: red;
             margin-top: 5px;
         }
-
         button {
             width: 100%;
             padding: 10px;
@@ -67,7 +59,6 @@
             cursor: pointer;
             font-size: 16px;
         }
-
         button:hover {
             background-color: #0056b3;
         }
@@ -76,23 +67,20 @@
             text-align: center;
             margin-top: 10px;
         }
-
         .forgot-password a {
             color: #007BFF;
             text-decoration: none;
         }
-
         .forgot-password a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
-
 <body>
     <div class="login-container">
         @include('layout.message')
         <h2>Login</h2>
-        <form action="{{ route('loginPost') }}" method="post">
+        <form action="{{ route('login') }}" method="post">
             @csrf
             <div class="form-group">
                 <label for="email">Email</label>
@@ -116,5 +104,4 @@
         </div>
     </div>
 </body>
-
 </html>

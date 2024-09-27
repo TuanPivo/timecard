@@ -7,14 +7,6 @@
             flex-wrap: wrap;
             width: 50%;
         }
-
-        /* .btn-container .btn {
-                        flex: 1;
-                        margin: 5px;
-                    }
-                    .fc-day-sat .fc-daygrid-day-frame {
-                        background-color: rgb(171, 47, 47) !important;
-                } */
         .fc .fc-toolbar.fc-header-toolbar {
             padding: 5px
         }
@@ -105,7 +97,7 @@
                     url: '{{ route('attendanceData') }}',
                     method: 'GET',
                     success: function(data) {
-                         // Log the events data here
+                        // Log the events data here
                     },
                 },
                 dayMaxEventRows: true, // giới hạn số dòng sự kiện
@@ -134,13 +126,13 @@
                         }
                     } else {
                         // Màu xanh cho ngày lễ
-                        containerEl.style.backgroundColor = '#007bff';
+                        // containerEl.style.backgroundColor = '#007bff';
+                        containerEl.style.backgroundColor = '#FF0000';
                     }
 
                     // Thiết lập tiêu đề của sự kiện
                     var titleEl = document.createElement('div');
-                    titleEl.textContent = arg.event
-                        .title; // Tiêu đề của sự kiện (ví dụ: Check In, Check Out)
+                    titleEl.textContent = arg.event.title;
                     containerEl.appendChild(titleEl);
 
                     // nếu là ngày lễ thì không cần hiển thị giờ

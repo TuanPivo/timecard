@@ -122,11 +122,11 @@
                         var endEl = document.createElement('div');
                         endEl.textContent = "End Time: " + formatDate(arg.event.end);
                         containerEl.appendChild(endEl);
-                    }
 
-                    var reasonEl = document.createElement('div');
-                    reasonEl.textContent = "Reason: " + (reason ? reason : "undefined");
-                    containerEl.appendChild(reasonEl);
+                        var reasonEl = document.createElement('div');
+                        reasonEl.textContent = "Reason: " + (reason ? reason : "undefined");
+                        containerEl.appendChild(reasonEl);
+                    }
 
                     return {
                         domNodes: [containerEl]
@@ -163,7 +163,8 @@
                     case 'rejected':
                         return '#e55353';
                     default:
-                        return '#007bff';
+                        // return '#007bff';
+                        return '#FF0000';
                 }
             }
 

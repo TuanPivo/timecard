@@ -13,7 +13,8 @@ class HolidayController extends Controller
 {
     public function index()
     {
-        $holidays = Holiday::all();
+        // $holidays = Holiday::all();
+        $holidays = Holiday::orderBy('created_at', 'desc')->get(); 
         return view('holidays.index', compact('holidays'));
     }
 
