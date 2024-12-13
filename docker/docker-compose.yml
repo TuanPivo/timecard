@@ -1,0 +1,54 @@
+services:
+  site:
+    build:
+      args:
+        php_version: ${PHP_VERSION}
+      context: ./
+      dockerfile: Dockerfile
+    image: php:${PHP_VERSION}-${PROJECT_NAME}
+    container_name: ${PROJECT_NAME}-site
+    working_dir: /var/www/html
+    extra_hosts:
+      - ${PROJECT_NAME}.local:127.0.0.1
+    ports:
+      - 80:80
+    volumes:
+      - ..:/var/www/html
+    links:
+      - mysql
+    
+  mysql:
+    image: mysql:8.0
+    container_name: ${PROJECT_NAME}-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${PROJECT_NAME}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./db/mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: ${PROJECT_NAME}-pma
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 50M
+    ports:
+      - 8081:80
+    
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ${PROJECT_NAME}-mailhog
+    ports:
+      - "1080:8025"  # MailHog Web UI
+      - "1025:1025"  # SMTP Server
+    
+  redis:
+    image: redis:alpine
+    container_name: ${PROJECT_NAME}-redis
+    ports:
+      - "6379:6379"
