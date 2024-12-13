@@ -25,7 +25,8 @@ class AccountController extends Controller
             return redirect()->route('home')->with('error', "You are not logged in");
         }
 
-        $users = User::orderBy('created_at', 'ASC')->get();
+        // $users = User::orderBy('created_at', 'ASC')->get();
+        $users = User::orderBy('updated_at', 'DESC')->get();
 
         return view('account.index', [
             'users' => $users,

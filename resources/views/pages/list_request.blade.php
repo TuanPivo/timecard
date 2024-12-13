@@ -4,7 +4,7 @@
     @include('layout.message')
     <div class="card">
         <div class="card-header">
-            <h5 class="fw-bold mb-3">Lists Request</h5>
+            <h5 class="fw-bold mb-3">Approve or Reject Request (check-in/check-out)</h5>
         </div>
         <div class="card-body">							
             <table id="basic-datatables" class="table table-head-bg-info text-center">

@@ -6,13 +6,13 @@
     <title>Uruca</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="{{ asset('assets/image/logo.png')}}" type="image/x-icon" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Fonts and icons -->
     <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
-    <script src=" {{asset('assets/js/plugin/webfont/webfont.min.js')}} "></script>
+    <script src=" {{ asset('assets/js/plugin/webfont/webfont.min.js') }} "></script>
     <!-- jQuery Scrollbar -->
-    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js')}} "></script>
-	<script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }} "></script>
+    <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
 
     <script>
         WebFont.load({
@@ -36,8 +36,8 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/custom.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
 
 </head>
 
@@ -62,16 +62,14 @@
     </div>
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.min.js')}}"></script>
-
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
-
     <!-- Datatables -->
-    <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js')}} "></script>
-
+    <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }} "></script>
     <!-- Kaiadmin JS -->
     <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
 
 </body>
+
 </html>

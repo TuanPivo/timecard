@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminLeaveRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\LeaveRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +59,17 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/process-reset-password/{token}', 'processResetPassword')->name('password.processResetPassword');
     });
 
+    Route::controller(LeaveRequestController::class)->group(function () {
+        Route::get('/leave-requests', [LeaveRequestController::class, 'index'])->name('leave_requests.index');
+        Route::post('leave-requests', [LeaveRequestController::class, 'store'])->name('leave_requests.store');
+        Route::get('/leave-requests/data', [LeaveRequestController::class, 'getLeaveRequest'])->name('leave_requests.getLeaveRequest');
+
+        Route::get('/leave-requests/list', [LeaveRequestController::class, 'list'])->name('leave_requests.list');
+        Route::get('/leave-requests/{id}/edit', [LeaveRequestController::class, 'edit'])->name('leave_requests.edit');
+        Route::put('/leave-requests/{id}', [LeaveRequestController::class, 'update'])->name('leave_requests.update');
+        Route::delete('/leave-requests/{id}', [LeaveRequestController::class, 'destroy'])->name('leave_requests.destroy');
+    });
+
     Route::middleware('CheckAdmin')->controller(AccountController::class)->group(function () {
         Route::get('/account', 'index')->name('account.index');
         Route::get('/account/create', 'create')->name('account.create');
@@ -79,4 +92,11 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/admin/holiday/delete/{id}', 'delete')->name('holiday.delete');
 
     });
+
+   
+    Route::middleware('CheckAdmin')->controller(AdminLeaveRequestController::class)->group(function () {
+        Route::get('admin/leave-requests', 'index')->name('admin_leave_requests.index');
+        Route::post('admin/leave-requests/update-status/{leaveRequest}', 'updateStatus')->name('admin_leave_requests.updateStatus');
+    });
+    
 });

@@ -31,7 +31,8 @@
                     <div class="card-body p-0">
                         <p class="demo">
                             <button value="check in" onclick="handleButtonClick(this)" class="btn btn-info me-2">Check In</button>
-                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-info">Check Out</button>
+                            <button value="check out" onclick="handleButtonClick(this)" class="btn btn-info me-2">Check Out</button>
+                            <a href="#" class="btn btn-info" id="createLeaveRequestButton">Leave Request</a>
                         </p>
                     </div>
                 </form>
@@ -46,7 +47,32 @@
 
     @include('pages.modalRequest')
 
+    @include('pages.leaveRequestModal')
+
     <script>
+        // Biến lưu trạng thái đăng nhập của người dùng
+        var isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+
+        // check input start_date and end_date
+        document.addEventListener('DOMContentLoaded', function() {
+            var startDateInput = document.getElementById('start_date');
+            var endDateInput = document.getElementById('end_date');
+
+            function validateDates() {
+                var startDate = new Date(startDateInput.value);
+                var endDate = new Date(endDateInput.value);
+
+                if (startDate >= endDate) {
+                    endDateInput.setCustomValidity('End date must be later than start date.');
+                } else {
+                    endDateInput.setCustomValidity('');
+                }
+            }
+
+            startDateInput.addEventListener('input', validateDates);
+            endDateInput.addEventListener('input', validateDates);
+        });
+        
         // Function to update the clock
         function updateClock() {
             var now = new Date();
@@ -70,8 +96,6 @@
 
         // Initial call to display the clock immediately
         updateClock();
-    </script>
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -234,6 +258,48 @@
                 $('#attendanceDate').val(date);
                 $('#attendanceModal').modal('show'); // Hiển thị modal
             }
+
+            // show modal leaveRequestModal
+            document.getElementById('createLeaveRequestButton').addEventListener('click', function() {
+                if (!isLoggedIn) {
+                    alert('You must log in to continue.');
+                    window.location.href = '{{ route('login') }}';
+                    return;
+                }
+                var leaveRequestModal = new bootstrap.Modal(document.getElementById('leaveRequestModal'));
+                leaveRequestModal.show();
+            });
+
+            // Xử lý gửi form và nạp lại lịch sau khi gửi thành công
+            document.getElementById('leaveRequestForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var form = this;
+                var formData = new FormData(form);
+
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status) {
+                            form.reset();
+                            var leaveRequestModal = bootstrap.Modal.getInstance(document.getElementById('leaveRequestModal'));
+                            leaveRequestModal.hide();
+                            calendar.refetchEvents();
+                            window.location.href = '{{ route('leave_requests.index') }}';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
 
             //xử lý gửi request
             $('#saveAttendanceBtn').click(function() {
