@@ -1,15 +1,15 @@
 #!/bin/bash
-[ ! -f config.env ] || export $(grep -v '^#' config.env | xargs)
+#!/bin/bash
+[ ! -f .env ] || export $(grep -v '^#' .env | xargs)
 
 install() {
     build
     up
-    mkdir -p ../local_repositories/veritrans-tgmdk
     docker compose exec ${CONTAINER_APP} composer install
-    docker compose exec ${CONTAINER_APP} cp .env.docker .env
+    docker compose exec ${CONTAINER_APP} cp .env.example .env
     docker compose exec ${CONTAINER_APP} php artisan key:generate
     docker compose exec ${CONTAINER_APP} php artisan storage:link
-    # migrate
+    migrate
 }
 
 up() {
