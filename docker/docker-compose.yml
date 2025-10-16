@@ -52,3 +52,13 @@ services:
     container_name: ${PROJECT_NAME}-redis
     ports:
       - "6379:6379"
+  
+  face_api:
+    build:
+      context: ../../face_service
+    container_name: face_service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../../face_service:/app
+    restart: unless-stopped

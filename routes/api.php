@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\FaceUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::post('/face-attendance', [AttendanceController::class, 'apiFaceAttendance']);
+Route::post('/face-user', [FaceUserController::class, 'store']);
