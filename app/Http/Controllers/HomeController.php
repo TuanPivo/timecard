@@ -207,7 +207,4 @@ class HomeController extends Controller
         return redirect()->route('your-route-name')->with('error', "You cannot delete this request");
     }
 
-
-
-
 }
