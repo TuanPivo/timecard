@@ -1,9 +1,10 @@
+
 services:
   site:
     build:
       args:
         php_version: ${PHP_VERSION}
-      context: ./
+      context: ./ # Đường dẫn tới Dockerfile của Laravel
       dockerfile: Dockerfile
     image: php:${PHP_VERSION}-${PROJECT_NAME}
     container_name: ${PROJECT_NAME}
@@ -11,12 +12,14 @@ services:
     extra_hosts:
       - ${PROJECT_NAME}.local:127.0.0.1
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - ..:/var/www/html
-    links:
+    depends_on:
       - mysql
-    
+    networks:
+      - timecard_net
+
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -29,6 +32,8 @@ services:
       SERVICE_NAME: mysql
     volumes:
       - ./db/mysql_data:/var/lib/mysql
+    networks:
+      - timecard_net
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -38,21 +43,29 @@ services:
       PMA_PORT: 3306
       UPLOAD_LIMIT: 50M
     ports:
-      - 8080:80
-    
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - timecard_net
+
   mailhog:
     image: mailhog/mailhog
     container_name: ${PROJECT_NAME}-mailhog
     ports:
-      - "1080:8025"  # MailHog Web UI
-      - "1025:1025"  # SMTP Server
-    
+      - "1080:8025"
+      - "1025:1025"
+    networks:
+      - timecard_net
+
   redis:
     image: redis:alpine
     container_name: ${PROJECT_NAME}-redis
     ports:
       - "6379:6379"
-  
+    networks:
+      - timecard_net
+
   face_api:
     build:
       context: ../../face_service
@@ -62,3 +75,9 @@ services:
     volumes:
       - ../../face_service:/app
     restart: unless-stopped
+    networks:
+      - timecard_net
+
+networks:
+  timecard_net:
+    driver: bridge
